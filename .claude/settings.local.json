@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git ls-tree:*)",
+      "Bash(find /tmp/forget-me-not -type f -name \"*.sql\" 2>/dev/null | head -5)",
+      "Bash(cp -r /tmp/forget-me-not/.gitignore /tmp/forget-me-not/package.json /tmp/forget-me-not/package-lock.json /tmp/forget-me-not/next.config.ts /tmp/forget-me-not/tsconfig.json /tmp/forget-me-not/tailwind.config.ts /tmp/forget-me-not/postcss.config.mjs . && cp -r /tmp/forget-me-not/app /tmp/forget-me-not/components /tmp/forget-me-not/config /tmp/forget-me-not/docs /tmp/forget-me-not/important-markdowns /tmp/forget-me-not/lib /tmp/forget-me-not/public /tmp/forget-me-not/types /tmp/forget-me-not/prototype . && echo \"Files copied successfully\")",
+      "Bash(ls -A | grep -v -E '^\\(\\\\.git|\\\\.claude|LICENSE|README\\\\.md\\)$' | xargs rm -rf && echo \"Cleaned up\")"
+    ]
+  }
+}
