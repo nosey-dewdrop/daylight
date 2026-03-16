@@ -34,3 +34,17 @@ Pods/
 
 # Claude
 .claude/
+
+# Yerelde tut, GitHub'a gönderme
+daylight/App/
+daylight/Services/
+daylight/Theme/
+daylight/Utils/
+daylight/Models/AppNotification.swift
+daylight/Models/Avatar.swift
+daylight/Models/BlogPost.swift
+daylight/Models/Interest.swift
+daylight/Models/Letter.swift
+daylight/Models/Stamp.swift
+plans/
+project.yml
