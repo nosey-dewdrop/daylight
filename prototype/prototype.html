@@ -1,0 +1,1542 @@
+<!-- this is a prototyppe of everlong app.i made it with google deep search, claude code, notebooklm as assigned on the fellowship program.
+ so, basically totally vibecoded version.
+ no fancy libraries or database.
+ just a mock up!
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>everlong — letters that last</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preco
+nnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Outfit:wght@200;300;400;500&family=Caveat:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   EVERLONG — DESIGN SYSTEM
+   deep plum nights, lilac whispers, celestial calm
+   ═══════════════════════════════════════════ */
+:root {
+  --bg: #0C0A10;
+  --bg1: #110F16;
+  --bg2: #17141E;
+  --bg3: #1E1A28;
+  --bg4: #252030;
+  --brd: #2A2538;
+  --brd2: #3A3450;
+  --lilac: #B8A4D6;
+  --lilac2: #CDBDE8;
+  --lilac3: #9882BA;
+  --lilac4: #7B68A0;
+  --pink: #D4A0B9;
+  --pink2: #E0B8CC;
+  --plum: #6B4F7A;
+  --deep: #3D2A50;
+  --gold: #D4B896;
+  --acf: rgba(184,164,214,0.10);
+  --acg: rgba(184,164,214,0.05);
+  --txt: #EDE8F2;
+  --tx2: #B0A4BF;
+  --tx3: #7E7290;
+  --tx4: #514768;
+  --fd: 'Cormorant Garamond', Georgia, serif;
+  --fb: 'Outfit', -apple-system, sans-serif;
+  --fc: 'Caveat', cursive;
+  --nav-h: 52px;
+  --side-w: 250px;
+  --radius: 12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: var(--fb);
+  font-weight: 300;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* atmospheric noise */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* subtle radial glow */
+body::after {
+  content: '';
+  position: fixed;
+  top: -30%; left: -20%;
+  width: 140%; height: 140%;
+  background: radial-gradient(ellipse at 20% 20%, rgba(107,79,122,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 80%, rgba(184,164,214,0.04) 0%, transparent 50%);
+  pointer-events: none; z-index: 0;
+}
+
+h1,h2,h3 { font-family: var(--fd); font-weight: 400; }
+a { color: var(--lilac); text-decoration: none; }
+a:hover { color: var(--lilac2); }
+::selection { background: rgba(184,164,214,0.25); color: var(--txt); }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--brd); border-radius: 4px; }
+
+/* ═══ TOPNAV ═══ */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--nav-h);
+  background: rgba(12,10,16,0.88);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(42,37,56,0.5);
+  padding: 0 24px;
+  display: flex; align-items: center; gap: 16px;
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+.topnav.hide { transform: translateY(-100%); pointer-events: none; }
+.nav-brand {
+  font-family: var(--fd); font-size: 20px; font-style: italic;
+  color: var(--lilac); cursor: pointer; letter-spacing: 1px;
+  flex-shrink: 0;
+}
+.nav-brand span { font-weight: 300; color: var(--tx3); font-size: 11px; font-family: var(--fb); font-style: normal; margin-left: 8px; letter-spacing: 0.5px; }
+.nav-search {
+  flex: 1; max-width: 340px; position: relative;
+}
+.nav-search input {
+  width: 100%; padding: 8px 14px 8px 34px; border-radius: 10px;
+  border: 1px solid var(--brd); background: var(--bg1);
+  font-size: 12px; color: var(--txt); font-family: var(--fb); font-weight: 300;
+  transition: all 0.2s;
+}
+.nav-search input:focus { border-color: var(--lilac4); box-shadow: 0 0 0 3px var(--acg); outline: none; }
+.nav-search input::placeholder { color: var(--tx4); }
+.nav-search::before { content: '⌕'; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--tx4); }
+.nav-right { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+.nav-link {
+  font-size: 11px; color: var(--tx3); cursor: pointer; background: none; border: none;
+  font-family: var(--fb); font-weight: 300; transition: color 0.2s; padding: 6px 10px;
+  border-radius: 8px; white-space: nowrap;
+}
+.nav-link:hover { color: var(--lilac); background: var(--acf); }
+.nav-link.active { color: var(--lilac); background: var(--acf); }
+.badge { background: var(--pink); color: #000; font-size: 8px; padding: 1px 5px; border-radius: 8px; margin-left: 3px; font-weight: 500; }
+
+/* ═══ LAYOUT ═══ */
+.layout { display: flex; padding-top: var(--nav-h); min-height: 100vh; position: relative; z-index: 1; }
+.sidebar {
+  width: var(--side-w); flex-shrink: 0; position: fixed;
+  top: var(--nav-h); bottom: 0; left: 0;
+  overflow-y: auto; border-right: 1px solid rgba(42,37,56,0.3);
+  background: rgba(17,15,22,0.6); padding: 16px 14px 60px;
+}
+.main { margin-left: var(--side-w); flex: 1; padding: 24px 32px 80px; max-width: 700px; }
+
+/* ═══ PAGES ═══ */
+.page { display: none; }
+.page.active { display: block; animation: emerge 0.5s cubic-bezier(0.22,1,0.36,1); }
+@keyframes emerge { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ═══ BUTTONS ═══ */
+.btn {
+  background: var(--lilac); color: #0C0A10; border: none;
+  padding: 9px 20px; border-radius: 10px; font-size: 12px;
+  font-family: var(--fb); font-weight: 500; cursor: pointer;
+  transition: all 0.25s; letter-spacing: 0.3px;
+}
+.btn:hover { filter: brightness(1.12); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(184,164,214,0.15); }
+.btn-ghost {
+  background: none; border: 1px solid var(--brd); padding: 9px 20px;
+  border-radius: 10px; font-size: 12px; font-family: var(--fb); font-weight: 300;
+  color: var(--tx2); cursor: pointer; transition: all 0.25s;
+}
+.btn-ghost:hover { border-color: var(--lilac4); color: var(--lilac); }
+.btn-sm { padding: 6px 14px; font-size: 10px; border-radius: 8px; }
+.btn-pink { background: var(--pink); }
+.btn-pink:hover { box-shadow: 0 4px 20px rgba(212,160,185,0.15); }
+
+/* ═══ FORMS ═══ */
+input, textarea, select {
+  width: 100%; padding: 10px 14px; border-radius: 10px;
+  border: 1px solid var(--brd); background: var(--bg1);
+  font-size: 13px; font-family: var(--fb); font-weight: 300;
+  color: var(--txt); outline: none; transition: all 0.2s;
+}
+input:focus, textarea:focus { border-color: var(--lilac4); box-shadow: 0 0 0 3px var(--acg); }
+input::placeholder, textarea::placeholder { color: var(--tx4); }
+.form-label { display: block; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lilac4); margin-bottom: 5px; font-weight: 400; }
+
+/* ═══ TAGS ═══ */
+.tag {
+  display: inline-block; font-size: 9px; color: var(--lilac3);
+  background: var(--acf); border: 1px solid rgba(184,164,214,0.12);
+  padding: 2px 8px; border-radius: 4px; letter-spacing: 0.03em;
+}
+.tag-pink { color: var(--pink); background: rgba(212,160,185,0.1); border-color: rgba(212,160,185,0.15); }
+.sl { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lilac4); font-weight: 400; margin-bottom: 10px; }
+
+/* ═══ SIDEBAR ═══ */
+.sb-title { font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--tx4); font-weight: 400; margin: 18px 0 8px; padding: 0 4px; }
+.sb-item {
+  display: flex; gap: 10px; align-items: center;
+  padding: 8px 8px; border-radius: 8px; cursor: pointer;
+  transition: all 0.2s; font-size: 12px; color: var(--tx2);
+}
+.sb-item:hover { background: var(--bg3); color: var(--txt); }
+.sb-icon { font-size: 14px; width: 20px; text-align: center; flex-shrink: 0; }
+.sb-txt { flex: 1; }
+.sb-meta { font-size: 9px; color: var(--tx4); }
+
+/* ═══ CARDS ═══ */
+.card {
+  background: var(--bg2); border: 1px solid var(--brd);
+  border-radius: var(--radius); padding: 18px; margin-bottom: 10px;
+  transition: all 0.3s; cursor: pointer; position: relative;
+}
+.card:hover { border-color: var(--brd2); background: var(--bg3); transform: translateY(-1px); }
+.card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+/* ═══ LETTER CARD ═══ */
+.letter-card {
+  background: var(--bg2); border: 1px solid var(--brd); border-radius: var(--radius);
+  padding: 20px; margin-bottom: 12px; position: relative; overflow: hidden;
+  transition: all 0.3s; cursor: pointer;
+}
+.letter-card:hover { border-color: var(--brd2); }
+.letter-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--lilac4), var(--pink), var(--lilac4));
+  opacity: 0; transition: opacity 0.3s;
+}
+.letter-card:hover::before { opacity: 1; }
+.letter-status {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 6px; font-weight: 400;
+}
+.status-transit { color: var(--gold); background: rgba(212,184,150,0.1); }
+.status-delivered { color: var(--pink); background: rgba(212,160,185,0.1); }
+.status-read { color: var(--lilac); background: var(--acf); }
+
+/* ═══ PROFILE AVATAR ═══ */
+.avatar {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: linear-gradient(135deg, rgba(184,164,214,0.15), rgba(212,160,185,0.1));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0; border: 1px solid var(--brd);
+}
+.avatar-sm { width: 32px; height: 32px; font-size: 14px; }
+.avatar-lg { width: 72px; height: 72px; font-size: 32px; }
+
+/* ═══ PROGRESS BAR ═══ */
+.xp-bar { height: 4px; background: var(--bg4); border-radius: 4px; overflow: hidden; }
+.xp-fill { height: 100%; background: linear-gradient(90deg, var(--lilac4), var(--lilac)); border-radius: 4px; transition: width 0.6s ease; }
+
+/* ═══ STAMP ═══ */
+.stamp {
+  width: 48px; height: 48px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; border: 1px solid var(--brd);
+  transition: all 0.2s; cursor: pointer;
+}
+.stamp:hover { transform: scale(1.1); }
+.stamp-locked { opacity: 0.2; filter: grayscale(1); }
+
+/* ═══ COUNTDOWN ═══ */
+.countdown {
+  font-family: var(--fd); font-size: 28px; font-weight: 300;
+  color: var(--lilac); letter-spacing: 4px;
+}
+.countdown-label { font-size: 9px; color: var(--tx4); letter-spacing: 0.12em; text-transform: uppercase; }
+
+/* ═══ JOURNEY LINE ═══ */
+.journey {
+  height: 3px; background: var(--bg4); border-radius: 3px;
+  position: relative; margin: 14px 0;
+}
+.journey-fill {
+  height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, var(--lilac4), var(--pink));
+  position: relative;
+}
+.journey-dot {
+  position: absolute; right: -5px; top: -4px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--pink); border: 2px solid var(--bg);
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(212,160,185,0.4); } 50% { box-shadow: 0 0 0 6px rgba(212,160,185,0); } }
+.journey-city {
+  font-size: 9px; color: var(--tx4); letter-spacing: 0.06em;
+}
+
+/* ═══ HERO ═══ */
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  justify-content: center; align-items: center; text-align: center;
+  padding: 0 24px; position: relative; z-index: 1;
+}
+.hero h1 {
+  font-family: var(--fd); font-style: italic; font-weight: 300;
+  font-size: clamp(56px, 12vw, 96px); color: var(--lilac);
+  line-height: 0.9; letter-spacing: -2px; margin-bottom: 12px;
+}
+.hero-sub {
+  font-family: var(--fd); font-style: italic; font-weight: 300;
+  font-size: 18px; color: var(--tx2); margin-bottom: 6px;
+}
+.hero-desc {
+  font-size: 13px; color: var(--tx3); font-weight: 200;
+  max-width: 420px; margin: 0 auto 32px;
+}
+
+/* stars */
+.stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.star {
+  position: absolute; width: 2px; height: 2px; background: var(--lilac3);
+  border-radius: 50%; opacity: 0;
+  animation: twinkle var(--dur) ease-in-out var(--delay) infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: 0; } 50% { opacity: var(--bright); } }
+
+/* anim utils */
+.ar { opacity: 0; animation: arise 0.7s ease forwards; }
+.ar1 { animation-delay: 0.1s; } .ar2 { animation-delay: 0.25s; }
+.ar3 { animation-delay: 0.4s; } .ar4 { animation-delay: 0.6s; }
+.ar5 { animation-delay: 0.8s; }
+@keyframes arise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ═══ BOTTLE ═══ */
+.bottle-float {
+  animation: bobbing 4s ease-in-out infinite;
+}
+@keyframes bobbing { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
+
+/* ═══ MOOD COLORS ═══ */
+.mood-bar {
+  height: 3px; border-radius: 3px; margin-top: 12px;
+}
+
+/* ═══ MUSIC CARD ═══ */
+.music-card {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg1); border: 1px solid var(--brd);
+  border-radius: 10px; padding: 10px 14px; margin-top: 10px;
+}
+.music-wave {
+  display: flex; gap: 2px; align-items: flex-end; height: 16px;
+}
+.music-wave span {
+  width: 2px; background: var(--lilac3); border-radius: 2px;
+  animation: wave 1.2s ease-in-out infinite;
+}
+.music-wave span:nth-child(1) { height: 6px; animation-delay: 0s; }
+.music-wave span:nth-child(2) { height: 12px; animation-delay: 0.15s; }
+.music-wave span:nth-child(3) { height: 8px; animation-delay: 0.3s; }
+.music-wave span:nth-child(4) { height: 14px; animation-delay: 0.1s; }
+.music-wave span:nth-child(5) { height: 5px; animation-delay: 0.25s; }
+@keyframes wave { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(0.4); } }
+
+/* ═══ ONBOARDING ═══ */
+.ob-step { display: none; }
+.ob-step.active { display: block; animation: emerge 0.4s ease; }
+.ob-progress { display: flex; gap: 4px; margin-bottom: 24px; }
+.ob-dot { width: 28px; height: 3px; border-radius: 3px; background: var(--bg4); transition: all 0.3s; }
+.ob-dot.done { background: var(--lilac); }
+.ob-dot.current { background: var(--lilac3); width: 44px; }
+
+/* interest pills */
+.int-pill {
+  display: inline-block; padding: 7px 14px; border: 1px solid var(--brd);
+  border-radius: 20px; font-size: 12px; color: var(--tx2); cursor: pointer;
+  transition: all 0.2s; font-weight: 300;
+}
+.int-pill:hover { border-color: var(--brd2); }
+.int-pill.sel { background: var(--lilac); color: #0C0A10; border-color: var(--lilac); font-weight: 400; }
+
+/* mbti grid */
+.mbti-opt {
+  padding: 10px; border: 1px solid var(--brd); border-radius: 10px;
+  text-align: center; cursor: pointer; transition: all 0.2s;
+  font-size: 12px; color: var(--tx2);
+}
+.mbti-opt:hover { border-color: var(--brd2); }
+.mbti-opt.sel { background: var(--acf); border-color: var(--lilac4); color: var(--lilac); }
+
+/* ═══ MEMORY BOX ═══ */
+.sealed {
+  position: relative; overflow: hidden;
+}
+.sealed::after {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(184,164,214,0.03) 8px, rgba(184,164,214,0.03) 9px);
+  pointer-events: none;
+}
+.wax-seal {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: radial-gradient(circle, #8B3A4A, #6B2A3A);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; box-shadow: 0 2px 8px rgba(139,58,74,0.3);
+}
+
+/* ═══ BLOG ═══ */
+.blog-card {
+  background: var(--bg2); border: 1px solid var(--brd); border-radius: var(--radius);
+  padding: 20px; cursor: pointer; transition: all 0.3s;
+  position: relative; overflow: hidden;
+}
+.blog-card:hover { border-color: var(--brd2); transform: translateY(-2px); }
+.blog-cat {
+  font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 6px;
+}
+
+/* ═══ OVERLAY ═══ */
+.overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(12,10,16,0.95); z-index: 200;
+  justify-content: center; align-items: center; text-align: center;
+  backdrop-filter: blur(12px);
+}
+.overlay.on { display: flex; animation: emerge 0.4s ease; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ STARS ═══ -->
+<div class="stars" id="stars"></div>
+
+<!-- ═══ TOPNAV ═══ -->
+<nav class="topnav hide" id="topnav">
+  <span class="nav-brand" onclick="go('dashboard')">everlong<span>letters that last</span></span>
+  <div class="nav-search">
+    <input type="text" placeholder="search pen pals, letters, stories...">
+  </div>
+  <div class="nav-right">
+    <button class="nav-link" onclick="go('dashboard')">✉ inbox</button>
+    <button class="nav-link" onclick="go('explore')">✦ explore</button>
+    <button class="nav-link" onclick="go('bottle')">🐚 bottle mail</button>
+    <button class="nav-link" onclick="go('memory')">📦 memory box</button>
+    <button class="nav-link" onclick="go('blog')">📖 blog</button>
+    <button class="nav-link" onclick="go('profile')">☽ profile</button>
+  </div>
+</nav>
+
+<!-- ═══ OVERLAY ═══ -->
+<div class="overlay" id="overlay">
+  <div>
+    <div style="font-size:36px;margin-bottom:12px;" id="ov-icon">✦</div>
+    <h2 id="ov-title" style="font-style:italic;font-size:1.6rem;color:var(--lilac);margin-bottom:6px;"></h2>
+    <p id="ov-desc" style="color:var(--tx3);margin-bottom:20px;font-size:13px;max-width:320px;"></p>
+    <button class="btn" onclick="closeOv()">okay</button>
+  </div>
+</div>
+
+<!-- ═══ LANDING ═══ -->
+<section id="landing-page" class="page active" style="position:relative;z-index:1;display:block;">
+<div class="hero">
+  <h1 class="ar ar1">everlong</h1>
+  <p class="hero-sub ar ar2">letters that last</p>
+  <p class="hero-desc ar ar3">write a letter. watch it travel across the world. wait. because real connection takes time, and the best things in life are worth waiting for.</p>
+  <div class="ar ar4" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+    <button class="btn" onclick="go('signup')">start writing ✉</button>
+    <button class="btn-ghost" onclick="go('login')">sign in</button>
+  </div>
+  <div class="ar ar5" style="margin-top:56px;display:flex;gap:32px;justify-content:center;">
+    <div style="text-align:center;">
+      <div style="font-family:var(--fd);font-size:24px;color:var(--lilac);">∞</div>
+      <div style="font-size:9px;color:var(--tx4);letter-spacing:0.1em;">LETTERS TRAVEL<br>BY REAL DISTANCE</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:var(--fd);font-size:24px;color:var(--pink);">🐚</div>
+      <div style="font-size:9px;color:var(--tx4);letter-spacing:0.1em;">THROW A BOTTLE<br>INTO THE OCEAN</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:var(--fd);font-size:24px;color:var(--gold);">📦</div>
+      <div style="font-size:9px;color:var(--tx4);letter-spacing:0.1em;">WRITE LETTERS<br>NEVER MEANT TO SEND</div>
+    </div>
+  </div>
+  <p class="ar ar5" style="margin-top:40px;font-family:var(--fc);font-size:14px;color:var(--tx4);">for the dreamers, the overthinkers, the ones who still believe slow things are the most beautiful things.</p>
+</div>
+</section>
+
+<!-- ═══ SIGNUP ═══ -->
+<section id="signup-page" class="page">
+<div style="max-width:380px;margin:0 auto;padding:10vh 0;">
+  <h2 style="font-style:italic;font-size:1.8rem;color:var(--lilac);margin-bottom:4px;">begin your journey</h2>
+  <p style="font-size:12px;color:var(--tx3);margin-bottom:24px;">every great story starts with a single letter.</p>
+  <div style="margin-bottom:14px;"><div class="form-label">display name</div><input id="su-name" placeholder="what should we call you?"></div>
+  <div style="margin-bottom:14px;"><div class="form-label">email</div><input type="email" placeholder="you@world.com"></div>
+  <div style="margin-bottom:14px;"><div class="form-label">password</div><input type="password" placeholder="at least 6 characters"></div>
+  <button class="btn" style="width:100%;" onclick="go('onboarding')">continue →</button>
+  <p style="text-align:center;margin-top:14px;font-size:11px;color:var(--tx4);">already here? <a href="#" onclick="go('login')">sign in</a></p>
+</div>
+</section>
+
+<!-- ═══ LOGIN ═══ -->
+<section id="login-page" class="page">
+<div style="max-width:380px;margin:0 auto;padding:16vh 0;">
+  <h2 style="font-style:italic;font-size:1.8rem;color:var(--lilac);margin-bottom:4px;">welcome back</h2>
+  <p style="font-size:12px;color:var(--tx3);margin-bottom:24px;">your letters have been waiting.</p>
+  <div style="margin-bottom:14px;"><div class="form-label">email</div><input type="email" placeholder="you@world.com"></div>
+  <div style="margin-bottom:14px;"><div class="form-label">password</div><input type="password" placeholder="••••••"></div>
+  <button class="btn" style="width:100%;" onclick="mockLogin()">sign in</button>
+</div>
+</section>
+
+<!-- ═══ ONBOARDING ═══ -->
+<section id="onboarding-page" class="page">
+<div style="max-width:440px;margin:0 auto;padding:8vh 0;">
+  <div class="ob-progress" id="ob-progress"></div>
+
+  <!-- step 1: avatar -->
+  <div class="ob-step active" id="ob-1">
+    <h2 style="font-style:italic;font-size:1.5rem;color:var(--lilac);margin-bottom:3px;">choose your avatar</h2>
+    <p style="font-size:11px;color:var(--tx3);margin-bottom:18px;">no real photos — mystery is part of the magic.</p>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px;">
+      <div class="avatar sel-av" style="width:56px;height:56px;font-size:24px;cursor:pointer;margin:auto;" onclick="selAv(this)">🦢</div>
+      <div class="avatar" style="width:56px;height:56px;font-size:24px;cursor:pointer;margin:auto;" onclick="selAv(this)">🌙</div>
+      <div class="avatar" style="width:56px;height:56px;font-size:24px;cursor:pointer;margin:auto;" onclick="selAv(this)">✦</div>
+      <div class="avatar" style="width:56px;height:56px;font-size:24px;cursor:pointer;margin:auto;" onclick="selAv(this)">🐚</div>
+      <div class="avatar" style="width:56px;height:56px;font-size:24px;cursor:pointer;margin:auto;" onclick="selAv(this)">🦋</div>
+      <div class="avatar" style="width:56px;height:56px;font-size:24px;cursor:pointer;margin:auto;" onclick="selAv(this)">🌿</div>
+      <div class="avatar" style="width:56px;height:56px;font-size:24px;cursor:pointer;margin:auto;" onclick="selAv(this)">☁</div>
+      <div class="avatar" style="width:56px;height:56px;font-size:24px;cursor:pointer;margin:auto;" onclick="selAv(this)">🪻</div>
+      <div class="avatar" style="width:56px;height:56px;font-size:24px;cursor:pointer;margin:auto;" onclick="selAv(this)">🔮</div>
+      <div class="avatar" style="width:56px;height:56px;font-size:24px;cursor:pointer;margin:auto;" onclick="selAv(this)">🕊</div>
+    </div>
+    <button class="btn" style="width:100%;" onclick="obNext(2)">next →</button>
+  </div>
+
+  <!-- step 2: basics -->
+  <div class="ob-step" id="ob-2">
+    <h2 style="font-style:italic;font-size:1.5rem;color:var(--lilac);margin-bottom:3px;">a little about you</h2>
+    <p style="font-size:11px;color:var(--tx3);margin-bottom:18px;">leave breadcrumbs of your soul.</p>
+    <div style="margin-bottom:12px;"><div class="form-label">country</div><input placeholder="where in the world are you?"></div>
+    <div style="margin-bottom:12px;"><div class="form-label">languages</div><input placeholder="english, türkçe, 日本語..."></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div><div class="form-label">age</div><input type="number" placeholder="21"></div>
+      <div><div class="form-label">zodiac (optional)</div><input placeholder="pisces ♓"></div>
+    </div>
+    <div style="margin-bottom:12px;"><div class="form-label">bio</div><textarea rows="2" placeholder="300 chars to tell the world who you are..." maxlength="300"></textarea></div>
+    <button class="btn" style="width:100%;" onclick="obNext(3)">next →</button>
+  </div>
+
+  <!-- step 3: mbti -->
+  <div class="ob-step" id="ob-3">
+    <h2 style="font-style:italic;font-size:1.5rem;color:var(--lilac);margin-bottom:3px;">what's your type?</h2>
+    <p style="font-size:11px;color:var(--tx3);margin-bottom:18px;">optional — but people love knowing this.</p>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:20px;" id="mbti-grid"></div>
+    <button class="btn" style="width:100%;" onclick="obNext(4)">next →</button>
+    <button class="btn-ghost btn-sm" style="width:100%;margin-top:6px;" onclick="obNext(4)">skip</button>
+  </div>
+
+  <!-- step 4: interests -->
+  <div class="ob-step" id="ob-4">
+    <h2 style="font-style:italic;font-size:1.5rem;color:var(--lilac);margin-bottom:3px;">what draws you in?</h2>
+    <p style="font-size:11px;color:var(--tx3);margin-bottom:18px;">pick at least 3 — we'll help you find kindred spirits.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;" id="int-pills"></div>
+    <button class="btn" style="width:100%;opacity:0.3;" id="int-go" onclick="obNext(5)">next →</button>
+  </div>
+
+  <!-- step 5: soul crumbs -->
+  <div class="ob-step" id="ob-5">
+    <h2 style="font-style:italic;font-size:1.5rem;color:var(--lilac);margin-bottom:3px;">the tiny windows</h2>
+    <p style="font-size:11px;color:var(--tx3);margin-bottom:18px;">these aren't data points — they're pieces of your world.</p>
+    <div style="margin-bottom:12px;"><div class="form-label">📖 currently reading</div><input placeholder="the book on your nightstand"></div>
+    <div style="margin-bottom:12px;"><div class="form-label">🎵 last song you listened to</div><input placeholder="the one still in your head"></div>
+    <div style="margin-bottom:12px;"><div class="form-label">✦ life motto</div><input placeholder="the sentence you live by"></div>
+    <button class="btn" style="width:100%;" onclick="finishOnboarding()">enter everlong ✦</button>
+  </div>
+</div>
+</section>
+
+<!-- ═══ MAIN LAYOUT (after login) ═══ -->
+<div class="layout" id="layout" style="display:none;">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-title">IN TRANSIT</div>
+  <div id="sb-transit"></div>
+  <div class="sb-title" style="margin-top:18px;">ACTIVE PEN PALS</div>
+  <div id="sb-pals"></div>
+  <div class="sb-title" style="margin-top:18px;">DAILY QUESTION</div>
+  <div style="background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-top:4px;">
+    <p style="font-family:var(--fd);font-style:italic;font-size:13px;color:var(--txt);line-height:1.5;">"if you could send one letter to your 16-year-old self, what would you say?"</p>
+    <div style="font-size:9px;color:var(--tx4);margin-top:6px;">philosophy · march 4</div>
+    <button class="btn btn-sm" style="margin-top:8px;" onclick="answerDaily()">answer</button>
+  </div>
+  <div class="sb-title" style="margin-top:18px;">YOUR LEVEL</div>
+  <div style="padding:4px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+      <span style="font-size:11px;color:var(--lilac);">🌸 bloom — level 3</span>
+      <span style="font-size:9px;color:var(--tx4);">300 / 600 xp</span>
+    </div>
+    <div class="xp-bar"><div class="xp-fill" style="width:50%;"></div></div>
+  </div>
+</aside>
+
+<!-- CONTENT -->
+<div class="main">
+
+<!-- ═══ DASHBOARD / INBOX ═══ -->
+<section id="dashboard-page" class="page">
+  <h1 style="font-style:italic;font-size:1.8rem;color:var(--lilac);margin-bottom:2px;">your letters</h1>
+  <p style="font-size:12px;color:var(--tx3);margin-bottom:16px;">patience is the point.</p>
+
+  <!-- MAIN TABS -->
+  <div style="display:flex;gap:4px;margin-bottom:16px;border-bottom:1px solid var(--brd);padding-bottom:0;">
+    <button class="nav-link active" id="tab-inbox" onclick="switchTab('inbox')" style="padding:8px 16px;border-bottom:2px solid var(--lilac);border-radius:0;">✉ inbox</button>
+    <button class="nav-link" id="tab-sent" onclick="switchTab('sent')" style="padding:8px 16px;border-bottom:2px solid transparent;border-radius:0;">🕊 sent</button>
+    <button class="nav-link" id="tab-archive" onclick="switchTab('archive')" style="padding:8px 16px;border-bottom:2px solid transparent;border-radius:0;">📜 archive</button>
+  </div>
+
+  <!-- SUB FILTERS (for inbox) -->
+  <div style="display:flex;gap:8px;margin-bottom:18px;" id="inbox-filters">
+    <button class="btn btn-sm" onclick="filterInbox('all',this)">all</button>
+    <button class="btn-ghost btn-sm" onclick="filterInbox('transit',this)">in transit</button>
+    <button class="btn-ghost btn-sm" onclick="filterInbox('delivered',this)">delivered</button>
+    <button class="btn-ghost btn-sm" onclick="filterInbox('read',this)">read</button>
+  </div>
+
+  <div id="inbox-letters"></div>
+  <div id="sent-letters" style="display:none;"></div>
+  <div id="archive-letters" style="display:none;"></div>
+
+  <div style="text-align:center;margin-top:24px;">
+    <button class="btn" onclick="go('compose')">✉ compose a letter</button>
+  </div>
+</section>
+
+<!-- ═══ COMPOSE ═══ -->
+<section id="compose-page" class="page">
+  <a href="#" onclick="go('dashboard')" style="font-size:10px;color:var(--tx4);">← back to inbox</a>
+  <h2 style="font-style:italic;font-size:1.5rem;color:var(--lilac);margin:12px 0 4px;">write a letter</h2>
+  <p style="font-size:11px;color:var(--tx3);margin-bottom:18px;">take your time. every word carries weight.</p>
+
+  <div style="margin-bottom:14px;">
+    <div class="form-label">to</div>
+    <input placeholder="search for a pen pal..." id="compose-to">
+  </div>
+
+  <div style="margin-bottom:14px;">
+    <textarea id="compose-body" rows="10" placeholder="dear..." style="font-family:var(--fd);font-size:15px;font-weight:300;line-height:1.8;font-style:italic;"></textarea>
+    <div style="display:flex;justify-content:space-between;margin-top:4px;">
+      <span style="font-size:9px;color:var(--tx4);" id="char-count">0 characters</span>
+      <span style="font-size:9px;color:var(--tx4);">min 50 chars for full xp</span>
+    </div>
+  </div>
+
+  <!-- ai icebreaker -->
+  <div style="background:var(--bg1);border:1px dashed var(--brd);border-radius:10px;padding:14px;margin-bottom:14px;">
+    <div style="font-size:9px;color:var(--lilac4);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;">🧊 AI ICE-BREAKER SUGGESTIONS</div>
+    <div style="font-size:11px;color:var(--tx2);margin-bottom:4px;">📖 "you both love murakami — ask about their favorite book"</div>
+    <div style="font-size:11px;color:var(--tx2);margin-bottom:4px;">🎧 "you both listen to radiohead — ask what their favorite album is"</div>
+    <div style="font-size:11px;color:var(--tx2);">🌠 "shared interest: astronomy — ask about the last time they stargazed"</div>
+    <div style="font-size:9px;color:var(--tx4);margin-top:6px;">powered by claude · dismiss anytime</div>
+  </div>
+
+  <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px;">
+    <div>
+      <div class="form-label">stamp</div>
+      <div style="display:flex;gap:6px;">
+        <div class="stamp" style="background:var(--bg2);" onclick="selStamp(this)">🌸</div>
+        <div class="stamp" style="background:var(--bg2);" onclick="selStamp(this)">🌙</div>
+        <div class="stamp" style="background:var(--bg2);" onclick="selStamp(this)">✦</div>
+        <div class="stamp" style="background:var(--bg2);" onclick="selStamp(this)">🐚</div>
+        <div class="stamp" style="background:var(--bg2);" onclick="selStamp(this)">🕊</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:14px;">
+    <div class="form-label">🎵 attach a song (optional)</div>
+    <input placeholder="paste a spotify or apple music link...">
+  </div>
+
+  <div style="display:flex;gap:10px;">
+    <button class="btn" onclick="sendLetter()">send letter ✉</button>
+    <button class="btn-ghost" onclick="ov('📦','saved to memory box.')">save to memory box</button>
+  </div>
+</section>
+
+<!-- ═══ LETTER VIEW ═══ -->
+<section id="letter-page" class="page">
+  <a href="#" onclick="go('dashboard')" style="font-size:10px;color:var(--tx4);">← back to inbox</a>
+  <div id="letter-view" style="margin-top:16px;"></div>
+</section>
+
+<!-- ═══ EXPLORE ═══ -->
+<section id="explore-page" class="page">
+  <h1 style="font-style:italic;font-size:1.8rem;color:var(--lilac);margin-bottom:2px;">explore</h1>
+  <p style="font-size:12px;color:var(--tx3);margin-bottom:18px;">find kindred spirits across the world.</p>
+
+  <div style="display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap;">
+    <span class="int-pill sel" onclick="toggleExploreFilter('any language',this)">all</span>
+    <span class="int-pill" onclick="toggleExploreFilter('english',this)">english</span>
+    <span class="int-pill" onclick="toggleExploreFilter('türkçe',this)">türkçe</span>
+    <span class="int-pill" onclick="toggleExploreFilter('日本語',this)">日本語</span>
+    <span class="int-pill" onclick="toggleExploreFilter('français',this)">français</span>
+    <span style="color:var(--tx4);font-size:10px;display:flex;align-items:center;margin:0 4px;">·</span>
+    <span class="int-pill" onclick="toggleExploreFilter('philosophy',this)">philosophy</span>
+    <span class="int-pill" onclick="toggleExploreFilter('literature',this)">literature</span>
+    <span class="int-pill" onclick="toggleExploreFilter('music',this)">music</span>
+    <span class="int-pill" onclick="toggleExploreFilter('astronomy',this)">astronomy</span>
+    <span class="int-pill" onclick="toggleExploreFilter('slow living',this)">slow living</span>
+  </div>
+
+  <div class="card-grid" id="explore-grid"></div>
+</section>
+
+<!-- ═══ USER PROFILE VIEW ═══ -->
+<section id="user-page" class="page">
+  <a href="#" onclick="go('explore')" style="font-size:10px;color:var(--tx4);">← back to explore</a>
+  <div id="user-view" style="margin-top:16px;"></div>
+</section>
+
+<!-- ═══ BOTTLE MAIL ═══ -->
+<section id="bottle-page" class="page">
+  <div style="text-align:center;padding:40px 0 20px;">
+    <div class="bottle-float" style="font-size:56px;margin-bottom:16px;">🐚</div>
+    <h1 style="font-style:italic;font-size:1.8rem;color:var(--lilac);margin-bottom:4px;">bottle mail</h1>
+    <p style="font-size:12px;color:var(--tx3);max-width:380px;margin:0 auto 24px;">seal a letter and throw it into the ocean. the universe decides who finds it.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;">
+    <div class="card" style="text-align:center;" onclick="go('compose')">
+      <div style="font-size:28px;margin-bottom:8px;">✉</div>
+      <h3 style="font-family:var(--fd);font-style:italic;font-size:1rem;color:var(--txt);margin-bottom:4px;">throw a bottle</h3>
+      <p style="font-size:10px;color:var(--tx3);">write a letter to a stranger</p>
+    </div>
+    <div class="card" style="text-align:center;" onclick="openBottle()">
+      <div style="font-size:28px;margin-bottom:8px;">🌊</div>
+      <h3 style="font-family:var(--fd);font-style:italic;font-size:1rem;color:var(--txt);margin-bottom:4px;">find a bottle</h3>
+      <p style="font-size:10px;color:var(--tx3);">discover a letter from the ocean</p>
+    </div>
+  </div>
+
+  <div class="sl">YOUR BOTTLES</div>
+  <div class="letter-card" style="cursor:default;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <span class="letter-status status-transit">🕊 traveling</span>
+        <div style="font-family:var(--fd);font-style:italic;font-size:14px;color:var(--txt);margin-top:6px;">"to whoever finds this..."</div>
+      </div>
+      <span style="font-size:9px;color:var(--tx4);">sent 2h ago</span>
+    </div>
+    <div style="font-size:10px;color:var(--tx4);margin-top:8px;">waiting to be found...</div>
+  </div>
+
+  <div class="letter-card" style="cursor:default;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <span class="letter-status status-read">✦ found & replied</span>
+        <div style="font-family:var(--fd);font-style:italic;font-size:14px;color:var(--txt);margin-top:6px;">"sometimes you need a stranger to understand..."</div>
+      </div>
+      <span style="font-size:9px;color:var(--tx4);">3 days ago</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
+      <span style="font-size:10px;color:var(--pink);">🌙 yuki from seoul found your bottle</span>
+      <button class="btn btn-sm" onclick="this.textContent='✓ added';this.style.background='var(--plum)';this.style.color='var(--lilac2)';">+ add pen pal</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MEMORY BOX ═══ -->
+<section id="memory-page" class="page">
+  <h1 style="font-style:italic;font-size:1.8rem;color:var(--lilac);margin-bottom:2px;">memory box</h1>
+  <p style="font-size:12px;color:var(--tx3);margin-bottom:16px;">letters written, never meaning to send.</p>
+
+  <div style="display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap;">
+    <span class="int-pill sel" style="font-size:10px;padding:5px 10px;" onclick="filterMemory('all',this)">all</span>
+    <span class="int-pill" style="font-size:10px;padding:5px 10px;" onclick="filterMemory('self',this)">to myself</span>
+    <span class="int-pill" style="font-size:10px;padding:5px 10px;" onclick="filterMemory('unsent',this)">unsent</span>
+    <span class="int-pill" style="font-size:10px;padding:5px 10px;" onclick="filterMemory('capsule',this)">time capsules</span>
+  </div>
+
+  <button class="btn" style="margin-bottom:18px;" onclick="go('compose')">✍ write to memory box</button>
+
+  <div id="memory-letters"></div>
+</section>
+
+<!-- ═══ BLOG ═══ -->
+<section id="blog-page" class="page">
+  <h1 style="font-style:italic;font-size:1.8rem;color:var(--lilac);margin-bottom:2px;">the everlong blog</h1>
+  <p style="font-size:12px;color:var(--tx3);margin-bottom:20px;">love stories that never grow old.</p>
+  <div id="blog-grid"></div>
+</section>
+
+<!-- ═══ MY PROFILE ═══ -->
+<section id="profile-page" class="page">
+  <div id="my-profile"></div>
+</section>
+
+</div><!-- main -->
+</div><!-- layout -->
+
+<script>
+// ═══ DATA ═══
+const U = {
+  name: 'Luna', avatar: '🦢', country: 'Turkey', city: 'Istanbul',
+  lat: 41.01, lng: 28.98, mbti: 'INFP', zodiac: 'Pisces',
+  bio: 'writing letters to the universe and hoping it writes back.',
+  book: 'The Trial — Kafka', song: 'Exit Music — Radiohead', motto: 'slow things are the most beautiful things.',
+  interests: ['philosophy','literature','music','astronomy','slow living'],
+  xp: 300, level: 3, levelName: 'bloom 🌸',
+  stamps: ['🌸','🌙','✦'], soundtrack: 'radiohead — in rainbows'
+};
+
+const PALS = [
+  { id:'sora', name:'Sora', avatar:'🌙', country:'Japan', city:'Tokyo', lat:35.68, lng:139.69, mbti:'INFJ', zodiac:'Scorpio', bio:'reading under moonlight.', book:'Norwegian Wood — Murakami', song:'Nude — Radiohead', interests:['literature','music','philosophy'], languages:['日本語','english'], compat:94, streak:23 },
+  { id:'leo', name:'Leo', avatar:'✦', country:'Brazil', city:'São Paulo', lat:-23.55, lng:-46.63, mbti:'ENFP', zodiac:'Sagittarius', bio:'collecting stories and sunsets.', book:'One Hundred Years of Solitude', song:'Wish You Were Here — Pink Floyd', interests:['literature','astronomy','philosophy'], languages:['english'], compat:87, streak:12 },
+  { id:'noor', name:'Noor', avatar:'🕊', country:'Morocco', city:'Marrakech', lat:31.63, lng:-8.0, mbti:'INTJ', zodiac:'Aquarius', bio:'letters are my love language.', book:'The Stranger — Camus', song:'Pyramid Song — Radiohead', interests:['philosophy','music','slow living'], languages:['français','english'], compat:91, streak:0 },
+  { id:'iris', name:'Iris', avatar:'🦋', country:'France', city:'Paris', lat:48.86, lng:2.35, mbti:'ISFP', zodiac:'Cancer', bio:'watercolors and handwritten letters.', book:'Letters to a Young Poet — Rilke', song:'Clair de Lune — Debussy', interests:['art','literature','slow living'], languages:['français','english'], compat:82, streak:7 },
+  { id:'milo', name:'Milo', avatar:'🌿', country:'Germany', city:'Berlin', lat:52.52, lng:13.41, mbti:'INTP', zodiac:'Virgo', bio:'overthinking is my cardio.', book:'Meditations — Marcus Aurelius', song:'Everything In Its Right Place', interests:['philosophy','music','technology'], languages:['english'], compat:78, streak:0 },
+  { id:'yuki', name:'Yuki', avatar:'☁', country:'South Korea', city:'Seoul', lat:37.57, lng:126.98, mbti:'INFP', zodiac:'Pisces', bio:'an old soul in a fast city.', book:'Kafka on the Shore — Murakami', song:'Fake Plastic Trees — Radiohead', interests:['literature','music','astronomy'], languages:['english'], compat:96, streak:0 }
+];
+
+const LETTERS = [
+  { id:1, from:PALS[0], status:'DELIVERED', body:'dear luna,\n\ni\'ve been thinking about what you said — that sometimes silence between two people is more honest than words. i think you\'re right. there\'s a japanese concept called "ma" (間), the space between. it\'s not emptiness, it\'s where meaning lives.\n\nthe cherry blossoms just started here. i wish i could send you one pressed between these pages.\n\nwith warmth,\nsora', stamp:'🌸', song:'Motion Picture Soundtrack — Radiohead', mood:'#2A1F3D', sent:'3 days ago', distance:8500, hours:85 },
+  { id:2, from:PALS[1], status:'IN_TRANSIT', body:'', stamp:'✦', song:'', mood:'', sent:'6 hours ago', distance:10100, hours:101, progress:6 },
+  { id:3, from:PALS[3], status:'READ', body:'chère luna,\n\ni found your profile and thought — here is someone who understands that the world doesn\'t have to move so fast. your life motto made me stop scrolling. "slow things are the most beautiful things." yes. a thousand times yes.\n\nthe seine is beautiful today. i drew a small watercolor of it — maybe one day i\'ll figure out how to send it through everlong.\n\nà bientôt,\niris', stamp:'🌙', song:'Clair de Lune — Debussy', mood:'#1E1A2E', sent:'1 week ago', distance:2200, hours:22 }
+];
+
+const SENT = [
+  { id:10, to:PALS[0], status:'READ', body:'dear sora,\n\ni keep thinking about that concept of "ma" you mentioned. the spaces between notes in music — that\'s where the real melody lives, isn\'t it? debussy understood that. radiohead understands that.\n\ntell me about the cherry blossoms. i want to see tokyo through your words.\n\nwaiting for your next letter,\nluna', stamp:'🌸', song:'How to Disappear Completely — Radiohead', sent:'5 days ago', distance:8500, hours:85 },
+  { id:11, to:PALS[1], status:'IN_TRANSIT', body:'dear leo,\n\nyour profile said you collect stories and sunsets. i collect half-finished thoughts and songs that make me cry at 3am. i think we\'d get along.\n\nwhat\'s são paulo like at night?\n\nfrom the other side of the world,\nluna', stamp:'✦', song:'Wish You Were Here — Pink Floyd', sent:'1 day ago', distance:10100, hours:101, progress:14 },
+  { id:12, to:PALS[2], status:'DELIVERED', body:'dear noor,\n\ni saw your profile and your bio stopped me: "letters are my love language." mine too. i think the world forgot how to wait for things, and we\'re the ones still remembering.\n\ncamus said the only serious question is whether life is worth living. i think writing letters is my answer.\n\nfrom istanbul with warmth,\nluna', stamp:'🕊', song:'Pyramid Song — Radiohead', sent:'2 days ago', distance:4200, hours:42 }
+];
+
+const ARCHIVE = [
+  { id:20, from:PALS[3], direction:'received', body:'luna,\n\nmerci for your letter about kafka. you\'re right — he wrote like someone trying to breathe underwater. "a book must be the axe for the frozen sea inside us." i think letters can do that too.\n\nthe louvre was quiet today. i sat in front of vermeer\'s lacemaker for an hour.\n\nbises,\niris', stamp:'🌙', song:'Gymnopédie No.1 — Erik Satie', date:'2 weeks ago', read:true },
+  { id:21, to:PALS[0], direction:'sent', body:'sora,\n\ni\'ve been listening to the playlist you shared. there\'s a song by ichiko aoba that made me cry on the bus. music really is the shortest distance between two souls.\n\ndo you think we\'ll ever run out of things to say? i hope not.\n\nyours in words,\nluna', stamp:'🌸', song:'Porcelain — Ichiko Aoba', date:'3 weeks ago', read:true },
+  { id:22, from:PALS[1], direction:'received', body:'luna!\n\nsão paulo at night is chaos and poetry at the same time. the graffiti tells stories, the street musicians play bossa nova, and somewhere a stray dog is living its best life.\n\ni attached a song — it reminds me of your letters.\n\nabraços,\nleo', stamp:'✦', song:'Aquarela — Toquinho', date:'3 weeks ago', read:true },
+  { id:23, to:PALS[3], direction:'sent', body:'iris,\n\nvermeer\'s lacemaker! she\'s so absorbed in her work — that\'s how i feel when writing letters. the world disappears.\n\nhave you read rilke\'s letters to a young poet? "perhaps all the dragons in our lives are princesses who are only waiting to see us act."\n\nwith love,\nluna', stamp:'🌙', song:'Clair de Lune — Debussy', date:'1 month ago', read:true }
+];
+
+const MEMORY = [
+  { to:'my younger self', body:'you\'re going to be okay. the loneliness you feel right now doesn\'t last forever. one day you\'ll write letters to people across oceans and they\'ll write back. imagine that.', date:'feb 14, 2026', capsule: null, tags:['self','reflection'] },
+  { to:'someone i never told', body:'i think about that conversation every day. the one we almost had but didn\'t. maybe this letter is my way of finally having it.', date:'jan 28, 2026', capsule: 'dec 31, 2026', tags:['unsent','love'] },
+  { to:'future me', body:'are you still writing? are you still waiting for things that matter? i hope so.', date:'jan 1, 2026', capsule: 'jan 1, 2027', tags:['self','hope'] },
+  { to:'the friend i lost', body:'i don\'t know where you are now. i hope you\'re reading someone else\'s letters. i hope someone is making you laugh the way you made me laugh.', date:'dec 15, 2025', capsule: null, tags:['unsent','grief'] },
+  { to:'daily question', body:'if i could send one letter to my 16-year-old self... i\'d say: the books you\'re reading right now will save your life later. keep reading.', date:'mar 3, 2026', capsule: null, tags:['daily','self'] }
+];
+
+const BLOG = [
+  { title:'Orpheus & Eurydice', cat:'MYTHOLOGY', desc:'a love so powerful it bent the rules of death — and a glance that undid it all.', icon:'🏛' },
+  { title:'Kafka\'s Letters to Milena', cat:'LITERARY LOVE', desc:'written kisses don\'t reach their destination — they are drunk by ghosts on the way.', icon:'✉' },
+  { title:'Heathcliff & Catherine', cat:'LITERARY LOVE', desc:'a love so wild it outlived death. brontë wrote obsession as poetry.', icon:'🌪' },
+  { title:'Abelard & Heloise', cat:'HISTORICAL LETTERS', desc:'separated by walls and centuries, their letters became a foundation of european literature.', icon:'📜' },
+  { title:'Letter of the Week', cat:'FEATURED', desc:'a letter from 1945, found in a soldier\'s pocket — never sent, but somehow still delivered.', icon:'💌' }
+];
+
+// ═══ STARS ═══
+function initStars() {
+  const c = document.getElementById('stars'); let h = '';
+  for (let i = 0; i < 60; i++) {
+    const x = Math.random()*100, y = Math.random()*100;
+    const dur = 3+Math.random()*5, delay = Math.random()*5;
+    const bright = 0.2+Math.random()*0.5;
+    h += `<div class="star" style="left:${x}%;top:${y}%;--dur:${dur}s;--delay:${delay}s;--bright:${bright};"></div>`;
+  }
+  c.innerHTML = h;
+}
+initStars();
+
+// ═══ NAVIGATION ═══
+function go(id) {
+  const authPages = ['landing','signup','login','onboarding'];
+  const nav = document.getElementById('topnav');
+  const lay = document.getElementById('layout');
+
+  // 1) hide ALL pages (both auth + app)
+  document.querySelectorAll('.page').forEach(p => {
+    p.classList.remove('active');
+    p.style.display = 'none';
+  });
+
+  // 2) show target page
+  const pg = document.getElementById(id+'-page');
+  if (pg) {
+    pg.style.display = 'block';
+    pg.classList.add('active');
+  }
+
+  // 3) toggle layout vs auth
+  if (authPages.includes(id)) {
+    nav.classList.add('hide');
+    lay.style.display = 'none';
+  } else {
+    nav.classList.remove('hide');
+    lay.style.display = 'flex';
+  }
+
+  // update active nav
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+  if (id === 'dashboard') renderDashboard();
+  if (id === 'explore') renderExplore();
+  if (id === 'memory') renderMemory();
+  if (id === 'blog') renderBlog();
+  if (id === 'profile') renderProfile();
+  if (id === 'compose') initCompose();
+
+  renderSidebar();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function mockLogin() { go('dashboard'); }
+function finishOnboarding() { go('dashboard'); }
+
+// ═══ ONBOARDING ═══
+let obStep = 1;
+const OB_TOTAL = 5;
+const MBTI_TYPES = ['INFP','INFJ','INTP','INTJ','ISFP','ISFJ','ISTP','ISTJ','ENFP','ENFJ','ENTP','ENTJ','ESFP','ESFJ','ESTP','ESTJ'];
+const INTERESTS = ['philosophy','literature','music','astronomy','psychology','slow living','art','cinema','poetry','mythology','technology','history','writing','photography','languages','cooking'];
+
+function obNext(step) {
+  obStep = step;
+  document.querySelectorAll('.ob-step').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('ob-'+step);
+  if (el) el.classList.add('active');
+  renderObProgress();
+}
+function renderObProgress() {
+  let h = '';
+  for (let i = 1; i <= OB_TOTAL; i++) {
+    h += `<div class="ob-dot ${i < obStep ? 'done' : ''} ${i === obStep ? 'current' : ''}"></div>`;
+  }
+  document.getElementById('ob-progress').innerHTML = h;
+}
+function selAv(el) {
+  document.querySelectorAll('.sel-av').forEach(a => { a.classList.remove('sel-av'); a.style.borderColor = 'var(--brd)'; });
+  el.classList.add('sel-av'); el.style.borderColor = 'var(--lilac)';
+}
+
+// init mbti grid
+function initMbtiGrid() {
+  const g = document.getElementById('mbti-grid');
+  if (g.children.length) return;
+  MBTI_TYPES.forEach(t => {
+    const d = document.createElement('div');
+    d.className = 'mbti-opt'; d.textContent = t;
+    d.onclick = () => { document.querySelectorAll('.mbti-opt').forEach(o => o.classList.remove('sel')); d.classList.add('sel'); };
+    g.appendChild(d);
+  });
+}
+
+// init interest pills
+let selInts = [];
+function initIntPills() {
+  const c = document.getElementById('int-pills');
+  if (c.children.length) return;
+  INTERESTS.forEach(i => {
+    const d = document.createElement('span');
+    d.className = 'int-pill'; d.textContent = i;
+    d.onclick = () => {
+      d.classList.toggle('sel');
+      if (d.classList.contains('sel')) selInts.push(i); else selInts = selInts.filter(x => x !== i);
+      const btn = document.getElementById('int-go');
+      btn.style.opacity = selInts.length >= 3 ? '1' : '0.3';
+      btn.style.pointerEvents = selInts.length >= 3 ? 'auto' : 'none';
+    };
+    c.appendChild(d);
+  });
+}
+
+// ═══ HAVERSINE ═══
+function haversine(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2-lat1)*Math.PI/180, dLon = (lon2-lon1)*Math.PI/180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+// ═══ SIDEBAR ═══
+function renderSidebar() {
+  const transit = LETTERS.filter(l => l.status === 'IN_TRANSIT');
+  document.getElementById('sb-transit').innerHTML = transit.length ? transit.map(l => `
+    <div class="sb-item" onclick="viewLetter(${l.id})">
+      <span class="sb-icon">🕊</span>
+      <div class="sb-txt">
+        <div style="font-size:11px;color:var(--txt);">from @${l.from.name.toLowerCase()}</div>
+        <div class="sb-meta">${Math.round(l.hours - (l.progress||0))}h remaining</div>
+      </div>
+    </div>
+  `).join('') : '<p style="font-size:10px;color:var(--tx4);padding:4px 8px;">no letters in transit</p>';
+
+  document.getElementById('sb-pals').innerHTML = PALS.filter(p => p.streak > 0).sort((a,b) => b.streak - a.streak).slice(0,4).map(p => `
+    <div class="sb-item" onclick="viewUser('${p.id}')">
+      <div class="avatar-sm avatar">${p.avatar}</div>
+      <div class="sb-txt">
+        <div style="font-size:11px;color:var(--txt);">@${p.name.toLowerCase()}</div>
+        <div class="sb-meta">🔥 ${p.streak} day streak</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ═══ DASHBOARD ═══
+let currentTab = 'inbox';
+
+function switchTab(tab) {
+  currentTab = tab;
+  ['inbox','sent','archive'].forEach(t => {
+    document.getElementById(t+'-letters').style.display = t === tab ? 'block' : 'none';
+    const tabBtn = document.getElementById('tab-'+t);
+    if (tabBtn) {
+      tabBtn.classList.toggle('active', t === tab);
+      tabBtn.style.borderBottomColor = t === tab ? 'var(--lilac)' : 'transparent';
+    }
+  });
+  const filters = document.getElementById('inbox-filters');
+  if (filters) filters.style.display = tab === 'inbox' ? 'flex' : 'none';
+
+  if (tab === 'inbox') renderInbox();
+  if (tab === 'sent') renderSent();
+  if (tab === 'archive') renderArchive();
+}
+
+function renderDashboard() {
+  renderInbox();
+  renderSent();
+  renderArchive();
+}
+
+function renderInbox() {
+  document.getElementById('inbox-letters').innerHTML = LETTERS.map(l => {
+    const dist = Math.round(haversine(U.lat, U.lng, l.from.lat, l.from.lng));
+    const hours = Math.round(dist / 100);
+    if (l.status === 'IN_TRANSIT') {
+      const progress = l.progress || 0;
+      const pct = Math.min(100, (progress / hours) * 100);
+      return `
+        <div class="letter-card" onclick="viewLetter(${l.id})">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="avatar-sm avatar">${l.from.avatar}</div>
+              <div>
+                <span class="letter-status status-transit">🕊 in transit</span>
+                <div style="font-size:11px;color:var(--txt);margin-top:4px;">letter from @${l.from.name.toLowerCase()}</div>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div class="countdown">${Math.floor((hours-progress)/24)}d ${Math.round((hours-progress)%24)}h</div>
+              <div class="countdown-label">until delivery</div>
+            </div>
+          </div>
+          <div class="journey" style="margin-top:14px;">
+            <div class="journey-fill" style="width:${pct}%;">
+              <div class="journey-dot"></div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;">
+            <span class="journey-city">${l.from.city}</span>
+            <span style="font-size:9px;color:var(--tx4);">${dist.toLocaleString()} km</span>
+            <span class="journey-city">${U.city}</span>
+          </div>
+        </div>`;
+    }
+    const statusMap = { DELIVERED: { cls:'status-delivered', icon:'💌', label:'delivered' }, READ: { cls:'status-read', icon:'✦', label:'read' } };
+    const s = statusMap[l.status] || statusMap.READ;
+    return `
+      <div class="letter-card" onclick="viewLetter(${l.id})">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="avatar-sm avatar">${l.from.avatar}</div>
+            <div>
+              <span class="letter-status ${s.cls}">${s.icon} ${s.label}</span>
+              <div style="font-size:11px;color:var(--txt);margin-top:4px;">letter from @${l.from.name.toLowerCase()}</div>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-size:20px;">${l.stamp}</span>
+            <div style="font-size:9px;color:var(--tx4);margin-top:2px;">${l.sent}</div>
+          </div>
+        </div>
+        <div style="font-family:var(--fd);font-style:italic;font-size:13px;color:var(--tx2);margin-top:10px;line-height:1.6;">${l.body.split('\n')[0].slice(0,80)}...</div>
+        ${l.song ? `<div class="music-card"><div class="music-wave"><span></span><span></span><span></span><span></span><span></span></div><span style="font-size:11px;color:var(--tx2);">${l.song}</span></div>` : ''}
+      </div>`;
+  }).join('');
+}
+
+function renderSent() {
+  document.getElementById('sent-letters').innerHTML = SENT.map(l => {
+    const dist = Math.round(haversine(U.lat, U.lng, l.to.lat, l.to.lng));
+    const hours = Math.round(dist / 100);
+    if (l.status === 'IN_TRANSIT') {
+      const progress = l.progress || 0;
+      const pct = Math.min(100, (progress / hours) * 100);
+      return `
+        <div class="letter-card" onclick="viewSentLetter(${l.id})">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="avatar-sm avatar">${l.to.avatar}</div>
+              <div>
+                <span class="letter-status status-transit">🕊 in transit</span>
+                <div style="font-size:11px;color:var(--txt);margin-top:4px;">to @${l.to.name.toLowerCase()}</div>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div class="countdown">${Math.floor((hours-progress)/24)}d ${Math.round((hours-progress)%24)}h</div>
+              <div class="countdown-label">until delivery</div>
+            </div>
+          </div>
+          <div class="journey" style="margin-top:14px;">
+            <div class="journey-fill" style="width:${pct}%;"><div class="journey-dot"></div></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;">
+            <span class="journey-city">${U.city}</span>
+            <span style="font-size:9px;color:var(--tx4);">${dist.toLocaleString()} km</span>
+            <span class="journey-city">${l.to.city}</span>
+          </div>
+        </div>`;
+    }
+    const statusMap = { DELIVERED: { cls:'status-delivered', icon:'💌', label:'delivered' }, READ: { cls:'status-read', icon:'✦', label:'read by them' } };
+    const s = statusMap[l.status] || statusMap.READ;
+    return `
+      <div class="letter-card" onclick="viewSentLetter(${l.id})">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="avatar-sm avatar">${l.to.avatar}</div>
+            <div>
+              <span class="letter-status ${s.cls}">${s.icon} ${s.label}</span>
+              <div style="font-size:11px;color:var(--txt);margin-top:4px;">to @${l.to.name.toLowerCase()}</div>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-size:20px;">${l.stamp}</span>
+            <div style="font-size:9px;color:var(--tx4);margin-top:2px;">${l.sent}</div>
+          </div>
+        </div>
+        <div style="font-family:var(--fd);font-style:italic;font-size:13px;color:var(--tx2);margin-top:10px;line-height:1.6;">${l.body.split('\n')[0].slice(0,80)}...</div>
+        ${l.song ? `<div class="music-card"><div class="music-wave"><span></span><span></span><span></span><span></span><span></span></div><span style="font-size:11px;color:var(--tx2);">${l.song}</span></div>` : ''}
+      </div>`;
+  }).join('');
+}
+
+function renderArchive() {
+  document.getElementById('archive-letters').innerHTML = `
+    <div style="font-size:10px;color:var(--tx4);margin-bottom:12px;">past letters — your story with every pen pal.</div>
+  ` + ARCHIVE.map(a => {
+    const person = a.direction === 'received' ? a.from : a.to;
+    const dirLabel = a.direction === 'received' ? 'from' : 'to';
+    const dirIcon = a.direction === 'received' ? '📨' : '📤';
+    return `
+      <div class="letter-card" onclick="viewArchiveLetter(${a.id})">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="avatar-sm avatar">${person.avatar}</div>
+            <div>
+              <span style="font-size:9px;color:var(--tx3);">${dirIcon} ${dirLabel} @${person.name.toLowerCase()}</span>
+              <div style="font-family:var(--fd);font-style:italic;font-size:13px;color:var(--tx2);margin-top:3px;line-height:1.5;">${a.body.split('\n')[0].slice(0,70)}...</div>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-size:16px;">${a.stamp}</span>
+            <div style="font-size:9px;color:var(--tx4);margin-top:2px;">${a.date}</div>
+          </div>
+        </div>
+        ${a.song ? `<div class="music-card" style="margin-top:8px;"><div class="music-wave"><span></span><span></span><span></span><span></span><span></span></div><span style="font-size:11px;color:var(--tx2);">${a.song}</span></div>` : ''}
+      </div>`;
+  }).join('');
+}
+
+function viewSentLetter(id) {
+  const l = SENT.find(x => x.id === id);
+  if (!l) return;
+  if (l.status === 'IN_TRANSIT') {
+    const dist = Math.round(haversine(U.lat, U.lng, l.to.lat, l.to.lng));
+    const hours = Math.round(dist / 100);
+    const progress = l.progress || 0;
+    const pct = Math.min(100, (progress / hours) * 100);
+    document.getElementById('letter-view').innerHTML = `
+      <div style="text-align:center;padding:40px 0;">
+        <div style="font-size:48px;margin-bottom:16px;">🕊</div>
+        <h2 style="font-style:italic;font-size:1.5rem;color:var(--lilac);margin-bottom:4px;">your letter is traveling</h2>
+        <p style="font-size:12px;color:var(--tx3);margin-bottom:20px;">to @${l.to.name.toLowerCase()} in ${l.to.city}</p>
+        <div class="countdown" style="font-size:42px;">${Math.floor((hours-progress)/24)}d ${Math.round((hours-progress)%24)}h</div>
+        <div class="countdown-label" style="margin-bottom:20px;">until delivery</div>
+        <div class="journey" style="max-width:400px;margin:0 auto;">
+          <div class="journey-fill" style="width:${pct}%;"><div class="journey-dot"></div></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;max-width:400px;margin:8px auto 0;">
+          <span class="journey-city">${U.city}</span>
+          <span style="font-size:9px;color:var(--tx4);">${dist.toLocaleString()} km</span>
+          <span class="journey-city">${l.to.city}</span>
+        </div>
+        <p style="font-family:var(--fc);font-size:14px;color:var(--tx4);margin-top:28px;">good things take time...</p>
+      </div>`;
+    go('letter'); return;
+  }
+  document.getElementById('letter-view').innerHTML = `
+    <div style="background:var(--bg2);border:1px solid var(--brd);border-radius:14px;padding:28px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="avatar">${U.avatar}</div>
+          <div>
+            <div style="font-size:13px;color:var(--txt);">you → @${l.to.name.toLowerCase()}</div>
+            <div style="font-size:10px;color:var(--tx4);">${l.sent}</div>
+          </div>
+        </div>
+        <span style="font-size:28px;">${l.stamp}</span>
+      </div>
+      <div style="font-family:var(--fd);font-style:italic;font-size:16px;color:var(--tx2);line-height:2;white-space:pre-line;font-weight:300;">${l.body}</div>
+      ${l.song ? `<div class="music-card"><div class="music-wave"><span></span><span></span><span></span><span></span><span></span></div><span style="font-size:11px;color:var(--tx2);">${l.song}</span></div>` : ''}
+    </div>`;
+  go('letter');
+}
+
+function viewArchiveLetter(id) {
+  const a = ARCHIVE.find(x => x.id === id);
+  if (!a) return;
+  const person = a.direction === 'received' ? a.from : a.to;
+  const sender = a.direction === 'received' ? person : {avatar:U.avatar,name:U.name,city:U.city,country:U.country};
+  const label = a.direction === 'received' ? `from @${person.name.toLowerCase()}` : `you → @${person.name.toLowerCase()}`;
+  document.getElementById('letter-view').innerHTML = `
+    <div style="background:var(--bg2);border:1px solid var(--brd);border-radius:14px;padding:28px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="avatar">${sender.avatar}</div>
+          <div>
+            <div style="font-size:13px;color:var(--txt);">${label}</div>
+            <div style="font-size:10px;color:var(--tx4);">${a.date}</div>
+          </div>
+        </div>
+        <span style="font-size:28px;">${a.stamp}</span>
+      </div>
+      <div style="font-family:var(--fd);font-style:italic;font-size:16px;color:var(--tx2);line-height:2;white-space:pre-line;font-weight:300;">${a.body}</div>
+      ${a.song ? `<div class="music-card"><div class="music-wave"><span></span><span></span><span></span><span></span><span></span></div><span style="font-size:11px;color:var(--tx2);">${a.song}</span></div>` : ''}
+    </div>`;
+  go('letter');
+}
+
+function answerDaily() {
+  const q = '"if you could send one letter to your 16-year-old self, what would you say?"';
+  MEMORY.unshift({ to:'my 16-year-old self', body:'(daily question: ' + q + ')\\n\\nyour answer here...', date:'today', capsule:null });
+  ov('📦', 'saved to your memory box — write your answer there whenever you\'re ready.');
+}
+
+// ═══ LETTER VIEW ═══
+function viewLetter(id) {
+  const l = LETTERS.find(x => x.id === id);
+  if (!l) return;
+
+  if (l.status === 'IN_TRANSIT') {
+    const dist = Math.round(haversine(U.lat, U.lng, l.from.lat, l.from.lng));
+    const hours = Math.round(dist / 100);
+    const progress = l.progress || 0;
+    const pct = Math.min(100, (progress / hours) * 100);
+    document.getElementById('letter-view').innerHTML = `
+      <div style="text-align:center;padding:40px 0;">
+        <div style="font-size:48px;margin-bottom:16px;">🕊</div>
+        <h2 style="font-style:italic;font-size:1.5rem;color:var(--lilac);margin-bottom:4px;">letter in transit</h2>
+        <p style="font-size:12px;color:var(--tx3);margin-bottom:20px;">from @${l.from.name.toLowerCase()} in ${l.from.city}</p>
+        <div class="countdown" style="font-size:42px;">${Math.floor((hours-progress)/24)}d ${Math.round((hours-progress)%24)}h</div>
+        <div class="countdown-label" style="margin-bottom:20px;">until delivery</div>
+        <div class="journey" style="max-width:400px;margin:0 auto;">
+          <div class="journey-fill" style="width:${pct}%;"><div class="journey-dot"></div></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;max-width:400px;margin:8px auto 0;">
+          <span class="journey-city">${l.from.city}</span>
+          <span style="font-size:9px;color:var(--tx4);">${dist.toLocaleString()} km</span>
+          <span class="journey-city">${U.city}</span>
+        </div>
+        <p style="font-family:var(--fc);font-size:14px;color:var(--tx4);margin-top:28px;">good things take time...</p>
+      </div>`;
+    go('letter');
+    return;
+  }
+
+  document.getElementById('letter-view').innerHTML = `
+    <div style="background:var(--bg2);border:1px solid var(--brd);border-radius:14px;padding:28px;position:relative;overflow:hidden;">
+      ${l.mood ? `<div class="mood-bar" style="background:${l.mood};position:absolute;top:0;left:0;right:0;height:3px;"></div>` : ''}
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="avatar">${l.from.avatar}</div>
+          <div>
+            <div style="font-size:13px;color:var(--txt);">@${l.from.name.toLowerCase()}</div>
+            <div style="font-size:10px;color:var(--tx4);">${l.from.city}, ${l.from.country} · ${l.sent}</div>
+          </div>
+        </div>
+        <span style="font-size:28px;">${l.stamp}</span>
+      </div>
+      <div style="font-family:var(--fd);font-style:italic;font-size:16px;color:var(--tx2);line-height:2;white-space:pre-line;font-weight:300;">${l.body}</div>
+      ${l.song ? `<div class="music-card"><div class="music-wave"><span></span><span></span><span></span><span></span><span></span></div><span style="font-size:11px;color:var(--tx2);">${l.song}</span></div>` : ''}
+      <div style="display:flex;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--brd);">
+        <button class="btn" onclick="go('compose')">✉ write back</button>
+        <button class="btn-ghost">♥ save</button>
+      </div>
+    </div>`;
+  go('letter');
+}
+
+// ═══ EXPLORE ═══
+let exploreFilters = new Set();
+
+function toggleExploreFilter(tag, el) {
+  if (tag === 'any language') {
+    // reset all
+    exploreFilters.clear();
+    document.querySelectorAll('#explore-page .int-pill').forEach(p => p.classList.remove('sel'));
+    el.classList.add('sel');
+  } else {
+    // remove "any language" sel
+    document.querySelector('#explore-page .int-pill:first-child')?.classList.remove('sel');
+    el.classList.toggle('sel');
+    if (exploreFilters.has(tag)) exploreFilters.delete(tag);
+    else exploreFilters.add(tag);
+    if (exploreFilters.size === 0) {
+      document.querySelector('#explore-page .int-pill:first-child')?.classList.add('sel');
+    }
+  }
+  renderExplore();
+}
+
+function renderExplore() {
+  let filtered = PALS;
+  if (exploreFilters.size > 0) {
+    filtered = PALS.filter(p => {
+      const all = [...p.interests, ...(p.languages||[])];
+      return [...exploreFilters].some(f => all.includes(f));
+    });
+  }
+  document.getElementById('explore-grid').innerHTML = filtered.map(p => `
+    <div style="background:var(--bg2);border-radius:12px;padding:20px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='var(--bg2)'" onclick="viewUser('${p.id}')">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+        <div class="avatar">${p.avatar}</div>
+        <div>
+          <div style="font-family:var(--fd);font-style:italic;font-size:1rem;color:var(--txt);">@${p.name.toLowerCase()}</div>
+          <div style="font-size:10px;color:var(--tx4);">${p.city}, ${p.country}</div>
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--tx2);margin-bottom:8px;font-weight:300;">${p.bio}</p>
+      <div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:8px;">
+        ${p.interests.map(i => `<span class="tag${U.interests.includes(i) ? ' tag-pink' : ''}">${i}</span>`).join('')}
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:10px;color:var(--tx4);">${p.mbti} · ${p.zodiac}</span>
+        <span style="font-size:11px;color:var(--pink);font-weight:400;">${p.compat}% match</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ═══ USER VIEW ═══
+function viewUser(id) {
+  const p = PALS.find(x => x.id === id);
+  if (!p) return;
+  const dist = Math.round(haversine(U.lat, U.lng, p.lat, p.lng));
+  const hours = Math.round(dist / 100);
+
+  // find letter history with this person
+  const history = [
+    ...SENT.filter(l => l.to && l.to.id === id).map(l => ({...l, direction:'sent', person:l.to})),
+    ...LETTERS.filter(l => l.from && l.from.id === id).map(l => ({...l, direction:'received', person:l.from})),
+    ...ARCHIVE.filter(a => (a.from && a.from.id === id) || (a.to && a.to.id === id)).map(a => ({...a, direction: a.direction || (a.from && a.from.id === id ? 'received' : 'sent')}))
+  ];
+
+  document.getElementById('user-view').innerHTML = `
+    <div style="text-align:center;padding-bottom:20px;border-bottom:1px solid var(--brd);margin-bottom:20px;">
+      <div class="avatar-lg avatar" style="margin:0 auto 12px;">${p.avatar}</div>
+      <h2 style="font-style:italic;font-size:1.6rem;color:var(--txt);">@${p.name.toLowerCase()}</h2>
+      <div style="font-size:11px;color:var(--tx4);margin:4px 0 10px;">${p.city}, ${p.country} · ${p.mbti} · ${p.zodiac}</div>
+      <p style="font-size:13px;color:var(--tx2);font-weight:300;max-width:400px;margin:0 auto 10px;line-height:1.7;">${p.bio}</p>
+      <p style="font-size:11px;color:var(--tx3);font-weight:300;max-width:400px;margin:0 auto 14px;line-height:1.6;">currently reading <span style="color:var(--lilac);">${p.book}</span> · last listened to <span style="color:var(--pink);">${p.song}</span></p>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-bottom:14px;">
+        ${p.interests.map(i => `<span class="tag${U.interests.includes(i) ? ' tag-pink' : ''}">${i}</span>`).join('')}
+      </div>
+      <div style="display:flex;gap:24px;justify-content:center;margin-bottom:16px;">
+        <div style="text-align:center;"><div style="font-family:var(--fd);font-size:20px;color:var(--pink);">${p.compat}%</div><div style="font-size:8px;color:var(--tx4);text-transform:uppercase;letter-spacing:0.1em;">match</div></div>
+        <div style="text-align:center;"><div style="font-family:var(--fd);font-size:20px;color:var(--lilac);">${dist.toLocaleString()}</div><div style="font-size:8px;color:var(--tx4);text-transform:uppercase;letter-spacing:0.1em;">km away</div></div>
+        <div style="text-align:center;"><div style="font-family:var(--fd);font-size:20px;color:var(--gold);">${hours > 24 ? Math.round(hours/24)+'d' : hours+'h'}</div><div style="font-size:8px;color:var(--tx4);text-transform:uppercase;letter-spacing:0.1em;">letter time</div></div>
+      </div>
+      ${p.streak > 0 ? `<div style="font-size:11px;color:var(--pink);margin-bottom:12px;">🔥 ${p.streak} day streak</div>` : ''}
+      <button class="btn" onclick="composeTo('${p.name.toLowerCase()}')">✉ write a letter to ${p.name.toLowerCase()}</button>
+    </div>
+    ${history.length ? `
+      <div class="sl" style="margin-top:8px;">YOUR LETTER HISTORY</div>
+      ${history.map(h => {
+        const dir = h.direction === 'sent' ? '📤 you wrote' : '📨 they wrote';
+        const preview = h.body ? h.body.split('\\n')[0].slice(0,70)+'...' : '(in transit)';
+        const time = h.date || h.sent || '';
+        return `<div style="padding:12px 0;border-bottom:1px solid rgba(42,37,56,0.2);">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:10px;color:var(--tx3);">${dir}</span>
+            <span style="font-size:9px;color:var(--tx4);">${time}</span>
+          </div>
+          <div style="font-family:var(--fd);font-style:italic;font-size:13px;color:var(--tx2);margin-top:4px;line-height:1.5;">${preview}</div>
+          ${h.song ? `<div style="font-size:9px;color:var(--tx4);margin-top:3px;">🎵 ${h.song}</div>` : ''}
+        </div>`;
+      }).join('')}
+    ` : `<p style="font-size:11px;color:var(--tx4);margin-top:12px;">no letters exchanged yet — be the first to write.</p>`}
+  `;
+  go('user');
+}
+
+// ═══ MEMORY BOX ═══
+function renderMemory() {
+  document.getElementById('memory-letters').innerHTML = MEMORY.map((m, i) => `
+    <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid rgba(42,37,56,0.2);${i===0?'border-top:1px solid rgba(42,37,56,0.2);':''}">
+      <div style="flex-shrink:0;padding-top:2px;">
+        <div class="wax-seal" style="width:28px;height:28px;font-size:10px;">✦</div>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <span style="font-size:10px;color:var(--lilac3);font-weight:400;text-transform:uppercase;letter-spacing:0.08em;">to: ${m.to}</span>
+          <span style="font-size:9px;color:var(--tx4);">${m.date}</span>
+        </div>
+        <div style="font-family:var(--fd);font-style:italic;font-size:13px;color:var(--tx2);line-height:1.6;margin-bottom:6px;">"${m.body.slice(0,120)}${m.body.length > 120 ? '...' : ''}"</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="display:flex;gap:4px;">
+            ${(m.tags||[]).map(t => `<span class="tag" style="font-size:8px;padding:1px 6px;">${t}</span>`).join('')}
+            ${m.capsule ? `<span style="font-size:9px;color:var(--gold);">🔒 opens ${m.capsule}</span>` : ''}
+          </div>
+          ${!m.capsule ? `<button class="btn-ghost btn-sm" style="font-size:9px;padding:3px 10px;" onclick="ov('💌','this letter has been unsealed and is ready to send.')">unseal & send</button>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterMemory(type, el) {
+  document.querySelectorAll('#memory-page .int-pill').forEach(p => p.classList.remove('sel'));
+  if (el) el.classList.add('sel');
+  // mock filter - just re-render (in real app would actually filter)
+  renderMemory();
+}
+
+// ═══ BLOG ═══
+function renderBlog() {
+  document.getElementById('blog-grid').innerHTML = BLOG.map((b, i) => `
+    <div style="padding:20px 0;${i > 0 ? 'border-top:1px solid var(--brd);' : ''}cursor:pointer;" onclick="ov('${b.icon}','${b.title} — full story coming soon.')">
+      <div style="font-size:8px;color:var(--gold);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:6px;">${b.cat}</div>
+      <h3 style="font-family:var(--fd);font-style:italic;font-size:1.4rem;color:var(--txt);margin-bottom:6px;line-height:1.3;">${b.title}</h3>
+      <p style="font-size:12px;color:var(--tx2);font-weight:300;line-height:1.6;">${b.desc}</p>
+      <span style="font-size:10px;color:var(--lilac3);margin-top:8px;display:inline-block;">read story →</span>
+    </div>
+  `).join('');
+}
+
+// ═══ PROFILE ═══
+function renderProfile() {
+  document.getElementById('my-profile').innerHTML = `
+    <div style="text-align:center;padding-bottom:24px;border-bottom:1px solid var(--brd);margin-bottom:24px;">
+      <div class="avatar-lg avatar" style="margin:0 auto 14px;">${U.avatar}</div>
+      <h2 style="font-style:italic;font-size:1.6rem;color:var(--txt);">@${U.name.toLowerCase()}</h2>
+      <div style="font-size:11px;color:var(--tx4);margin:4px 0 12px;">${U.city}, ${U.country} · ${U.mbti} · ${U.zodiac}</div>
+      <p style="font-size:13px;color:var(--tx2);font-weight:300;max-width:420px;margin:0 auto;line-height:1.8;">
+        ${U.bio}<br><br>
+        currently reading <span style="color:var(--lilac);font-style:italic;">${U.book}</span>.
+        last song on repeat: <span style="color:var(--pink);font-style:italic;">${U.song}</span>.
+        life motto — <span style="color:var(--gold);font-style:italic;">"${U.motto}"</span>
+      </p>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:14px;">
+        ${U.interests.map(i => `<span class="tag">${i}</span>`).join('')}
+      </div>
+    </div>
+
+    <div class="sl">MY SOUNDTRACK</div>
+    <div class="music-card" style="margin-bottom:24px;">
+      <div class="music-wave"><span></span><span></span><span></span><span></span><span></span></div>
+      <span style="font-size:11px;color:var(--tx2);">${U.soundtrack}</span>
+    </div>
+
+    <div class="sl">LEVEL & XP</div>
+    <div style="margin-bottom:24px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-family:var(--fd);font-style:italic;font-size:1rem;color:var(--lilac);">${U.levelName}</span>
+        <span style="font-size:10px;color:var(--tx4);">${U.xp} / 600 xp</span>
+      </div>
+      <div class="xp-bar"><div class="xp-fill" style="width:50%;"></div></div>
+      <div style="font-size:9px;color:var(--tx4);margin-top:6px;">next: ⭐ stargazer — unlock moonrise stamp</div>
+    </div>
+
+    <div class="sl">STAMP COLLECTION</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
+      ${U.stamps.map(s => `<div class="stamp" style="background:var(--bg2);">${s}</div>`).join('')}
+      <div class="stamp stamp-locked" style="background:var(--bg2);">⭐</div>
+      <div class="stamp stamp-locked" style="background:var(--bg2);">🌌</div>
+      <div class="stamp stamp-locked" style="background:var(--bg2);">💜</div>
+      <div class="stamp stamp-locked" style="background:var(--bg2);">🌑</div>
+      <div class="stamp stamp-locked" style="background:var(--bg2);">💫</div>
+    </div>
+
+    <div class="sl">PEN PAL STREAKS</div>
+    <div style="margin-bottom:20px;">
+      ${PALS.filter(p=>p.streak>0).map(p => `
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(42,37,56,0.2);">
+          <div class="avatar-sm avatar">${p.avatar}</div>
+          <div style="flex:1;">
+            <div style="font-size:12px;color:var(--txt);">@${p.name.toLowerCase()}</div>
+            <div style="font-size:9px;color:var(--tx4);">${p.city}</div>
+          </div>
+          <div style="font-size:13px;color:var(--pink);font-family:var(--fd);">🔥 ${p.streak}d</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+// ═══ COMPOSE ═══
+let _composeTo = '';
+function composeTo(name) {
+  _composeTo = name;
+  go('compose');
+}
+function initCompose() {
+  const toField = document.getElementById('compose-to');
+  if (toField && _composeTo) {
+    toField.value = '@' + _composeTo;
+    toField.style.color = 'var(--lilac)';
+  }
+  const ta = document.getElementById('compose-body');
+  if (ta) {
+    ta.oninput = () => {
+      document.getElementById('char-count').textContent = ta.value.length + ' characters';
+    };
+  }
+}
+function selStamp(el) {
+  document.querySelectorAll('.stamp').forEach(s => s.style.borderColor = 'var(--brd)');
+  el.style.borderColor = 'var(--lilac)';
+}
+function sendLetter() {
+  ov('✉', 'your letter is on its way. it will travel across the world and arrive when it\'s meant to.');
+}
+function openBottle() {
+  ov('🐚', 'you found a bottle from someone in reykjavík! open it to read their letter.');
+}
+
+// ═══ OVERLAY ═══
+function ov(icon, msg) {
+  document.getElementById('ov-icon').textContent = icon;
+  document.getElementById('ov-title').textContent = '';
+  document.getElementById('ov-desc').textContent = msg;
+  document.getElementById('overlay').classList.add('on');
+}
+function closeOv() { document.getElementById('overlay').classList.remove('on'); }
+
+// ═══ INIT ═══
+renderObProgress();
+initMbtiGrid();
+initIntPills();
+</script>
+</body>
+</html>
