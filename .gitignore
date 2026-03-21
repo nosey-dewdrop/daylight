@@ -35,6 +35,9 @@ Pods/
 # Claude
 .claude/
 
+# MCP config (contains API keys)
+.mcp.json
+
 # Plans
 plans/
 project.yml

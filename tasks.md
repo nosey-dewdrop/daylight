@@ -1,0 +1,15 @@
+# Tasks
+
+- [ ] restart claude code to activate PixelLab MCP server (dev)
+- [ ] generate app icon with PixelLab (design)
+- [ ] generate avatar base assets — skin, hair, eyes, mouth (design)
+- [ ] generate avatar clothing and accessories (design)
+- [ ] generate avatar poses — free and premium (design)
+- [ ] generate avatar backgrounds and frames — free and premium bundles (design)
+- [ ] generate avatar decor items (design)
+- [ ] generate stamp collection (design)
+- [ ] generate UI and menu icons (design)
+- [ ] generate letter visuals (design)
+- [ ] generate market/shop assets (design)
+- [ ] generate room furniture assets (design)
+- [ ] generate onboarding visuals (design)
