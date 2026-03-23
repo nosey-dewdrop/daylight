@@ -1,0 +1,18 @@
+# Tasks
+
+- [x] restart claude code to activate PixelLab MCP server (dev)
+- [x] generate app icon with PixelLab (design)
+- [x] generate stamp collection — flowers, animals, symbols, seasonal (design)
+- [x] generate UI icons — tab bar, navigation, actions, status (design)
+- [x] generate letter visuals — envelopes, mailbox, typewriter (design)
+- [x] set up avatar picker view with skin + hair selection (dev)
+- [x] create paper doll template + drawing guide for Procreate (design)
+- [ ] damla: draw 10 hair styles in Procreate using template (design)
+- [ ] damla: draw 5 tops in Procreate using template (design)
+- [ ] damla: draw 5 bottoms in Procreate using template (design)
+- [ ] integrate hand-drawn paper doll parts into app (dev)
+- [ ] download and organize all generated stamps into asset catalog (dev)
+- [ ] download and organize all generated icons into asset catalog (dev)
+- [ ] generate market/shop assets (design)
+- [ ] generate room furniture assets (design)
+- [ ] generate onboarding visuals (design)
