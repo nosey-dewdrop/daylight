@@ -3,6 +3,7 @@ import SwiftUI
 struct ProfileView: View {
     private let level = Levels.getInfo(xp: 350)
     @State private var showAvatarPicker = false
+    @State private var avatarConfig = AvatarConfig.default
 
     var body: some View {
         NavigationStack {
@@ -24,8 +25,7 @@ struct ProfileView: View {
                                     RoundedRectangle(cornerRadius: 4)
                                         .strokeBorder(Theme.brd, style: StrokeStyle(lineWidth: 1, dash: [3, 3]))
                                         .frame(width: 90, height: 110)
-                                    Text("🌸")
-                                        .font(.system(size: 40))
+                                    AvatarView(config: avatarConfig, size: 80, bgColor: .clear, showBackground: false)
                                     // Edit badge
                                     VStack {
                                         Spacer()
@@ -134,20 +134,35 @@ struct ProfileView: View {
                         }
 
                         // Coming soon sections
-                        ProfileSection(title: "MY ROOM") {
-                            VStack(spacing: 8) {
-                                Text("🏠")
-                                    .font(.system(size: 28))
-                                Text("coming soon")
-                                    .font(Theme.typeFont(size: 10))
-                                    .foregroundStyle(Theme.tx4)
-                                Text("decorate your room & invite friends")
-                                    .font(Theme.typeFont(size: 8))
-                                    .foregroundStyle(Theme.tx4)
+                        NavigationLink {
+                            RoomView()
+                        } label: {
+                            ProfileSection(title: "MY ROOM") {
+                                HStack(spacing: 12) {
+                                    Image("furniture_bed")
+                                        .interpolation(.none)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 36, height: 36)
+                                    Image("furniture_bookshelf")
+                                        .interpolation(.none)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 36, height: 36)
+                                    Image("furniture_cat")
+                                        .interpolation(.none)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 36, height: 36)
+                                    Spacer()
+                                    Text("enter →")
+                                        .font(Theme.typeFont(size: 10))
+                                        .foregroundStyle(Theme.lilac)
+                                }
+                                .padding(.vertical, 4)
                             }
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 8)
                         }
+                        .buttonStyle(.plain)
 
                         ProfileSection(title: "STAMP COLLECTION") {
                             VStack(spacing: 8) {

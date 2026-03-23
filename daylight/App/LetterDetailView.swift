@@ -16,91 +16,115 @@ struct LetterDetailView: View {
             Theme.bg.ignoresSafeArea()
 
             ScrollView {
-                VStack(spacing: 0) {
-                    // Envelope header
-                    HStack {
-                        AvatarView(emoji: senderEmoji, size: 40)
-                        VStack(alignment: .leading, spacing: 2) {
+                VStack(spacing: 16) {
+                    // Sender info — passport style avatar
+                    HStack(spacing: 12) {
+                        // Passport photo style avatar
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Theme.bg1)
+                                .frame(width: 48, height: 56)
+                            RoundedRectangle(cornerRadius: 4)
+                                .strokeBorder(Theme.brd, lineWidth: 0.5)
+                                .frame(width: 48, height: 56)
+                            AvatarView(config: .default, size: 40, showBackground: false)
+                        }
+
+                        VStack(alignment: .leading, spacing: 4) {
                             Text(senderName)
-                                .font(Theme.typeFont(size: 14))
+                                .font(Theme.typeFont(size: 16))
                                 .foregroundStyle(Theme.txt)
+                                .fontWeight(.medium)
+
                             HStack(spacing: 6) {
                                 StatusBadge(status: status)
                                 if let km = distanceKm {
                                     Text("·")
                                         .font(.system(size: 8))
                                         .foregroundStyle(Theme.tx4)
-                                    Text("\(Int(km)) km")
-                                        .font(Theme.typeFont(size: 10))
+                                    Text(String(format: "%.0f km", km))
+                                        .font(Theme.typeFont(size: 9))
                                         .foregroundStyle(Theme.tx3)
+                                        .italic()
                                 }
                             }
                         }
+
                         Spacer()
-                        // Stamp
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 2)
-                                .fill(Theme.bg2)
-                                .frame(width: 40, height: 48)
-                            RoundedRectangle(cornerRadius: 1)
-                                .strokeBorder(Theme.brd.opacity(0.5), style: StrokeStyle(lineWidth: 1, dash: [2, 2]))
-                                .frame(width: 36, height: 44)
-                            Text(stampEmoji)
-                                .font(.system(size: 20))
-                        }
                     }
-                    .padding(Theme.padding)
-
-                    // Letter paper
-                    ZStack(alignment: .topLeading) {
-                        // Paper background with ruled lines
-                        Rectangle()
-                            .fill(Color(hex: "F5F2EB"))
-                            .overlay(
-                                VStack(spacing: 28) {
-                                    ForEach(0..<20, id: \.self) { _ in
-                                        Rectangle()
-                                            .fill(Theme.brd.opacity(0.2))
-                                            .frame(height: 0.5)
-                                    }
-                                }
-                                .padding(.top, 20)
-                                .padding(.horizontal, 12)
-                            )
-                            .overlay(
-                                HStack {
-                                    Rectangle()
-                                        .fill(Color(hex: "C4707F").opacity(0.12))
-                                        .frame(width: 0.5)
-                                        .padding(.leading, 32)
-                                    Spacer()
-                                }
-                            )
-
-                        // Letter text
-                        Text(content)
-                            .font(Theme.handFont(size: 20))
-                            .foregroundStyle(Color(hex: "2A2A3A"))
-                            .lineSpacing(10)
-                            .padding(.top, 20)
-                            .padding(.leading, 40)
-                            .padding(.trailing, 20)
-                            .padding(.bottom, 40)
-                    }
-                    .clipShape(RoundedRectangle(cornerRadius: 4))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 4)
-                            .strokeBorder(Theme.brd.opacity(0.3), lineWidth: 0.5)
-                    )
                     .padding(.horizontal, Theme.padding)
-                    .shadow(color: .black.opacity(0.04), radius: 8, y: 4)
+
+                    // Letter paper with stamp ON it
+                    ZStack(alignment: .topTrailing) {
+                        // Paper
+                        VStack(spacing: 0) {
+                            ZStack(alignment: .topLeading) {
+                                Rectangle()
+                                    .fill(Color(hex: "F5F2EB"))
+                                    .overlay(
+                                        VStack(spacing: 24) {
+                                            ForEach(0..<25, id: \.self) { _ in
+                                                Rectangle()
+                                                    .fill(Theme.brd.opacity(0.15))
+                                                    .frame(height: 0.5)
+                                            }
+                                        }
+                                        .padding(.top, 20)
+                                        .padding(.horizontal, 12)
+                                    )
+                                    .overlay(
+                                        HStack {
+                                            Rectangle()
+                                                .fill(Color(hex: "C4707F").opacity(0.10))
+                                                .frame(width: 0.5)
+                                                .padding(.leading, 28)
+                                            Spacer()
+                                        }
+                                    )
+
+                                // Letter text — smaller, elegant
+                                Text(content)
+                                    .font(Theme.handFont(size: 15))
+                                    .foregroundStyle(Color(hex: "2A2A3A"))
+                                    .lineSpacing(8)
+                                    .padding(.top, 24)
+                                    .padding(.leading, 36)
+                                    .padding(.trailing, 56)
+                                    .padding(.bottom, 40)
+                            }
+                        }
+                        .clipShape(RoundedRectangle(cornerRadius: 4))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 4)
+                                .strokeBorder(Theme.brd.opacity(0.3), lineWidth: 0.5)
+                        )
+                        .shadow(color: .black.opacity(0.04), radius: 8, y: 4)
+
+                        // Stamp on the paper
+                        StampShape()
+                            .fill(Color(hex: "F5F0E8"))
+                            .frame(width: 40, height: 50)
+                            .overlay(
+                                StampShape()
+                                    .strokeBorder(Theme.brd.opacity(0.3), lineWidth: 0.5)
+                            )
+                            .shadow(color: .black.opacity(0.06), radius: 2, y: 1)
+                            .padding(.top, 10)
+                            .padding(.trailing, 10)
+                    }
+                    .padding(.horizontal, Theme.padding)
 
                     // Timestamp
-                    Text(timeInfo)
-                        .font(Theme.typeFont(size: 10))
-                        .foregroundStyle(Theme.tx4)
-                        .padding(.top, 16)
+                    HStack {
+                        Spacer()
+                        Text(timeInfo)
+                            .font(Theme.typeFont(size: 9))
+                            .foregroundStyle(Theme.tx4)
+                            .italic()
+                    }
+                    .padding(.horizontal, Theme.padding)
                 }
+                .padding(.top, 8)
                 .padding(.bottom, 40)
             }
         }

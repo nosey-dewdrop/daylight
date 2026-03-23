@@ -1,32 +1,41 @@
 import SwiftUI
 
 struct AvatarView: View {
-    let emoji: String
+    let config: AvatarConfig
     var size: CGFloat = 48
-    var bgColor: Color = Theme.bg2
+    var showBackground: Bool = true
 
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: size * 0.25)
-                .fill(bgColor)
-                .overlay(
-                    RoundedRectangle(cornerRadius: size * 0.25)
-                        .strokeBorder(Theme.brd2, lineWidth: 1)
-                )
-            Text(emoji)
-                .font(.system(size: size * 0.5))
+            if showBackground {
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(Theme.bg1)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 4)
+                            .strokeBorder(Theme.brd, lineWidth: 0.5)
+                    )
+            }
+
+            // Show only head — crop top portion of character (vesikalık)
+            Image(config.assetName)
+                .interpolation(.none)
+                .resizable()
+                .scaledToFill()
+                .frame(width: size * 0.85, height: size * 1.0)
+                .offset(y: -size * 0.15) // shift up to show head, not feet
+                .clipped()
         }
-        .frame(width: size, height: size)
+        .frame(width: size, height: size * 1.2)
+        .clipShape(RoundedRectangle(cornerRadius: 4))
     }
 }
 
 #Preview {
-    HStack(spacing: 12) {
-        AvatarView(emoji: "🌱", size: 40)
-        AvatarView(emoji: "🌸", size: 56)
-        AvatarView(emoji: "🌙", size: 64, bgColor: Theme.bg3)
+    HStack(spacing: 16) {
+        AvatarView(config: .default, size: 40)
+        AvatarView(config: AvatarConfig(hairStyle: "long", skinTone: "medium"), size: 40)
+        AvatarView(config: AvatarConfig(hairStyle: "afro", skinTone: "dark"), size: 40)
     }
     .padding()
     .background(Theme.bg)
-    .preferredColorScheme(.light)
 }
