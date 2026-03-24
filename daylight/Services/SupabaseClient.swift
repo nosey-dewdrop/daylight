@@ -1,14 +1,17 @@
 import Foundation
 import Supabase
 
-enum SupabaseConfig {
-    // TODO: Replace with your actual Supabase credentials
-    // These should match your forget-me-not Supabase project
-    static let url = URL(string: "https://yrxtlupqcmxyozwapmor.supabase.co")!
-    static let anonKey = "YOUR_ANON_KEY_HERE"
-}
+let supabase: SupabaseClient = {
+    guard let path = Bundle.main.path(forResource: "Config", ofType: "plist"),
+          let config = NSDictionary(contentsOfFile: path),
+          let urlString = config["supabaseURL"] as? String,
+          let anonKey = config["supabaseAnonKey"] as? String,
+          let url = URL(string: urlString) else {
+        fatalError("Missing or invalid Config.plist. Ensure Config.plist exists in the app bundle with supabaseURL and supabaseAnonKey keys.")
+    }
 
-let supabase = SupabaseClient(
-    supabaseURL: SupabaseConfig.url,
-    supabaseKey: SupabaseConfig.anonKey
-)
+    return SupabaseClient(
+        supabaseURL: url,
+        supabaseKey: anonKey
+    )
+}()

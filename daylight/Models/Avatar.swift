@@ -2,9 +2,10 @@ import SwiftUI
 
 // MARK: - Avatar System (hair + skin → preset image)
 
-struct AvatarConfig: Codable, Equatable {
+struct AvatarConfig: Codable, Equatable, Hashable {
     var hairStyle: String
     var skinTone: String
+    var background: String?
 
     var assetName: String {
         "avatar_\(hairStyle)_\(skinTone)"
@@ -12,8 +13,14 @@ struct AvatarConfig: Codable, Equatable {
 
     static let `default` = AvatarConfig(
         hairStyle: "bob",
-        skinTone: "light"
+        skinTone: "light",
+        background: nil
     )
+
+    static let backgrounds = [
+        "sky_blue", "sunset_pink", "mint_green", "lavender",
+        "peach", "cream", "coral", "sage"
+    ]
 }
 
 struct AvatarOption: Identifiable {

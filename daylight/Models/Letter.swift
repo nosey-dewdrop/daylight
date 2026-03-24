@@ -1,7 +1,7 @@
 import Foundation
 
 struct Letter: Codable, Identifiable {
-    let id: String
+    var id: String?
     var senderId: String?
     var recipientId: String?
     var content: String
@@ -9,15 +9,17 @@ struct Letter: Codable, Identifiable {
     var songUrl: String?
     var status: LetterStatus
     var isBottle: Bool
-    var isMemoryBox: Bool
-    var memoryBoxRecipient: String?
-    var timeCapsuleDate: String?
     var distanceKm: Double?
     var deliveryHours: Double?
-    var sentAt: String?
-    var deliversAt: String?
-    var readAt: String?
-    let createdAt: String
+    var sentAt: Date?
+    var deliversAt: Date?
+    var readAt: Date?
+    var createdAt: Date?
+
+    // transient — populated after fetch, not encoded/decoded from DB
+    var sender: AppUser?
+    var recipient: AppUser?
+    var stamp: Stamp?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -28,9 +30,6 @@ struct Letter: Codable, Identifiable {
         case songUrl = "song_url"
         case status
         case isBottle = "is_bottle"
-        case isMemoryBox = "is_memory_box"
-        case memoryBoxRecipient = "memory_box_recipient"
-        case timeCapsuleDate = "time_capsule_date"
         case distanceKm = "distance_km"
         case deliveryHours = "delivery_hours"
         case sentAt = "sent_at"
