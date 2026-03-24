@@ -53,7 +53,7 @@ struct OnboardingView: View {
         HStack(spacing: 4) {
             ForEach(0..<totalSteps, id: \.self) { step in
                 Capsule()
-                    .fill(step <= currentStep ? DaylightTheme.deepBlue : DaylightTheme.babyBlue.opacity(0.3))
+                    .fill(step <= currentStep ? DaylightTheme.rose : DaylightTheme.blue.opacity(0.3))
                     .frame(height: 4)
             }
         }
@@ -69,11 +69,11 @@ struct OnboardingView: View {
 
             Text("What should we call you?")
                 .font(DaylightTheme.titleFont)
-                .foregroundColor(DaylightTheme.darkBrown)
+                .foregroundColor(DaylightTheme.text)
 
             Text("This is how your pen pals will know you")
                 .font(DaylightTheme.letterFont)
-                .foregroundColor(DaylightTheme.warmBrown)
+                .foregroundColor(DaylightTheme.textSub)
 
             TextField("Your name", text: $displayName)
                 .font(DaylightTheme.headlineFont)
@@ -89,21 +89,21 @@ struct OnboardingView: View {
         VStack(spacing: 20) {
             Image(systemName: "globe.americas")
                 .font(.system(size: 50))
-                .foregroundColor(DaylightTheme.deepBlue)
+                .foregroundColor(DaylightTheme.rose)
 
             Text("Where are you from?")
                 .font(DaylightTheme.titleFont)
-                .foregroundColor(DaylightTheme.darkBrown)
+                .foregroundColor(DaylightTheme.text)
 
             VStack(alignment: .leading, spacing: 8) {
                 Text("Age")
                     .font(DaylightTheme.captionFont)
-                    .foregroundColor(DaylightTheme.warmBrown)
+                    .foregroundColor(DaylightTheme.textSub)
 
                 Stepper(value: $age, in: 13...99) {
                     Text("\(age) years old")
                         .font(DaylightTheme.headlineFont)
-                        .foregroundColor(DaylightTheme.darkBrown)
+                        .foregroundColor(DaylightTheme.text)
                 }
                 .padding(12)
                 .background(Color.white.opacity(0.8))
@@ -113,7 +113,7 @@ struct OnboardingView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Country")
                     .font(DaylightTheme.captionFont)
-                    .foregroundColor(DaylightTheme.warmBrown)
+                    .foregroundColor(DaylightTheme.textSub)
 
                 ScrollView(.vertical, showsIndicators: false) {
                     LazyVStack(spacing: 4) {
@@ -123,17 +123,17 @@ struct OnboardingView: View {
                                     Text(country.flag)
                                     Text(country.name)
                                         .font(DaylightTheme.bodyFont)
-                                        .foregroundColor(DaylightTheme.darkBrown)
+                                        .foregroundColor(DaylightTheme.text)
                                     Spacer()
                                     if selectedCountry?.id == country.id {
                                         Image(systemName: "checkmark.circle.fill")
-                                            .foregroundColor(DaylightTheme.deepBlue)
+                                            .foregroundColor(DaylightTheme.rose)
                                     }
                                 }
                                 .padding(10)
                                 .background(
                                     selectedCountry?.id == country.id ?
-                                        DaylightTheme.babyBlue.opacity(0.2) : Color.white.opacity(0.5)
+                                        DaylightTheme.blue.opacity(0.2) : Color.white.opacity(0.5)
                                 )
                                 .clipShape(RoundedRectangle(cornerRadius: DaylightTheme.smallCornerRadius))
                             }
@@ -150,16 +150,16 @@ struct OnboardingView: View {
         VStack(spacing: 20) {
             Image(systemName: "text.bubble.fill")
                 .font(.system(size: 50))
-                .foregroundColor(DaylightTheme.mutedGreen)
+                .foregroundColor(DaylightTheme.green)
 
             Text("Which languages do you speak?")
                 .font(DaylightTheme.titleFont)
-                .foregroundColor(DaylightTheme.darkBrown)
+                .foregroundColor(DaylightTheme.text)
                 .multilineTextAlignment(.center)
 
             Text("Select all that apply")
                 .font(DaylightTheme.letterFont)
-                .foregroundColor(DaylightTheme.warmBrown)
+                .foregroundColor(DaylightTheme.textSub)
 
             FlowLayout(spacing: 8) {
                 ForEach(Countries.languages, id: \.self) { language in
@@ -182,22 +182,22 @@ struct OnboardingView: View {
         VStack(spacing: 20) {
             Image(systemName: "heart.circle.fill")
                 .font(.system(size: 50))
-                .foregroundColor(DaylightTheme.softPink)
+                .foregroundColor(DaylightTheme.pink)
 
             Text("What are you into?")
                 .font(DaylightTheme.titleFont)
-                .foregroundColor(DaylightTheme.darkBrown)
+                .foregroundColor(DaylightTheme.text)
 
             Text("Pick at least 3 interests")
                 .font(DaylightTheme.letterFont)
-                .foregroundColor(DaylightTheme.warmBrown)
+                .foregroundColor(DaylightTheme.textSub)
 
             let grouped = Dictionary(grouping: userService.allInterests, by: { $0.category })
             ForEach(Array(grouped.keys.sorted()), id: \.self) { category in
                 VStack(alignment: .leading, spacing: 8) {
                     Text(category)
                         .font(DaylightTheme.captionFont)
-                        .foregroundColor(DaylightTheme.warmBrown)
+                        .foregroundColor(DaylightTheme.textSub)
 
                     FlowLayout(spacing: 8) {
                         ForEach(grouped[category] ?? [], id: \.id) { interest in
@@ -226,16 +226,16 @@ struct OnboardingView: View {
 
             Text("Optional: Personality")
                 .font(DaylightTheme.titleFont)
-                .foregroundColor(DaylightTheme.darkBrown)
+                .foregroundColor(DaylightTheme.text)
 
             Text("These help find compatible pen pals")
                 .font(DaylightTheme.letterFont)
-                .foregroundColor(DaylightTheme.warmBrown)
+                .foregroundColor(DaylightTheme.textSub)
 
             VStack(alignment: .leading, spacing: 8) {
                 Text("MBTI Type")
                     .font(DaylightTheme.captionFont)
-                    .foregroundColor(DaylightTheme.warmBrown)
+                    .foregroundColor(DaylightTheme.textSub)
 
                 FlowLayout(spacing: 8) {
                     ForEach(Countries.mbtiTypes, id: \.self) { type in
@@ -249,7 +249,7 @@ struct OnboardingView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Zodiac Sign")
                     .font(DaylightTheme.captionFont)
-                    .foregroundColor(DaylightTheme.warmBrown)
+                    .foregroundColor(DaylightTheme.textSub)
 
                 FlowLayout(spacing: 8) {
                     ForEach(Countries.zodiacSigns, id: \.self) { sign in
@@ -266,7 +266,7 @@ struct OnboardingView: View {
         VStack(spacing: 20) {
             Text("Create Your Avatar")
                 .font(DaylightTheme.titleFont)
-                .foregroundColor(DaylightTheme.darkBrown)
+                .foregroundColor(DaylightTheme.text)
 
             AvatarView(config: avatarConfig, size: 120)
                 .padding()
@@ -303,7 +303,7 @@ struct OnboardingView: View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
                 .font(DaylightTheme.captionFont)
-                .foregroundColor(DaylightTheme.warmBrown)
+                .foregroundColor(DaylightTheme.textSub)
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 6) {
@@ -311,12 +311,12 @@ struct OnboardingView: View {
                         Button(action: { set(option) }) {
                             Text(option.rawValue.capitalized)
                                 .font(.system(size: 11, design: .serif))
-                                .foregroundColor(current() == option.rawValue ? .white : DaylightTheme.deepBlue)
+                                .foregroundColor(current() == option.rawValue ? .white : DaylightTheme.rose)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 6)
                                 .background(
                                     Capsule()
-                                        .fill(current() == option.rawValue ? DaylightTheme.deepBlue : DaylightTheme.babyBlue.opacity(0.3))
+                                        .fill(current() == option.rawValue ? DaylightTheme.rose : DaylightTheme.blue.opacity(0.3))
                                 )
                         }
                         .buttonStyle(.plain)
@@ -330,7 +330,7 @@ struct OnboardingView: View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
                 .font(DaylightTheme.captionFont)
-                .foregroundColor(DaylightTheme.warmBrown)
+                .foregroundColor(DaylightTheme.textSub)
 
             HStack(spacing: 8) {
                 ForEach(colors, id: \.self) { hex in

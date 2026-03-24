@@ -109,13 +109,13 @@ struct StampView: View {
 
     private var stampColor: Color {
         switch stamp.category {
-        case "Welcome": return DaylightTheme.mutedGreen
+        case "Welcome": return DaylightTheme.green
         case "Nature": return Color(hex: "#5B8C5A")
-        case "Cities": return DaylightTheme.deepBlue
+        case "Cities": return DaylightTheme.rose
         case "Seasons": return Color(hex: "#D4926A")
         case "Zodiac": return Color(hex: "#7B68AE")
         case "Premium": return DaylightTheme.softGold
-        default: return DaylightTheme.skyBlue
+        default: return DaylightTheme.blue
         }
     }
 

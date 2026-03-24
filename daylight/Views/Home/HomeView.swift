@@ -18,7 +18,7 @@ struct HomeView: View {
                         VStack(spacing: 12) {
                             Text("Letters on their way")
                                 .font(DaylightTheme.headlineFont)
-                                .foregroundColor(DaylightTheme.darkBrown)
+                                .foregroundColor(DaylightTheme.text)
 
                             GlobeView(inTransitLetters: letterService.inTransitLetters)
                                 .frame(height: 260)
@@ -26,11 +26,11 @@ struct HomeView: View {
                             if letterService.inTransitLetters.isEmpty {
                                 Text("No letters in transit right now")
                                     .font(DaylightTheme.letterFont)
-                                    .foregroundColor(DaylightTheme.warmBrown.opacity(0.6))
+                                    .foregroundColor(DaylightTheme.textSub.opacity(0.6))
                             } else {
                                 Text("\(letterService.inTransitLetters.count) letter\(letterService.inTransitLetters.count == 1 ? "" : "s") flying to you")
                                     .font(DaylightTheme.captionFont)
-                                    .foregroundColor(DaylightTheme.deepBlue)
+                                    .foregroundColor(DaylightTheme.rose)
                             }
                         }
                         .padding(.top, 8)
@@ -41,7 +41,7 @@ struct HomeView: View {
                                 HStack {
                                     Text("Your Letters")
                                         .font(DaylightTheme.titleFont)
-                                        .foregroundColor(DaylightTheme.darkBrown)
+                                        .foregroundColor(DaylightTheme.text)
 
                                     Spacer()
 
@@ -68,15 +68,15 @@ struct HomeView: View {
                             VStack(spacing: 16) {
                                 Image(systemName: "envelope.open")
                                     .font(.system(size: 50))
-                                    .foregroundColor(DaylightTheme.babyBlue)
+                                    .foregroundColor(DaylightTheme.blue)
 
                                 Text("Your mailbox is empty")
                                     .font(DaylightTheme.headlineFont)
-                                    .foregroundColor(DaylightTheme.darkBrown)
+                                    .foregroundColor(DaylightTheme.text)
 
                                 Text("Send a letter or try bottle mail to start a conversation!")
                                     .font(DaylightTheme.letterFont)
-                                    .foregroundColor(DaylightTheme.warmBrown)
+                                    .foregroundColor(DaylightTheme.textSub)
                                     .multilineTextAlignment(.center)
 
                                 Button(action: { showCompose = true }) {
@@ -100,9 +100,9 @@ struct HomeView: View {
                         Button(action: { showCompose = true }) {
                             ZStack {
                                 Circle()
-                                    .fill(DaylightTheme.deepBlue)
+                                    .fill(DaylightTheme.rose)
                                     .frame(width: 56, height: 56)
-                                    .shadow(color: DaylightTheme.deepBlue.opacity(0.4), radius: 8, x: 0, y: 4)
+                                    .shadow(color: DaylightTheme.rose.opacity(0.4), radius: 8, x: 0, y: 4)
 
                                 Image(systemName: "pencil.line")
                                     .font(.system(size: 22))
@@ -119,7 +119,7 @@ struct HomeView: View {
                 ToolbarItem(placement: .principal) {
                     Text("daylight")
                         .font(.system(size: 22, weight: .light, design: .serif))
-                        .foregroundColor(DaylightTheme.darkBrown)
+                        .foregroundColor(DaylightTheme.text)
                 }
             }
             .sheet(isPresented: $showCompose) {

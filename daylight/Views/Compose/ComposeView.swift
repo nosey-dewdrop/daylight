@@ -49,15 +49,15 @@ struct ComposeView: View {
                                         VStack(spacing: 4) {
                                             RoundedRectangle(cornerRadius: 3)
                                                 .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [4]))
-                                                .foregroundColor(DaylightTheme.warmBrown.opacity(0.5))
+                                                .foregroundColor(DaylightTheme.textSub.opacity(0.5))
                                                 .frame(width: 50, height: 65)
                                                 .overlay(
                                                     Image(systemName: "plus")
-                                                        .foregroundColor(DaylightTheme.warmBrown)
+                                                        .foregroundColor(DaylightTheme.textSub)
                                                 )
                                             Text("Stamp")
                                                 .font(.system(size: 10, design: .serif))
-                                                .foregroundColor(DaylightTheme.warmBrown)
+                                                .foregroundColor(DaylightTheme.textSub)
                                         }
                                     }
                                 }
@@ -69,7 +69,7 @@ struct ComposeView: View {
                                 if content.isEmpty {
                                     Text("Write your letter here...\n\nTake your time. Say something meaningful. Letters need at least 50 words.")
                                         .font(DaylightTheme.letterFont)
-                                        .foregroundColor(DaylightTheme.warmBrown.opacity(0.4))
+                                        .foregroundColor(DaylightTheme.textSub.opacity(0.4))
                                         .padding(4)
                                 }
 
@@ -83,7 +83,7 @@ struct ComposeView: View {
                             // Line separator
                             ForEach(0..<8, id: \.self) { _ in
                                 Divider()
-                                    .background(DaylightTheme.warmBrown.opacity(0.1))
+                                    .background(DaylightTheme.textSub.opacity(0.1))
                                     .padding(.vertical, 6)
                             }
                         }
@@ -99,7 +99,7 @@ struct ComposeView: View {
                         HStack {
                             Text("\(wordCount) / 50 words minimum")
                                 .font(DaylightTheme.captionFont)
-                                .foregroundColor(wordCount >= 50 ? DaylightTheme.mutedGreen : DaylightTheme.warmBrown)
+                                .foregroundColor(wordCount >= 50 ? DaylightTheme.green : DaylightTheme.textSub)
 
                             Spacer()
 
@@ -118,23 +118,23 @@ struct ComposeView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
-                        .foregroundColor(DaylightTheme.deepBlue)
+                        .foregroundColor(DaylightTheme.rose)
                 }
 
                 ToolbarItem(placement: .principal) {
                     Text(isBottleMail ? "Bottle Mail" : "Write Letter")
                         .font(DaylightTheme.headlineFont)
-                        .foregroundColor(DaylightTheme.darkBrown)
+                        .foregroundColor(DaylightTheme.text)
                 }
 
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: sendLetter) {
                         if isSending {
                             ProgressView()
-                                .tint(DaylightTheme.deepBlue)
+                                .tint(DaylightTheme.rose)
                         } else {
                             Image(systemName: "paperplane.fill")
-                                .foregroundColor(canSend ? DaylightTheme.deepBlue : DaylightTheme.warmBrown.opacity(0.3))
+                                .foregroundColor(canSend ? DaylightTheme.rose : DaylightTheme.textSub.opacity(0.3))
                         }
                     }
                     .disabled(!canSend || isSending)
@@ -156,20 +156,20 @@ struct ComposeView: View {
             if isBottleMail {
                 ZStack {
                     Circle()
-                        .fill(DaylightTheme.deepBlue.opacity(0.15))
+                        .fill(DaylightTheme.rose.opacity(0.15))
                         .frame(width: 44, height: 44)
                     Image(systemName: "drop.fill")
                         .font(.system(size: 20))
-                        .foregroundColor(DaylightTheme.deepBlue)
+                        .foregroundColor(DaylightTheme.rose)
                 }
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Bottle Mail")
                         .font(DaylightTheme.headlineFont)
-                        .foregroundColor(DaylightTheme.darkBrown)
+                        .foregroundColor(DaylightTheme.text)
                     Text("Your letter will find a random reader")
                         .font(DaylightTheme.captionFont)
-                        .foregroundColor(DaylightTheme.warmBrown)
+                        .foregroundColor(DaylightTheme.textSub)
                 }
             } else if let profile = recipientProfile {
                 AvatarView(config: profile.avatarConfig ?? .default, size: 44)
@@ -177,17 +177,17 @@ struct ComposeView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("To: \(profile.displayName ?? "Unknown")")
                         .font(DaylightTheme.headlineFont)
-                        .foregroundColor(DaylightTheme.darkBrown)
+                        .foregroundColor(DaylightTheme.text)
                     if let country = profile.country {
                         Text(country)
                             .font(DaylightTheme.captionFont)
-                            .foregroundColor(DaylightTheme.warmBrown)
+                            .foregroundColor(DaylightTheme.textSub)
                     }
                 }
             } else if let name = recipientName {
                 Text("To: \(name)")
                     .font(DaylightTheme.headlineFont)
-                    .foregroundColor(DaylightTheme.darkBrown)
+                    .foregroundColor(DaylightTheme.text)
             }
 
             Spacer()

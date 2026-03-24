@@ -35,7 +35,7 @@ struct FriendsView: View {
                 ToolbarItem(placement: .principal) {
                     Text("Pen Pals")
                         .font(DaylightTheme.titleFont)
-                        .foregroundColor(DaylightTheme.darkBrown)
+                        .foregroundColor(DaylightTheme.text)
                 }
             }
             .sheet(item: $selectedFriend) { friend in
@@ -55,19 +55,19 @@ struct FriendsView: View {
     private func friendRow(friend: Profile) -> some View {
         HStack(spacing: 14) {
             AvatarView(config: friend.avatarConfig ?? .default, size: 50)
-                .overlay(Circle().stroke(DaylightTheme.warmBrown.opacity(0.2), lineWidth: 1))
+                .overlay(Circle().stroke(DaylightTheme.textSub.opacity(0.2), lineWidth: 1))
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(friend.displayName ?? "Unknown")
                     .font(DaylightTheme.headlineFont)
-                    .foregroundColor(DaylightTheme.darkBrown)
+                    .foregroundColor(DaylightTheme.text)
 
                 HStack(spacing: 8) {
                     if let country = friend.country,
                        let info = Countries.find(byName: country) {
                         Text("\(info.flag) \(country)")
                             .font(DaylightTheme.captionFont)
-                            .foregroundColor(DaylightTheme.warmBrown)
+                            .foregroundColor(DaylightTheme.textSub)
                     }
                 }
             }
@@ -76,7 +76,7 @@ struct FriendsView: View {
 
             Image(systemName: "chevron.right")
                 .font(.system(size: 14))
-                .foregroundColor(DaylightTheme.warmBrown.opacity(0.5))
+                .foregroundColor(DaylightTheme.textSub.opacity(0.5))
         }
         .padding(14)
         .parchmentCard()
@@ -86,15 +86,15 @@ struct FriendsView: View {
         VStack(spacing: 16) {
             Image(systemName: "person.2")
                 .font(.system(size: 50))
-                .foregroundColor(DaylightTheme.babyBlue)
+                .foregroundColor(DaylightTheme.blue)
 
             Text("No pen pals yet")
                 .font(DaylightTheme.headlineFont)
-                .foregroundColor(DaylightTheme.darkBrown)
+                .foregroundColor(DaylightTheme.text)
 
             Text("Go to Explore to find pen pals from around the world!")
                 .font(DaylightTheme.letterFont)
-                .foregroundColor(DaylightTheme.warmBrown)
+                .foregroundColor(DaylightTheme.textSub)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
         }

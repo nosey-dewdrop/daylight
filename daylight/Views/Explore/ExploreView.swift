@@ -31,21 +31,21 @@ struct ExploreView: View {
                         // Search results
                         if userService.isLoading {
                             ProgressView()
-                                .tint(DaylightTheme.deepBlue)
+                                .tint(DaylightTheme.rose)
                                 .padding(.top, 40)
                         } else if userService.searchResults.isEmpty {
                             VStack(spacing: 12) {
                                 Image(systemName: "magnifyingglass")
                                     .font(.system(size: 40))
-                                    .foregroundColor(DaylightTheme.babyBlue)
+                                    .foregroundColor(DaylightTheme.blue)
 
                                 Text("Search for pen pals")
                                     .font(DaylightTheme.headlineFont)
-                                    .foregroundColor(DaylightTheme.darkBrown)
+                                    .foregroundColor(DaylightTheme.text)
 
                                 Text("Use filters or browse to find people from around the world")
                                     .font(DaylightTheme.letterFont)
-                                    .foregroundColor(DaylightTheme.warmBrown)
+                                    .foregroundColor(DaylightTheme.textSub)
                                     .multilineTextAlignment(.center)
                             }
                             .padding(.top, 20)
@@ -71,7 +71,7 @@ struct ExploreView: View {
                 ToolbarItem(placement: .principal) {
                     Text("Explore")
                         .font(DaylightTheme.titleFont)
-                        .foregroundColor(DaylightTheme.darkBrown)
+                        .foregroundColor(DaylightTheme.text)
                 }
             }
             .sheet(item: $selectedProfile) { profile in
@@ -93,7 +93,7 @@ struct ExploreView: View {
             RoundedRectangle(cornerRadius: DaylightTheme.cornerRadius)
                 .fill(
                     LinearGradient(
-                        colors: [DaylightTheme.deepBlue.opacity(0.1), DaylightTheme.babyBlue.opacity(0.15)],
+                        colors: [DaylightTheme.rose.opacity(0.1), DaylightTheme.blue.opacity(0.15)],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
@@ -102,15 +102,15 @@ struct ExploreView: View {
             VStack(spacing: 8) {
                 Image(systemName: "globe.americas.fill")
                     .font(.system(size: 50))
-                    .foregroundColor(DaylightTheme.deepBlue.opacity(0.4))
+                    .foregroundColor(DaylightTheme.rose.opacity(0.4))
 
                 Text("Discover pen pals worldwide")
                     .font(DaylightTheme.headlineFont)
-                    .foregroundColor(DaylightTheme.darkBrown)
+                    .foregroundColor(DaylightTheme.text)
 
                 Text("\(userService.searchResults.count) people found")
                     .font(DaylightTheme.captionFont)
-                    .foregroundColor(DaylightTheme.warmBrown)
+                    .foregroundColor(DaylightTheme.textSub)
             }
             .padding(.vertical, 24)
         }
@@ -123,26 +123,26 @@ struct ExploreView: View {
             HStack(spacing: 12) {
                 ZStack {
                     Circle()
-                        .fill(DaylightTheme.deepBlue.opacity(0.15))
+                        .fill(DaylightTheme.rose.opacity(0.15))
                         .frame(width: 44, height: 44)
                     Image(systemName: "drop.fill")
                         .font(.system(size: 20))
-                        .foregroundColor(DaylightTheme.deepBlue)
+                        .foregroundColor(DaylightTheme.rose)
                 }
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Bottle Mail")
                         .font(DaylightTheme.headlineFont)
-                        .foregroundColor(DaylightTheme.darkBrown)
+                        .foregroundColor(DaylightTheme.text)
                     Text("Send a letter to a random stranger")
                         .font(DaylightTheme.captionFont)
-                        .foregroundColor(DaylightTheme.warmBrown)
+                        .foregroundColor(DaylightTheme.textSub)
                 }
 
                 Spacer()
 
                 Image(systemName: "chevron.right")
-                    .foregroundColor(DaylightTheme.warmBrown.opacity(0.5))
+                    .foregroundColor(DaylightTheme.textSub.opacity(0.5))
             }
             .padding(14)
             .parchmentCard()
@@ -156,7 +156,7 @@ struct ExploreView: View {
             HStack {
                 Text("Filters")
                     .font(DaylightTheme.headlineFont)
-                    .foregroundColor(DaylightTheme.darkBrown)
+                    .foregroundColor(DaylightTheme.text)
 
                 Spacer()
 
@@ -164,7 +164,7 @@ struct ExploreView: View {
                     withAnimation { showFilters.toggle() }
                 }) {
                     Image(systemName: showFilters ? "chevron.up" : "chevron.down")
-                        .foregroundColor(DaylightTheme.deepBlue)
+                        .foregroundColor(DaylightTheme.rose)
                 }
             }
 
@@ -242,14 +242,14 @@ struct ExploreView: View {
         HStack {
             Text(title)
                 .font(DaylightTheme.captionFont)
-                .foregroundColor(DaylightTheme.warmBrown)
+                .foregroundColor(DaylightTheme.textSub)
             Spacer()
             Text(value ?? "All")
                 .font(DaylightTheme.bodyFont)
-                .foregroundColor(DaylightTheme.deepBlue)
+                .foregroundColor(DaylightTheme.rose)
             Image(systemName: "chevron.down")
                 .font(.system(size: 10))
-                .foregroundColor(DaylightTheme.deepBlue)
+                .foregroundColor(DaylightTheme.rose)
         }
         .padding(10)
         .background(Color.white.opacity(0.6))
@@ -265,10 +265,10 @@ struct ExploreView: View {
                     .font(.system(size: 12))
             }
         }
-        .foregroundColor(DaylightTheme.deepBlue)
+        .foregroundColor(DaylightTheme.rose)
         .padding(.horizontal, 10)
         .padding(.vertical, 5)
-        .background(DaylightTheme.babyBlue.opacity(0.2))
+        .background(DaylightTheme.blue.opacity(0.2))
         .clipShape(Capsule())
     }
 
@@ -280,12 +280,12 @@ struct ExploreView: View {
                 HStack {
                     Text(profile.displayName ?? "Unknown")
                         .font(DaylightTheme.headlineFont)
-                        .foregroundColor(DaylightTheme.darkBrown)
+                        .foregroundColor(DaylightTheme.text)
 
                     if let age = profile.age {
                         Text("\(age)")
                             .font(DaylightTheme.captionFont)
-                            .foregroundColor(DaylightTheme.warmBrown)
+                            .foregroundColor(DaylightTheme.textSub)
                     }
                 }
 
@@ -294,16 +294,16 @@ struct ExploreView: View {
                        let info = Countries.find(byName: country) {
                         Text("\(info.flag) \(country)")
                             .font(DaylightTheme.captionFont)
-                            .foregroundColor(DaylightTheme.warmBrown)
+                            .foregroundColor(DaylightTheme.textSub)
                     }
 
                     if let mbti = profile.mbti {
                         Text(mbti)
                             .font(.system(size: 10, design: .serif))
-                            .foregroundColor(DaylightTheme.deepBlue)
+                            .foregroundColor(DaylightTheme.rose)
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
-                            .background(DaylightTheme.babyBlue.opacity(0.2))
+                            .background(DaylightTheme.blue.opacity(0.2))
                             .clipShape(Capsule())
                     }
                 }
@@ -313,10 +313,10 @@ struct ExploreView: View {
                         ForEach(Array(interests), id: \.self) { interest in
                             Text(interest)
                                 .font(.system(size: 10, design: .serif))
-                                .foregroundColor(DaylightTheme.warmBrown)
+                                .foregroundColor(DaylightTheme.textSub)
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 2)
-                                .background(DaylightTheme.parchmentDark.opacity(0.5))
+                                .background(DaylightTheme.peach.opacity(0.5))
                                 .clipShape(Capsule())
                         }
                     }
@@ -327,7 +327,7 @@ struct ExploreView: View {
 
             Image(systemName: "chevron.right")
                 .font(.system(size: 14))
-                .foregroundColor(DaylightTheme.warmBrown.opacity(0.5))
+                .foregroundColor(DaylightTheme.textSub.opacity(0.5))
         }
         .padding(14)
         .parchmentCard()
@@ -369,19 +369,19 @@ struct PenPalProfileSheet: View {
 
                         Text(profile.displayName ?? "Unknown")
                             .font(DaylightTheme.titleFont)
-                            .foregroundColor(DaylightTheme.darkBrown)
+                            .foregroundColor(DaylightTheme.text)
 
                         HStack(spacing: 16) {
                             if let country = profile.country,
                                let info = Countries.find(byName: country) {
                                 Label("\(info.flag) \(country)", systemImage: "mappin")
                                     .font(DaylightTheme.captionFont)
-                                    .foregroundColor(DaylightTheme.warmBrown)
+                                    .foregroundColor(DaylightTheme.textSub)
                             }
                             if let age = profile.age {
                                 Label("\(age)", systemImage: "person")
                                     .font(DaylightTheme.captionFont)
-                                    .foregroundColor(DaylightTheme.warmBrown)
+                                    .foregroundColor(DaylightTheme.textSub)
                             }
                         }
 
@@ -411,7 +411,7 @@ struct PenPalProfileSheet: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text("Interests")
                                     .font(DaylightTheme.headlineFont)
-                                    .foregroundColor(DaylightTheme.darkBrown)
+                                    .foregroundColor(DaylightTheme.text)
 
                                 FlowLayout(spacing: 6) {
                                     ForEach(interests, id: \.self) { interest in
@@ -432,7 +432,7 @@ struct PenPalProfileSheet: View {
                             Button(action: sendFriendRequest) {
                                 Group {
                                     if isSendingRequest {
-                                        ProgressView().tint(DaylightTheme.deepBlue)
+                                        ProgressView().tint(DaylightTheme.rose)
                                     } else {
                                         Label("Add as Pen Pal", systemImage: "person.badge.plus")
                                     }
@@ -452,7 +452,7 @@ struct PenPalProfileSheet: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Close") { dismiss() }
-                        .foregroundColor(DaylightTheme.deepBlue)
+                        .foregroundColor(DaylightTheme.rose)
                 }
             }
             .sheet(isPresented: $showCompose) {
@@ -464,15 +464,15 @@ struct PenPalProfileSheet: View {
     private func detailRow(icon: String, title: String, value: String) -> some View {
         HStack {
             Image(systemName: icon)
-                .foregroundColor(DaylightTheme.deepBlue)
+                .foregroundColor(DaylightTheme.rose)
                 .frame(width: 24)
             Text(title)
                 .font(DaylightTheme.captionFont)
-                .foregroundColor(DaylightTheme.warmBrown)
+                .foregroundColor(DaylightTheme.textSub)
             Spacer()
             Text(value)
                 .font(DaylightTheme.bodyFont)
-                .foregroundColor(DaylightTheme.darkBrown)
+                .foregroundColor(DaylightTheme.text)
         }
         .padding(12)
         .background(Color.white.opacity(0.5))

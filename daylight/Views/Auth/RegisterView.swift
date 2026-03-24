@@ -22,22 +22,22 @@ struct RegisterView: View {
                         VStack(spacing: 8) {
                             Image(systemName: "envelope.badge.person.crop")
                                 .font(.system(size: 50))
-                                .foregroundColor(DaylightTheme.deepBlue)
+                                .foregroundColor(DaylightTheme.rose)
 
                             Text("Create Account")
                                 .font(DaylightTheme.titleFont)
-                                .foregroundColor(DaylightTheme.darkBrown)
+                                .foregroundColor(DaylightTheme.text)
 
                             Text("Start your pen pal journey")
                                 .font(DaylightTheme.letterFont)
-                                .foregroundColor(DaylightTheme.warmBrown)
+                                .foregroundColor(DaylightTheme.textSub)
                         }
 
                         VStack(spacing: 16) {
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("Email")
                                     .font(DaylightTheme.captionFont)
-                                    .foregroundColor(DaylightTheme.warmBrown)
+                                    .foregroundColor(DaylightTheme.textSub)
                                 TextField("your@email.com", text: $email)
                                     .textContentType(.emailAddress)
                                     .autocapitalization(.none)
@@ -51,7 +51,7 @@ struct RegisterView: View {
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("Password")
                                     .font(DaylightTheme.captionFont)
-                                    .foregroundColor(DaylightTheme.warmBrown)
+                                    .foregroundColor(DaylightTheme.textSub)
                                 SecureField("Minimum 6 characters", text: $password)
                                     .textContentType(.newPassword)
                                     .font(DaylightTheme.bodyFont)
@@ -63,7 +63,7 @@ struct RegisterView: View {
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("Confirm Password")
                                     .font(DaylightTheme.captionFont)
-                                    .foregroundColor(DaylightTheme.warmBrown)
+                                    .foregroundColor(DaylightTheme.textSub)
                                 SecureField("Confirm password", text: $confirmPassword)
                                     .textContentType(.newPassword)
                                     .font(DaylightTheme.bodyFont)
@@ -103,7 +103,7 @@ struct RegisterView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
-                        .foregroundColor(DaylightTheme.deepBlue)
+                        .foregroundColor(DaylightTheme.rose)
                 }
             }
         }

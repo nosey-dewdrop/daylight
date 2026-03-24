@@ -41,14 +41,14 @@ struct ContentView: View {
 
                 Text("daylight")
                     .font(.system(size: 36, weight: .light, design: .serif))
-                    .foregroundColor(DaylightTheme.darkBrown)
+                    .foregroundColor(DaylightTheme.text)
 
                 Text("letters that take their time")
                     .font(DaylightTheme.letterFont)
-                    .foregroundColor(DaylightTheme.warmBrown)
+                    .foregroundColor(DaylightTheme.textSub)
 
                 ProgressView()
-                    .tint(DaylightTheme.warmBrown)
+                    .tint(DaylightTheme.textSub)
                     .padding(.top, 20)
             }
         }

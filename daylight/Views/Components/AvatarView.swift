@@ -215,10 +215,10 @@ struct AvatarView: View {
         case .glasses:
             HStack(spacing: size * 0.04) {
                 Circle()
-                    .stroke(DaylightTheme.darkBrown, lineWidth: size * 0.015)
+                    .stroke(DaylightTheme.text, lineWidth: size * 0.015)
                     .frame(width: size * 0.14, height: size * 0.14)
                 Circle()
-                    .stroke(DaylightTheme.darkBrown, lineWidth: size * 0.015)
+                    .stroke(DaylightTheme.text, lineWidth: size * 0.015)
                     .frame(width: size * 0.14, height: size * 0.14)
             }
             .offset(y: -size * 0.02)
@@ -235,10 +235,10 @@ struct AvatarView: View {
         case .hat:
             VStack(spacing: 0) {
                 RoundedRectangle(cornerRadius: size * 0.03)
-                    .fill(DaylightTheme.warmBrown)
+                    .fill(DaylightTheme.textSub)
                     .frame(width: size * 0.35, height: size * 0.12)
                 Capsule()
-                    .fill(DaylightTheme.warmBrown)
+                    .fill(DaylightTheme.textSub)
                     .frame(width: size * 0.5, height: size * 0.04)
             }
             .offset(y: -size * 0.3)
@@ -254,7 +254,7 @@ struct AvatarView: View {
             .offset(y: size * 0.08)
         case .headband:
             Capsule()
-                .fill(DaylightTheme.softPink)
+                .fill(DaylightTheme.pink)
                 .frame(width: size * 0.5, height: size * 0.04)
                 .offset(y: -size * 0.2)
         case .none:

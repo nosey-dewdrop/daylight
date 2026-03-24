@@ -12,11 +12,11 @@ struct LetterCardView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(letter.sender?.displayName ?? "Unknown")
                             .font(DaylightTheme.headlineFont)
-                            .foregroundColor(DaylightTheme.darkBrown)
+                            .foregroundColor(DaylightTheme.text)
                         if let country = letter.sender?.country {
                             Text(country)
                                 .font(DaylightTheme.captionFont)
-                                .foregroundColor(DaylightTheme.warmBrown)
+                                .foregroundColor(DaylightTheme.textSub)
                         }
                     }
                 } else {
@@ -24,7 +24,7 @@ struct LetterCardView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("To: \(letter.recipient?.displayName ?? "Unknown")")
                             .font(DaylightTheme.headlineFont)
-                            .foregroundColor(DaylightTheme.darkBrown)
+                            .foregroundColor(DaylightTheme.text)
                     }
                 }
 
@@ -32,17 +32,17 @@ struct LetterCardView: View {
 
                 if letter.isBottle {
                     Image(systemName: "drop.fill")
-                        .foregroundColor(DaylightTheme.deepBlue)
+                        .foregroundColor(DaylightTheme.rose)
                         .font(.system(size: 14))
                 }
 
                 if letter.isInTransit {
                     VStack(spacing: 2) {
                         Image(systemName: "paperplane.fill")
-                            .foregroundColor(DaylightTheme.skyBlue)
+                            .foregroundColor(DaylightTheme.blue)
                         Text(DistanceCalculator.formatCountdown(letter.timeUntilDelivery))
                             .font(.system(size: 10, design: .serif))
-                            .foregroundColor(DaylightTheme.deepBlue)
+                            .foregroundColor(DaylightTheme.rose)
                     }
                 }
             }
@@ -56,13 +56,13 @@ struct LetterCardView: View {
                 if let distance = letter.distanceKm {
                     Text(DistanceCalculator.formatDistance(distance))
                         .font(DaylightTheme.captionFont)
-                        .foregroundColor(DaylightTheme.warmBrown)
+                        .foregroundColor(DaylightTheme.textSub)
                 }
                 Spacer()
                 if let date = letter.sentAt {
                     Text(date, style: .relative)
                         .font(DaylightTheme.captionFont)
-                        .foregroundColor(DaylightTheme.warmBrown.opacity(0.6))
+                        .foregroundColor(DaylightTheme.textSub.opacity(0.6))
                 }
             }
         }

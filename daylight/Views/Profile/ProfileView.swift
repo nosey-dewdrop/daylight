@@ -21,24 +21,24 @@ struct ProfileView: View {
                             Button(action: { showAvatarBuilder = true }) {
                                 ZStack(alignment: .bottomTrailing) {
                                     AvatarView(config: profile?.avatarConfig ?? .default, size: 100)
-                                        .overlay(Circle().stroke(DaylightTheme.warmBrown.opacity(0.2), lineWidth: 2))
+                                        .overlay(Circle().stroke(DaylightTheme.textSub.opacity(0.2), lineWidth: 2))
 
                                     Image(systemName: "pencil.circle.fill")
                                         .font(.system(size: 24))
-                                        .foregroundColor(DaylightTheme.deepBlue)
+                                        .foregroundColor(DaylightTheme.rose)
                                         .background(Circle().fill(.white))
                                 }
                             }
 
                             Text(profile?.displayName ?? "Your Name")
                                 .font(DaylightTheme.titleFont)
-                                .foregroundColor(DaylightTheme.darkBrown)
+                                .foregroundColor(DaylightTheme.text)
 
                             if let country = profile?.country,
                                let info = Countries.find(byName: country) {
                                 Text("\(info.flag) \(country)")
                                     .font(DaylightTheme.bodyFont)
-                                    .foregroundColor(DaylightTheme.warmBrown)
+                                    .foregroundColor(DaylightTheme.textSub)
                             }
 
                             if let bio = profile?.bio, !bio.isEmpty {
@@ -62,7 +62,7 @@ struct ProfileView: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text("Interests")
                                     .font(DaylightTheme.headlineFont)
-                                    .foregroundColor(DaylightTheme.darkBrown)
+                                    .foregroundColor(DaylightTheme.text)
 
                                 FlowLayout(spacing: 6) {
                                     ForEach(interests, id: \.self) { interest in
@@ -96,7 +96,7 @@ struct ProfileView: View {
                 ToolbarItem(placement: .principal) {
                     Text("Profile")
                         .font(DaylightTheme.titleFont)
-                        .foregroundColor(DaylightTheme.darkBrown)
+                        .foregroundColor(DaylightTheme.text)
                 }
             }
             .sheet(isPresented: $showAvatarBuilder) {
@@ -116,25 +116,25 @@ struct ProfileView: View {
             HStack {
                 Text("Level \(profile?.level ?? 1)")
                     .font(DaylightTheme.headlineFont)
-                    .foregroundColor(DaylightTheme.darkBrown)
+                    .foregroundColor(DaylightTheme.text)
 
                 Spacer()
 
                 Text("\(profile?.xp ?? 0) XP")
                     .font(DaylightTheme.bodyFont)
-                    .foregroundColor(DaylightTheme.deepBlue)
+                    .foregroundColor(DaylightTheme.rose)
             }
 
             // XP progress bar
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 6)
-                        .fill(DaylightTheme.babyBlue.opacity(0.3))
+                        .fill(DaylightTheme.blue.opacity(0.3))
 
                     RoundedRectangle(cornerRadius: 6)
                         .fill(
                             LinearGradient(
-                                colors: [DaylightTheme.deepBlue, DaylightTheme.skyBlue],
+                                colors: [DaylightTheme.rose, DaylightTheme.blue],
                                 startPoint: .leading,
                                 endPoint: .trailing
                             )
@@ -146,7 +146,7 @@ struct ProfileView: View {
 
             Text("Next level: \(LevelSystem.xpForLevel((profile?.level ?? 1) + 1)) XP")
                 .font(DaylightTheme.captionFont)
-                .foregroundColor(DaylightTheme.warmBrown)
+                .foregroundColor(DaylightTheme.textSub)
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
         .padding(16)
@@ -167,15 +167,15 @@ struct ProfileView: View {
         VStack(spacing: 6) {
             Image(systemName: icon)
                 .font(.system(size: 18))
-                .foregroundColor(DaylightTheme.deepBlue)
+                .foregroundColor(DaylightTheme.rose)
 
             Text(value)
                 .font(DaylightTheme.headlineFont)
-                .foregroundColor(DaylightTheme.darkBrown)
+                .foregroundColor(DaylightTheme.text)
 
             Text(label)
                 .font(DaylightTheme.captionFont)
-                .foregroundColor(DaylightTheme.warmBrown)
+                .foregroundColor(DaylightTheme.textSub)
         }
         .frame(maxWidth: .infinity)
         .padding(12)
@@ -186,15 +186,15 @@ struct ProfileView: View {
         Button(action: action) {
             HStack {
                 Image(systemName: icon)
-                    .foregroundColor(DaylightTheme.deepBlue)
+                    .foregroundColor(DaylightTheme.rose)
                     .frame(width: 24)
                 Text(title)
                     .font(DaylightTheme.bodyFont)
-                    .foregroundColor(DaylightTheme.darkBrown)
+                    .foregroundColor(DaylightTheme.text)
                 Spacer()
                 Image(systemName: "chevron.right")
                     .font(.system(size: 14))
-                    .foregroundColor(DaylightTheme.warmBrown.opacity(0.5))
+                    .foregroundColor(DaylightTheme.textSub.opacity(0.5))
             }
             .padding(14)
             .parchmentCard()

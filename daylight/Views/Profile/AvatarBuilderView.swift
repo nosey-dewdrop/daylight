@@ -29,12 +29,12 @@ struct AvatarBuilderView: View {
                                 Button(action: { selectedCategory = category }) {
                                     Text(category)
                                         .font(DaylightTheme.captionFont)
-                                        .foregroundColor(selectedCategory == category ? .white : DaylightTheme.deepBlue)
+                                        .foregroundColor(selectedCategory == category ? .white : DaylightTheme.rose)
                                         .padding(.horizontal, 14)
                                         .padding(.vertical, 8)
                                         .background(
                                             Capsule()
-                                                .fill(selectedCategory == category ? DaylightTheme.deepBlue : DaylightTheme.babyBlue.opacity(0.3))
+                                                .fill(selectedCategory == category ? DaylightTheme.rose : DaylightTheme.blue.opacity(0.3))
                                         )
                                 }
                                 .buttonStyle(.plain)
@@ -78,23 +78,23 @@ struct AvatarBuilderView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
-                        .foregroundColor(DaylightTheme.deepBlue)
+                        .foregroundColor(DaylightTheme.rose)
                 }
 
                 ToolbarItem(placement: .principal) {
                     Text("Avatar Builder")
                         .font(DaylightTheme.headlineFont)
-                        .foregroundColor(DaylightTheme.darkBrown)
+                        .foregroundColor(DaylightTheme.text)
                 }
 
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: save) {
                         if isSaving {
-                            ProgressView().tint(DaylightTheme.deepBlue)
+                            ProgressView().tint(DaylightTheme.rose)
                         } else {
                             Text("Save")
                                 .font(DaylightTheme.bodyFont)
-                                .foregroundColor(DaylightTheme.deepBlue)
+                                .foregroundColor(DaylightTheme.rose)
                         }
                     }
                     .disabled(isSaving)
@@ -117,19 +117,19 @@ struct AvatarBuilderView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(DaylightTheme.captionFont)
-                .foregroundColor(DaylightTheme.warmBrown)
+                .foregroundColor(DaylightTheme.textSub)
 
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))], spacing: 8) {
                 ForEach(Array(options), id: \.self) { option in
                     Button(action: { onSelect(option) }) {
                         Text(option.rawValue.capitalized)
                             .font(DaylightTheme.captionFont)
-                            .foregroundColor(current == option ? .white : DaylightTheme.deepBlue)
+                            .foregroundColor(current == option ? .white : DaylightTheme.rose)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 10)
                             .background(
                                 RoundedRectangle(cornerRadius: DaylightTheme.smallCornerRadius)
-                                    .fill(current == option ? DaylightTheme.deepBlue : DaylightTheme.babyBlue.opacity(0.2))
+                                    .fill(current == option ? DaylightTheme.rose : DaylightTheme.blue.opacity(0.2))
                             )
                     }
                     .buttonStyle(.plain)
@@ -146,7 +146,7 @@ struct AvatarBuilderView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(DaylightTheme.captionFont)
-                .foregroundColor(DaylightTheme.warmBrown)
+                .foregroundColor(DaylightTheme.textSub)
 
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 40))], spacing: 8) {
                 ForEach(colors, id: \.self) { hex in
@@ -156,7 +156,7 @@ struct AvatarBuilderView: View {
                             .frame(width: 36, height: 36)
                             .overlay(
                                 Circle()
-                                    .stroke(current == hex ? DaylightTheme.deepBlue : Color.clear, lineWidth: 3)
+                                    .stroke(current == hex ? DaylightTheme.rose : Color.clear, lineWidth: 3)
                             )
                             .overlay(
                                 Circle()

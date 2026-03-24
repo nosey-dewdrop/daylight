@@ -68,16 +68,16 @@ struct InterestChip: View {
         Button(action: { onTap?() }) {
             Text(text)
                 .font(DaylightTheme.captionFont)
-                .foregroundColor(isSelected ? .white : DaylightTheme.deepBlue)
+                .foregroundColor(isSelected ? .white : DaylightTheme.rose)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
                 .background(
                     Capsule()
-                        .fill(isSelected ? DaylightTheme.deepBlue : DaylightTheme.babyBlue.opacity(0.3))
+                        .fill(isSelected ? DaylightTheme.rose : DaylightTheme.blue.opacity(0.3))
                 )
                 .overlay(
                     Capsule()
-                        .stroke(DaylightTheme.deepBlue.opacity(0.2), lineWidth: 1)
+                        .stroke(DaylightTheme.rose.opacity(0.2), lineWidth: 1)
                 )
         }
         .buttonStyle(.plain)

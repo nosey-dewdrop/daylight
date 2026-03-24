@@ -26,17 +26,17 @@ struct ConversationView: View {
                         // Friend header
                         VStack(spacing: 12) {
                             AvatarView(config: friend.avatarConfig ?? .default, size: 80)
-                                .overlay(Circle().stroke(DaylightTheme.warmBrown.opacity(0.2), lineWidth: 1))
+                                .overlay(Circle().stroke(DaylightTheme.textSub.opacity(0.2), lineWidth: 1))
 
                             Text(friend.displayName ?? "Unknown")
                                 .font(DaylightTheme.titleFont)
-                                .foregroundColor(DaylightTheme.darkBrown)
+                                .foregroundColor(DaylightTheme.text)
 
                             if let country = friend.country,
                                let info = Countries.find(byName: country) {
                                 Text("\(info.flag) \(country)")
                                     .font(DaylightTheme.bodyFont)
-                                    .foregroundColor(DaylightTheme.warmBrown)
+                                    .foregroundColor(DaylightTheme.textSub)
                             }
 
                             if let bio = friend.bio, !bio.isEmpty {
@@ -66,11 +66,11 @@ struct ConversationView: View {
                             VStack(spacing: 12) {
                                 Image(systemName: "envelope")
                                     .font(.system(size: 30))
-                                    .foregroundColor(DaylightTheme.babyBlue)
+                                    .foregroundColor(DaylightTheme.blue)
 
                                 Text("No letters exchanged yet")
                                     .font(DaylightTheme.bodyFont)
-                                    .foregroundColor(DaylightTheme.warmBrown)
+                                    .foregroundColor(DaylightTheme.textSub)
                             }
                             .padding(.vertical, 40)
                         } else {
@@ -105,7 +105,7 @@ struct ConversationView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Close") { dismiss() }
-                        .foregroundColor(DaylightTheme.deepBlue)
+                        .foregroundColor(DaylightTheme.rose)
                 }
             }
             .sheet(isPresented: $showCompose) {

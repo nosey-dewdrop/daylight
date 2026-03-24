@@ -20,10 +20,10 @@ enum BadgeStatus {
     var color: Color {
         switch self {
         case .unread: return DaylightTheme.waxRed
-        case .delivered: return DaylightTheme.mutedGreen
-        case .read: return DaylightTheme.warmBrown
-        case .replied: return DaylightTheme.deepBlue
-        case .inTransit: return DaylightTheme.skyBlue
+        case .delivered: return DaylightTheme.green
+        case .read: return DaylightTheme.textMuted
+        case .replied: return DaylightTheme.blue
+        case .inTransit: return DaylightTheme.softGold
         }
     }
 

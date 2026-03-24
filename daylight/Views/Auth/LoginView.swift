@@ -32,11 +32,11 @@ struct LoginView: View {
 
                         Text("daylight")
                             .font(.system(size: 36, weight: .light, design: .serif))
-                            .foregroundColor(DaylightTheme.darkBrown)
+                            .foregroundColor(DaylightTheme.text)
 
                         Text("letters that take their time")
                             .font(DaylightTheme.letterFont)
-                            .foregroundColor(DaylightTheme.warmBrown)
+                            .foregroundColor(DaylightTheme.textSub)
                     }
 
                     // Login form
@@ -44,7 +44,7 @@ struct LoginView: View {
                         VStack(alignment: .leading, spacing: 6) {
                             Text("Email")
                                 .font(DaylightTheme.captionFont)
-                                .foregroundColor(DaylightTheme.warmBrown)
+                                .foregroundColor(DaylightTheme.textSub)
 
                             TextField("your@email.com", text: $email)
                                 .textContentType(.emailAddress)
@@ -59,7 +59,7 @@ struct LoginView: View {
                         VStack(alignment: .leading, spacing: 6) {
                             Text("Password")
                                 .font(DaylightTheme.captionFont)
-                                .foregroundColor(DaylightTheme.warmBrown)
+                                .foregroundColor(DaylightTheme.textSub)
 
                             SecureField("Password", text: $password)
                                 .textContentType(.password)
@@ -92,10 +92,10 @@ struct LoginView: View {
                         Button(action: { showRegister = true }) {
                             Text("Don't have an account? ")
                                 .font(DaylightTheme.captionFont)
-                                .foregroundColor(DaylightTheme.warmBrown)
+                                .foregroundColor(DaylightTheme.textSub)
                             + Text("Sign Up")
                                 .font(DaylightTheme.captionFont)
-                                .foregroundColor(DaylightTheme.deepBlue)
+                                .foregroundColor(DaylightTheme.rose)
                         }
                     }
                     .padding(24)

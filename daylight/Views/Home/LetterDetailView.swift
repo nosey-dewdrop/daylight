@@ -25,7 +25,7 @@ struct LetterDetailView: View {
                             if let senderName = letter.sender?.displayName {
                                 Text("From \(senderName)")
                                     .font(DaylightTheme.headlineFont)
-                                    .foregroundColor(DaylightTheme.deepBlue)
+                                    .foregroundColor(DaylightTheme.rose)
                             }
 
                             // Distance and travel info
@@ -35,11 +35,11 @@ struct LetterDetailView: View {
                                     Label(String(format: "%.0fh travel", hours), systemImage: "clock.fill")
                                 }
                                 .font(DaylightTheme.captionFont)
-                                .foregroundColor(DaylightTheme.warmBrown)
+                                .foregroundColor(DaylightTheme.textSub)
                             }
 
                             Divider()
-                                .background(DaylightTheme.warmBrown.opacity(0.3))
+                                .background(DaylightTheme.textSub.opacity(0.3))
 
                             // Letter content
                             Text(letter.content)
@@ -49,20 +49,20 @@ struct LetterDetailView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
 
                             Divider()
-                                .background(DaylightTheme.warmBrown.opacity(0.3))
+                                .background(DaylightTheme.textSub.opacity(0.3))
 
                             // Footer
                             HStack {
                                 if let date = letter.sentAt {
                                     Text("Sent \(date, style: .date)")
                                         .font(DaylightTheme.captionFont)
-                                        .foregroundColor(DaylightTheme.warmBrown)
+                                        .foregroundColor(DaylightTheme.textSub)
                                 }
                                 Spacer()
                                 if letter.isBottle {
                                     Label("Bottle Mail", systemImage: "drop.fill")
                                         .font(DaylightTheme.captionFont)
-                                        .foregroundColor(DaylightTheme.deepBlue)
+                                        .foregroundColor(DaylightTheme.rose)
                                 }
                             }
 
@@ -100,7 +100,7 @@ struct LetterDetailView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Close") { dismiss() }
-                        .foregroundColor(DaylightTheme.deepBlue)
+                        .foregroundColor(DaylightTheme.rose)
                 }
             }
             .sheet(isPresented: $showReply) {
@@ -120,11 +120,11 @@ struct LetterDetailView: View {
             // Sender avatar
             VStack(spacing: 4) {
                 AvatarView(config: letter.sender?.avatarConfig ?? .default, size: 50)
-                    .overlay(Circle().stroke(DaylightTheme.warmBrown.opacity(0.3), lineWidth: 1))
+                    .overlay(Circle().stroke(DaylightTheme.textSub.opacity(0.3), lineWidth: 1))
 
                 Text(letter.sender?.displayName ?? "")
                     .font(DaylightTheme.captionFont)
-                    .foregroundColor(DaylightTheme.darkBrown)
+                    .foregroundColor(DaylightTheme.text)
             }
 
             Spacer()
@@ -132,7 +132,7 @@ struct LetterDetailView: View {
             // Stamp
             VStack {
                 RoundedRectangle(cornerRadius: 3)
-                    .fill(DaylightTheme.deepBlue.opacity(0.8))
+                    .fill(DaylightTheme.rose.opacity(0.8))
                     .frame(width: 50, height: 65)
                     .overlay(
                         VStack(spacing: 2) {

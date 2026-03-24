@@ -15,15 +15,15 @@ struct DraftsView: View {
                     VStack(spacing: 16) {
                         Image(systemName: "doc.text")
                             .font(.system(size: 50))
-                            .foregroundColor(DaylightTheme.babyBlue)
+                            .foregroundColor(DaylightTheme.blue)
 
                         Text("No drafts")
                             .font(DaylightTheme.headlineFont)
-                            .foregroundColor(DaylightTheme.darkBrown)
+                            .foregroundColor(DaylightTheme.text)
 
                         Text("Letters you save as drafts will appear here")
                             .font(DaylightTheme.letterFont)
-                            .foregroundColor(DaylightTheme.warmBrown)
+                            .foregroundColor(DaylightTheme.textSub)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 40)
                     }
@@ -46,7 +46,7 @@ struct DraftsView: View {
                 ToolbarItem(placement: .principal) {
                     Text("Drafts")
                         .font(DaylightTheme.titleFont)
-                        .foregroundColor(DaylightTheme.darkBrown)
+                        .foregroundColor(DaylightTheme.text)
                 }
             }
             .sheet(item: $selectedDraft) { draft in
@@ -63,11 +63,11 @@ struct DraftsView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Image(systemName: "doc.text")
-                    .foregroundColor(DaylightTheme.warmBrown)
+                    .foregroundColor(DaylightTheme.textSub)
 
                 Text("To: \(draft.recipient?.displayName ?? "Unknown")")
                     .font(DaylightTheme.headlineFont)
-                    .foregroundColor(DaylightTheme.darkBrown)
+                    .foregroundColor(DaylightTheme.text)
 
                 Spacer()
 
@@ -92,7 +92,7 @@ struct DraftsView: View {
             if let date = draft.createdAt {
                 Text("Last edited \(date, style: .relative)")
                     .font(DaylightTheme.captionFont)
-                    .foregroundColor(DaylightTheme.warmBrown.opacity(0.6))
+                    .foregroundColor(DaylightTheme.textSub.opacity(0.6))
             }
         }
         .padding(14)

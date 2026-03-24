@@ -27,7 +27,7 @@ struct GlobeView: View {
 
             // Globe outline
             Circle()
-                .stroke(DaylightTheme.deepBlue.opacity(0.3), lineWidth: 1.5)
+                .stroke(DaylightTheme.rose.opacity(0.3), lineWidth: 1.5)
                 .frame(width: 240, height: 240)
 
             // In-transit letter indicators
@@ -38,7 +38,7 @@ struct GlobeView: View {
             // Center icon
             Image(systemName: "globe.americas.fill")
                 .font(.system(size: 28))
-                .foregroundColor(DaylightTheme.deepBlue.opacity(0.4))
+                .foregroundColor(DaylightTheme.rose.opacity(0.4))
         }
         .onAppear {
             withAnimation(.linear(duration: 60).repeatForever(autoreverses: false)) {
@@ -53,7 +53,7 @@ struct GlobeView: View {
             ForEach(0..<5, id: \.self) { i in
                 let yOffset = CGFloat(i - 2) * 40
                 Ellipse()
-                    .stroke(DaylightTheme.skyBlue.opacity(0.15), lineWidth: 0.5)
+                    .stroke(DaylightTheme.blue.opacity(0.15), lineWidth: 0.5)
                     .frame(width: 240 * cos(Double(i - 2) * 0.4), height: 20)
                     .offset(y: yOffset)
             }
@@ -62,7 +62,7 @@ struct GlobeView: View {
             ForEach(0..<4, id: \.self) { i in
                 let angle = Double(i) * 45
                 Ellipse()
-                    .stroke(DaylightTheme.skyBlue.opacity(0.15), lineWidth: 0.5)
+                    .stroke(DaylightTheme.blue.opacity(0.15), lineWidth: 0.5)
                     .frame(width: 60, height: 240)
                     .rotationEffect(.degrees(angle + rotation * 0.05))
             }
@@ -86,7 +86,7 @@ struct GlobeView: View {
             // Countdown
             Text(DistanceCalculator.formatCountdown(letter.timeUntilDelivery))
                 .font(.system(size: 8, design: .serif))
-                .foregroundColor(DaylightTheme.deepBlue)
+                .foregroundColor(DaylightTheme.rose)
         }
         .offset(x: x, y: y)
     }

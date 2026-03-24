@@ -19,7 +19,7 @@ struct StampPickerView: View {
                             VStack(alignment: .leading, spacing: 10) {
                                 Text(category)
                                     .font(DaylightTheme.headlineFont)
-                                    .foregroundColor(DaylightTheme.darkBrown)
+                                    .foregroundColor(DaylightTheme.text)
                                     .padding(.horizontal, DaylightTheme.padding)
 
                                 ScrollView(.horizontal, showsIndicators: false) {
@@ -43,14 +43,14 @@ struct StampPickerView: View {
 
                                                     if selectedStamp?.id == stamp.id {
                                                         Circle()
-                                                            .fill(DaylightTheme.deepBlue)
+                                                            .fill(DaylightTheme.rose)
                                                             .frame(width: 8, height: 8)
                                                     }
 
                                                     if stamp.xpRequired > 0 {
                                                         Text("\(stamp.xpRequired) XP")
                                                             .font(.system(size: 9, design: .serif))
-                                                            .foregroundColor(DaylightTheme.warmBrown)
+                                                            .foregroundColor(DaylightTheme.textSub)
                                                     }
                                                 }
                                             }
@@ -72,7 +72,7 @@ struct StampPickerView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
-                        .foregroundColor(DaylightTheme.deepBlue)
+                        .foregroundColor(DaylightTheme.rose)
                 }
             }
         }

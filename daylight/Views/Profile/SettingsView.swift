@@ -21,7 +21,7 @@ struct SettingsView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Bio")
                                 .font(DaylightTheme.headlineFont)
-                                .foregroundColor(DaylightTheme.darkBrown)
+                                .foregroundColor(DaylightTheme.text)
 
                             TextEditor(text: $bio)
                                 .font(DaylightTheme.letterFont)
@@ -51,7 +51,7 @@ struct SettingsView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Account")
                                 .font(DaylightTheme.headlineFont)
-                                .foregroundColor(DaylightTheme.darkBrown)
+                                .foregroundColor(DaylightTheme.text)
 
                             infoRow(title: "Email", value: authService.currentUser?.email ?? "-")
                             infoRow(title: "Member since", value: formattedJoinDate)
@@ -65,7 +65,7 @@ struct SettingsView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("About")
                                 .font(DaylightTheme.headlineFont)
-                                .foregroundColor(DaylightTheme.darkBrown)
+                                .foregroundColor(DaylightTheme.text)
 
                             infoRow(title: "Version", value: "1.0.0")
                             infoRow(title: "Made with", value: "love and patience")
@@ -97,7 +97,7 @@ struct SettingsView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Close") { dismiss() }
-                        .foregroundColor(DaylightTheme.deepBlue)
+                        .foregroundColor(DaylightTheme.rose)
                 }
             }
             .alert("Sign Out", isPresented: $showSignOutAlert) {
@@ -121,11 +121,11 @@ struct SettingsView: View {
         HStack {
             Text(title)
                 .font(DaylightTheme.bodyFont)
-                .foregroundColor(DaylightTheme.warmBrown)
+                .foregroundColor(DaylightTheme.textSub)
             Spacer()
             Text(value)
                 .font(DaylightTheme.bodyFont)
-                .foregroundColor(DaylightTheme.darkBrown)
+                .foregroundColor(DaylightTheme.text)
         }
         .padding(10)
         .background(Color.white.opacity(0.4))

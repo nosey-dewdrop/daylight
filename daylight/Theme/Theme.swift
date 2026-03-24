@@ -1,54 +1,73 @@
 import SwiftUI
 
 enum DaylightTheme {
-    // MARK: - Colors
-    static let babyBlue = Color(hex: "#A8D8EA")
-    static let skyBlue = Color(hex: "#7EB5D6")
-    static let deepBlue = Color(hex: "#4A90A4")
-    static let parchment = Color(hex: "#F5E6D3")
-    static let parchmentDark = Color(hex: "#E8D5BC")
-    static let warmBrown = Color(hex: "#8B7355")
-    static let darkBrown = Color(hex: "#5C4A32")
+    // MARK: - Core Colors (sahaf palette)
+    static let bg = Color.white
+    static let text = Color(hex: "#242424")
+    static let textSub = Color(hex: "#757575")
+    static let textMuted = Color(hex: "#b0b0b0")
+    static let rose = Color(hex: "#d4738f")
+    static let rule = Color(hex: "#e6e6e6")
+
+    // MARK: - Pastel Accents
+    static let yellow = Color(hex: "#fef3c7")
+    static let pink = Color(hex: "#fde2e4")
+    static let blue = Color(hex: "#d4ecf7")
+    static let green = Color(hex: "#d5f0d5")
+    static let lavender = Color(hex: "#e8dff5")
+    static let peach = Color(hex: "#fde8d0")
+
+    // MARK: - Semantic
+    static let parchment = Color(hex: "#FFF8F0")
+    static let cream = Color(hex: "#FFF8F0")
     static let waxRed = Color(hex: "#C0392B")
     static let softGold = Color(hex: "#D4A574")
-    static let cream = Color(hex: "#FFF8F0")
     static let inkBlack = Color(hex: "#2C2C2C")
-    static let mutedGreen = Color(hex: "#7EAE7B")
-    static let softPink = Color(hex: "#E8B4B8")
 
     // MARK: - Gradients
     static let skyGradient = LinearGradient(
-        colors: [Color(hex: "#87CEEB"), Color(hex: "#A8D8EA"), Color(hex: "#D4F1F9")],
+        colors: [blue, Color(hex: "#e8f4fa"), bg],
         startPoint: .top,
         endPoint: .bottom
     )
 
-    static let parchmentGradient = LinearGradient(
-        colors: [parchment, parchmentDark],
-        startPoint: .top,
-        endPoint: .bottom
-    )
+    // MARK: - Fonts (Inter-like via system sans)
+    static func heading(_ size: CGFloat) -> Font {
+        .system(size: size, weight: .heavy, design: .default)
+    }
 
-    // MARK: - Fonts
-    static func typewriter(_ size: CGFloat) -> Font {
-        .system(size: size, design: .serif)
+    static func body(_ size: CGFloat) -> Font {
+        .system(size: size, weight: .regular, design: .default)
+    }
+
+    static func label(_ size: CGFloat) -> Font {
+        .system(size: size, weight: .semibold, design: .default)
     }
 
     static func handwriting(_ size: CGFloat) -> Font {
         .system(size: size, design: .serif).italic()
     }
 
-    static let titleFont = typewriter(22)
-    static let headlineFont = typewriter(18)
-    static let bodyFont = typewriter(15)
-    static let captionFont = typewriter(12)
+    // MARK: - Presets
+    static let titleFont = heading(22)
+    static let headlineFont = heading(18)
+    static let bodyFont = body(15)
+    static let captionFont = label(12)
     static let letterFont = handwriting(17)
 
     // MARK: - Spacing
     static let cornerRadius: CGFloat = 16
     static let smallCornerRadius: CGFloat = 8
+    static let pillRadius: CGFloat = 99
     static let padding: CGFloat = 16
     static let smallPadding: CGFloat = 8
+
+    // MARK: - Pastel array for post-it style cards
+    static let pastels: [Color] = [yellow, pink, blue, green, lavender, peach]
+
+    static func pastel(for index: Int) -> Color {
+        pastels[index % pastels.count]
+    }
 }
 
 // MARK: - View Modifiers
@@ -58,7 +77,10 @@ struct ParchmentCard: ViewModifier {
         content
             .background(DaylightTheme.parchment)
             .clipShape(RoundedRectangle(cornerRadius: DaylightTheme.cornerRadius))
-            .shadow(color: .black.opacity(0.08), radius: 4, x: 0, y: 2)
+            .overlay(
+                RoundedRectangle(cornerRadius: DaylightTheme.cornerRadius)
+                    .strokeBorder(DaylightTheme.rule, lineWidth: 1)
+            )
     }
 }
 
@@ -67,12 +89,16 @@ struct DaylightButton: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .font(DaylightTheme.headlineFont)
-            .foregroundColor(isPrimary ? .white : DaylightTheme.deepBlue)
+            .font(DaylightTheme.label(15))
+            .foregroundColor(isPrimary ? .white : DaylightTheme.textSub)
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
-            .background(isPrimary ? DaylightTheme.deepBlue : DaylightTheme.babyBlue.opacity(0.3))
-            .clipShape(RoundedRectangle(cornerRadius: DaylightTheme.cornerRadius))
+            .padding(.vertical, 12)
+            .background(isPrimary ? DaylightTheme.rose : DaylightTheme.bg)
+            .clipShape(Capsule())
+            .overlay(
+                Capsule()
+                    .strokeBorder(isPrimary ? Color.clear : DaylightTheme.rule, lineWidth: 1)
+            )
     }
 }
 

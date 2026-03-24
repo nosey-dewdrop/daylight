@@ -18,12 +18,12 @@ struct StampCollectionView: View {
                             statCircle(
                                 value: "\(stampService.unlockedStampIds.count)",
                                 label: "Unlocked",
-                                color: DaylightTheme.mutedGreen
+                                color: DaylightTheme.green
                             )
                             statCircle(
                                 value: "\(stampService.allStamps.count)",
                                 label: "Total",
-                                color: DaylightTheme.deepBlue
+                                color: DaylightTheme.rose
                             )
                             statCircle(
                                 value: "\(authService.currentProfile?.xp ?? 0)",
@@ -41,7 +41,7 @@ struct StampCollectionView: View {
                                 HStack {
                                     Text(category)
                                         .font(DaylightTheme.headlineFont)
-                                        .foregroundColor(DaylightTheme.darkBrown)
+                                        .foregroundColor(DaylightTheme.text)
 
                                     Spacer()
 
@@ -49,7 +49,7 @@ struct StampCollectionView: View {
                                     let unlocked = grouped[category]?.filter { stampService.isUnlocked($0) || $0.xpRequired == 0 }.count ?? 0
                                     Text("\(unlocked)/\(total)")
                                         .font(DaylightTheme.captionFont)
-                                        .foregroundColor(DaylightTheme.warmBrown)
+                                        .foregroundColor(DaylightTheme.textSub)
                                 }
 
                                 // Album-style grid
@@ -68,7 +68,7 @@ struct StampCollectionView: View {
                                             if !isUnlocked && stamp.xpRequired > 0 {
                                                 Text("\(stamp.xpRequired) XP")
                                                     .font(.system(size: 9, design: .serif))
-                                                    .foregroundColor(DaylightTheme.warmBrown)
+                                                    .foregroundColor(DaylightTheme.textSub)
                                             }
                                         }
                                     }
@@ -91,7 +91,7 @@ struct StampCollectionView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Close") { dismiss() }
-                        .foregroundColor(DaylightTheme.deepBlue)
+                        .foregroundColor(DaylightTheme.rose)
                 }
             }
         }
@@ -109,7 +109,7 @@ struct StampCollectionView: View {
             }
             Text(label)
                 .font(DaylightTheme.captionFont)
-                .foregroundColor(DaylightTheme.warmBrown)
+                .foregroundColor(DaylightTheme.textSub)
         }
     }
 }

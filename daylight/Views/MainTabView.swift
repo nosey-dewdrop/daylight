@@ -38,7 +38,7 @@ struct MainTabView: View {
                 }
                 .tag(4)
         }
-        .tint(DaylightTheme.deepBlue)
+        .tint(DaylightTheme.rose)
         .task {
             await stampService.fetchAllStamps()
             if let userId = authService.currentUser?.id {

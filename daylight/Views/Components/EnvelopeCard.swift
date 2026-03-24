@@ -23,19 +23,19 @@ struct EnvelopeCard: View {
                         AvatarView(config: senderAvatar ?? .default, size: 36)
                             .overlay(
                                 Circle()
-                                    .stroke(DaylightTheme.warmBrown.opacity(0.3), lineWidth: 1)
+                                    .stroke(DaylightTheme.textSub.opacity(0.3), lineWidth: 1)
                             )
 
                         VStack(alignment: .leading, spacing: 2) {
                             Text(senderName)
                                 .font(DaylightTheme.headlineFont)
-                                .foregroundColor(DaylightTheme.darkBrown)
+                                .foregroundColor(DaylightTheme.text)
 
                             if let country = letter.sender?.country,
                                let info = Countries.find(byName: country) {
                                 Text("\(info.flag) \(country)")
                                     .font(DaylightTheme.captionFont)
-                                    .foregroundColor(DaylightTheme.warmBrown)
+                                    .foregroundColor(DaylightTheme.textSub)
                             }
                         }
 
@@ -45,7 +45,7 @@ struct EnvelopeCard: View {
                         if let stampName = stampName {
                             VStack {
                                 RoundedRectangle(cornerRadius: 2)
-                                    .fill(DaylightTheme.deepBlue.opacity(0.7))
+                                    .fill(DaylightTheme.rose.opacity(0.7))
                                     .frame(width: 36, height: 44)
                                     .overlay(
                                         Text(stampName.prefix(2).uppercased())
@@ -75,7 +75,7 @@ struct EnvelopeCard: View {
                                 systemImage: "location.fill"
                             )
                             .font(DaylightTheme.captionFont)
-                            .foregroundColor(DaylightTheme.warmBrown.opacity(0.7))
+                            .foregroundColor(DaylightTheme.textSub.opacity(0.7))
                         }
 
                         Spacer()
@@ -89,7 +89,7 @@ struct EnvelopeCard: View {
                         if let date = letter.deliversAt ?? letter.sentAt {
                             Text(date, style: .relative)
                                 .font(DaylightTheme.captionFont)
-                                .foregroundColor(DaylightTheme.warmBrown.opacity(0.6))
+                                .foregroundColor(DaylightTheme.textSub.opacity(0.6))
                         }
                     }
                 }
@@ -105,7 +105,7 @@ struct EnvelopeCard: View {
             // Main envelope
             RoundedRectangle(cornerRadius: DaylightTheme.cornerRadius)
                 .fill(DaylightTheme.parchment)
-                .shadow(color: DaylightTheme.warmBrown.opacity(0.15), radius: 6, x: 0, y: 3)
+                .shadow(color: DaylightTheme.textSub.opacity(0.15), radius: 6, x: 0, y: 3)
 
             // Envelope flap (decorative triangle at top)
             VStack {
@@ -117,7 +117,7 @@ struct EnvelopeCard: View {
             RoundedRectangle(cornerRadius: DaylightTheme.cornerRadius)
                 .fill(
                     LinearGradient(
-                        colors: [.clear, DaylightTheme.parchmentDark.opacity(0.1)],
+                        colors: [.clear, DaylightTheme.peach.opacity(0.1)],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
@@ -142,9 +142,9 @@ struct EnvelopeCard: View {
                         Spacer()
                         Image(systemName: "drop.fill")
                             .font(.system(size: 12))
-                            .foregroundColor(DaylightTheme.deepBlue)
+                            .foregroundColor(DaylightTheme.rose)
                             .padding(6)
-                            .background(Circle().fill(DaylightTheme.babyBlue.opacity(0.3)))
+                            .background(Circle().fill(DaylightTheme.blue.opacity(0.3)))
                             .padding(8)
                     }
                     Spacer()
@@ -162,7 +162,7 @@ struct EnvelopeCard: View {
                 path.addLine(to: CGPoint(x: w / 2, y: 16))
                 path.addLine(to: CGPoint(x: w - DaylightTheme.cornerRadius, y: 0))
             }
-            .stroke(DaylightTheme.warmBrown.opacity(0.15), lineWidth: 1)
+            .stroke(DaylightTheme.textSub.opacity(0.15), lineWidth: 1)
         }
         .frame(height: 16)
     }
