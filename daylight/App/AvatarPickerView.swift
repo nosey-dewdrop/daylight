@@ -1,8 +1,23 @@
 import SwiftUI
 
 struct AvatarPickerView: View {
+    @Environment(AuthService.self) private var auth
     @Environment(\.dismiss) private var dismiss
     @State private var config = AvatarConfig.default
+    @State private var isSaving = false
+
+    private let userService = UserService()
+
+    private let backgroundColors: [String: Color] = [
+        "sky_blue": Color(hex: "B8D4E3"),
+        "sunset_pink": Color(hex: "E8B4B8"),
+        "mint_green": Color(hex: "B8E0D2"),
+        "lavender": Color(hex: "C8B8E0"),
+        "peach": Color(hex: "E8C8A8"),
+        "cream": Color(hex: "F0E8D8"),
+        "coral": Color(hex: "E8A898"),
+        "sage": Color(hex: "B8C8A8"),
+    ]
 
     var body: some View {
         ZStack {
@@ -25,12 +40,18 @@ struct AvatarPickerView: View {
                         .tracking(3)
                     Spacer()
                     Button {
-                        dismiss()
+                        saveAvatar()
                     } label: {
-                        Text("save")
-                            .font(Theme.typeFont(size: 14))
-                            .foregroundStyle(Theme.lilac)
+                        if isSaving {
+                            ProgressView()
+                                .tint(Theme.lilac)
+                        } else {
+                            Text("save")
+                                .font(Theme.typeFont(size: 14))
+                                .foregroundStyle(Theme.lilac)
+                        }
                     }
+                    .disabled(isSaving)
                 }
                 .padding(.horizontal, Theme.padding)
                 .padding(.vertical, 14)
@@ -38,18 +59,13 @@ struct AvatarPickerView: View {
                 // Big avatar preview
                 ZStack {
                     Circle()
-                        .fill(Theme.bg2)
-                        .frame(width: 220, height: 220)
+                        .fill(backgroundColors[config.background ?? ""] ?? Theme.bg2)
+                        .frame(width: 180, height: 180)
                     Circle()
                         .strokeBorder(Theme.brd2, lineWidth: 1)
-                        .frame(width: 220, height: 220)
+                        .frame(width: 180, height: 180)
 
-                    AvatarView(
-                        config: config,
-                        size: 180,
-                        bgColor: .clear,
-                        showBackground: false
-                    )
+                    AvatarCircleView(config: config, size: 150)
                 }
                 .padding(.top, 8)
                 .padding(.bottom, 24)
@@ -84,7 +100,6 @@ struct AvatarPickerView: View {
                                                             lineWidth: isSelected ? 1.5 : 0.5
                                                         )
                                                         .frame(width: 72, height: 72)
-                                                    // Show this hair with current skin
                                                     Image("avatar_\(style.id)_\(config.skinTone)")
                                                         .interpolation(.none)
                                                         .resizable()
@@ -128,7 +143,6 @@ struct AvatarPickerView: View {
                                                         lineWidth: isSelected ? 1.5 : 0.5
                                                     )
                                                     .frame(width: 72, height: 72)
-                                                // Show current hair with this skin
                                                 Image("avatar_\(config.hairStyle)_\(tone.id)")
                                                     .interpolation(.none)
                                                     .resizable()
@@ -145,10 +159,62 @@ struct AvatarPickerView: View {
                                 Spacer()
                             }
                         }
+
+                        // Background picker
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("BACKGROUND")
+                                .font(Theme.typeFont(size: 10))
+                                .foregroundStyle(Theme.tx4)
+                                .tracking(2)
+
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 8) {
+                                    ForEach(AvatarConfig.backgrounds, id: \.self) { bg in
+                                        let isSelected = config.background == bg
+                                        Button {
+                                            config.background = bg
+                                        } label: {
+                                            Circle()
+                                                .fill(backgroundColors[bg] ?? Theme.bg2)
+                                                .frame(width: 44, height: 44)
+                                                .overlay(
+                                                    Circle()
+                                                        .strokeBorder(isSelected ? Theme.lilac : Theme.brd, lineWidth: isSelected ? 2 : 0.5)
+                                                )
+                                        }
+                                        .buttonStyle(.plain)
+                                    }
+                                }
+                            }
+                        }
                     }
                     .padding(.horizontal, Theme.padding)
                     .padding(.bottom, 40)
                 }
+            }
+        }
+        .onAppear {
+            if let existing = auth.currentUser?.avatarConfig {
+                config = existing
+            }
+        }
+    }
+
+    private func saveAvatar() {
+        guard var user = auth.currentUser else { return }
+        isSaving = true
+        user.avatarConfig = config
+
+        Task {
+            do {
+                try await userService.updateProfile(user)
+                auth.currentUser = user
+                await MainActor.run {
+                    isSaving = false
+                    dismiss()
+                }
+            } catch {
+                isSaving = false
             }
         }
     }

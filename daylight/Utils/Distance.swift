@@ -47,8 +47,26 @@ enum Distance {
     static func formatDate(_ dateString: String) -> String {
         let formatter = ISO8601DateFormatter()
         guard let date = formatter.date(from: dateString) else { return dateString }
+        return formatDate(date)
+    }
+
+    /// Format Date for display
+    static func formatDate(_ date: Date) -> String {
         let display = DateFormatter()
         display.dateFormat = "MMM d, yyyy"
         return display.string(from: date)
+    }
+
+    /// Human-readable time remaining from Date
+    static func timeLeft(deliversAt: Date) -> String {
+        let diff = deliversAt.timeIntervalSinceNow
+        if diff <= 0 { return "arrived" }
+
+        let hours = diff / 3600
+        if hours < 1 { return "\(Int(hours * 60))m left" }
+        if hours < 24 { return "\(Int(hours))h left" }
+        let days = hours / 24
+        if days < 2 { return "~1 day left" }
+        return "~\(Int(days)) days left"
     }
 }

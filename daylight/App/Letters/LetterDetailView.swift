@@ -1,15 +1,33 @@
 import SwiftUI
 
 struct LetterDetailView: View {
-    let senderName: String
-    let senderEmoji: String
-    let content: String
-    let stampEmoji: String
-    let status: LetterStatus
-    let distanceKm: Double?
-    let timeInfo: String
+    let letter: Letter
 
+    @Environment(AuthService.self) private var auth
     @Environment(\.dismiss) private var dismiss
+
+    @State private var showReply = false
+    @State private var markedAsRead = false
+
+    private let letterService = LetterService()
+
+    private var senderName: String {
+        letter.sender?.displayName ?? "pen pal"
+    }
+
+    private var senderConfig: AvatarConfig {
+        letter.sender?.avatarConfig ?? .default
+    }
+
+    private var timeText: String {
+        if letter.status == .inTransit, let deliversAt = letter.deliversAt {
+            let formatter = ISO8601DateFormatter()
+            return Distance.timeLeft(deliversAt: formatter.string(from: deliversAt))
+        } else if let sentAt = letter.sentAt {
+            return Distance.formatDate(ISO8601DateFormatter().string(from: sentAt))
+        }
+        return ""
+    }
 
     var body: some View {
         ZStack {
@@ -17,7 +35,7 @@ struct LetterDetailView: View {
 
             ScrollView {
                 VStack(spacing: 16) {
-                    // Sender info — passport style avatar
+                    // Sender info -- passport style avatar
                     HStack(spacing: 12) {
                         // Passport photo style avatar
                         ZStack {
@@ -27,7 +45,7 @@ struct LetterDetailView: View {
                             RoundedRectangle(cornerRadius: 4)
                                 .strokeBorder(Theme.brd, lineWidth: 0.5)
                                 .frame(width: 48, height: 56)
-                            AvatarView(config: .default, size: 40, showBackground: false)
+                            AvatarView(config: senderConfig, size: 40, showBackground: false)
                         }
 
                         VStack(alignment: .leading, spacing: 4) {
@@ -37,9 +55,9 @@ struct LetterDetailView: View {
                                 .fontWeight(.medium)
 
                             HStack(spacing: 6) {
-                                StatusBadge(status: status)
-                                if let km = distanceKm {
-                                    Text("·")
+                                StatusBadge(status: letter.status)
+                                if let km = letter.distanceKm {
+                                    Text(".")
                                         .font(.system(size: 8))
                                         .foregroundStyle(Theme.tx4)
                                     Text(String(format: "%.0f km", km))
@@ -82,8 +100,8 @@ struct LetterDetailView: View {
                                         }
                                     )
 
-                                // Letter text — smaller, elegant
-                                Text(content)
+                                // Letter text
+                                Text(letter.content)
                                     .font(Theme.handFont(size: 15))
                                     .foregroundStyle(Color(hex: "2A2A3A"))
                                     .lineSpacing(8)
@@ -100,29 +118,63 @@ struct LetterDetailView: View {
                         )
                         .shadow(color: .black.opacity(0.04), radius: 8, y: 4)
 
-                        // Stamp on the paper
-                        StampShape()
-                            .fill(Color(hex: "F5F0E8"))
-                            .frame(width: 40, height: 50)
-                            .overlay(
-                                StampShape()
-                                    .strokeBorder(Theme.brd.opacity(0.3), lineWidth: 0.5)
-                            )
-                            .shadow(color: .black.opacity(0.06), radius: 2, y: 1)
-                            .padding(.top, 10)
-                            .padding(.trailing, 10)
+                        // Stamp on the paper (top-right, rectangular)
+                        ZStack {
+                            StampShape()
+                                .fill(Color(hex: "F5F0E8"))
+                                .frame(width: 40, height: 50)
+                            StampShape()
+                                .strokeBorder(Theme.brd.opacity(0.3), lineWidth: 0.5)
+                                .frame(width: 40, height: 50)
+                            if let stampName = letter.stamp?.imageName {
+                                Image(stampName)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 24, height: 24)
+                            }
+                        }
+                        .shadow(color: .black.opacity(0.06), radius: 2, y: 1)
+                        .padding(.top, 10)
+                        .padding(.trailing, 10)
                     }
                     .padding(.horizontal, Theme.padding)
 
-                    // Timestamp
+                    // Delivery info
                     HStack {
+                        if let hours = letter.deliveryHours {
+                            Text("travel time: \(String(format: "%.1f", hours))h")
+                                .font(Theme.typeFont(size: 9))
+                                .foregroundStyle(Theme.tx4)
+                                .italic()
+                        }
                         Spacer()
-                        Text(timeInfo)
+                        Text(timeText)
                             .font(Theme.typeFont(size: 9))
                             .foregroundStyle(Theme.tx4)
                             .italic()
                     }
                     .padding(.horizontal, Theme.padding)
+
+                    // Reply button (only for inbox letters that are delivered/read)
+                    if letter.status == .delivered || letter.status == .read,
+                       letter.recipientId == auth.currentUser?.id {
+                        Button {
+                            showReply = true
+                        } label: {
+                            HStack(spacing: 6) {
+                                Image(systemName: "arrowshape.turn.up.left")
+                                    .font(.system(size: 12))
+                                Text("reply")
+                                    .font(Theme.typeFont(size: 13))
+                            }
+                            .foregroundStyle(Theme.bg)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                            .background(Theme.lilac)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                        }
+                        .padding(.horizontal, Theme.padding)
+                    }
                 }
                 .padding(.top, 8)
                 .padding(.bottom, 40)
@@ -144,20 +196,21 @@ struct LetterDetailView: View {
                 }
             }
         }
+        .sheet(isPresented: $showReply) {
+            if let senderId = letter.senderId {
+                ComposeView(recipientId: senderId, recipientName: senderName)
+                    .environment(auth)
+            }
+        }
+        .task {
+            // Mark as read on appear if it's delivered and addressed to current user
+            if letter.status == .delivered,
+               letter.recipientId == auth.currentUser?.id,
+               let letterId = letter.id,
+               !markedAsRead {
+                markedAsRead = true
+                try? await letterService.markAsRead(letterId: letterId)
+            }
+        }
     }
-}
-
-#Preview {
-    NavigationStack {
-        LetterDetailView(
-            senderName: "luna",
-            senderEmoji: "🌙",
-            content: "i've been thinking about what you said about the stars. there's this poem by neruda that keeps coming back to me.\n\n\"i want to do with you what spring does with the cherry trees.\"\n\ndo you ever feel like some words were written just for a specific moment in your life? i read that line three years ago and felt nothing. now it won't leave me alone.\n\nthe sky here has been impossibly clear. i counted seven shooting stars last night. made a wish on each one — same wish, seven times, just to be sure.\n\nyours,\nluna",
-            stampEmoji: "🌿",
-            status: .delivered,
-            distanceKm: 4200,
-            timeInfo: "arrived 2h ago"
-        )
-    }
-    .preferredColorScheme(.light)
 }

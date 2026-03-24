@@ -1,41 +1,37 @@
 import SwiftUI
 
 struct ContentView: View {
-    init() {
-        let appearance = UITabBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor(Theme.bg)
-        appearance.stackedLayoutAppearance.normal.iconColor = UIColor(Theme.tx4)
-        appearance.stackedLayoutAppearance.selected.iconColor = UIColor(Theme.txt)
-        UITabBar.appearance().standardAppearance = appearance
-        UITabBar.appearance().scrollEdgeAppearance = appearance
-    }
+    @Environment(AuthService.self) private var auth
 
     var body: some View {
-        TabView {
-            HomeView()
-                .tabItem {
-                    Image(systemName: "envelope")
-                    Text("letters")
+        Group {
+            if auth.isLoading {
+                // Splash / loading
+                ZStack {
+                    Theme.bg.ignoresSafeArea()
+                    VStack(spacing: 6) {
+                        Text("daylight")
+                            .font(Theme.typeFont(size: 28))
+                            .foregroundStyle(Theme.txt)
+                            .tracking(6)
+                        Text("letters that travel")
+                            .font(Theme.typeFont(size: 10))
+                            .foregroundStyle(Theme.tx4)
+                            .tracking(3)
+                    }
                 }
-
-            ComposeView()
-                .tabItem {
-                    Image(systemName: "square.and.pencil")
-                    Text("write")
-                }
-
-            ProfileView()
-                .tabItem {
-                    Image(systemName: "person")
-                    Text("profile")
-                }
+            } else if !auth.isAuthenticated {
+                LoginView()
+            } else if let user = auth.currentUser, !user.onboardingComplete {
+                OnboardingView()
+            } else {
+                MainTabView()
+            }
         }
-        .tint(Theme.txt)
+        .animation(.easeInOut(duration: 0.3), value: auth.isAuthenticated)
+        .animation(.easeInOut(duration: 0.3), value: auth.currentUser?.onboardingComplete)
+        .task {
+            await auth.restoreSession()
+        }
     }
-}
-
-#Preview {
-    ContentView()
-        .preferredColorScheme(.light)
 }
