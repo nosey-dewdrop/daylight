@@ -9,11 +9,11 @@ enum DaylightTheme {
     static let rose = Color(hex: "#d4738f")
     static let rule = Color(hex: "#e6e6e6")
 
-    // MARK: - Pastel Accents
+    // MARK: - Pastel Accents (for post-it cards only)
     static let yellow = Color(hex: "#fef3c7")
     static let pink = Color(hex: "#fde2e4")
-    static let blue = Color(hex: "#d4ecf7")
-    static let green = Color(hex: "#d5f0d5")
+    static let blue = Color(hex: "#fde2e4")  // mapped to pink, no blue in palette
+    static let green = Color(hex: "#f5f0eb")  // warm gray instead of green
     static let lavender = Color(hex: "#e8dff5")
     static let peach = Color(hex: "#fde8d0")
 
@@ -26,22 +26,22 @@ enum DaylightTheme {
 
     // MARK: - Gradients
     static let skyGradient = LinearGradient(
-        colors: [blue, Color(hex: "#e8f4fa"), bg],
+        colors: [pink.opacity(0.3), bg],
         startPoint: .top,
         endPoint: .bottom
     )
 
-    // MARK: - Fonts (Inter-like via system sans)
+    // MARK: - Fonts (Inter via bundle, fallback to system)
     static func heading(_ size: CGFloat) -> Font {
-        .system(size: size, weight: .heavy, design: .default)
+        .custom("Inter", size: size).weight(.heavy)
     }
 
     static func body(_ size: CGFloat) -> Font {
-        .system(size: size, weight: .regular, design: .default)
+        .custom("Inter", size: size).weight(.regular)
     }
 
     static func label(_ size: CGFloat) -> Font {
-        .system(size: size, weight: .semibold, design: .default)
+        .custom("Inter", size: size).weight(.semibold)
     }
 
     static func handwriting(_ size: CGFloat) -> Font {
@@ -63,7 +63,7 @@ enum DaylightTheme {
     static let smallPadding: CGFloat = 8
 
     // MARK: - Pastel array for post-it style cards
-    static let pastels: [Color] = [yellow, pink, blue, green, lavender, peach]
+    static let pastels: [Color] = [yellow, pink, lavender, peach, cream]
 
     static func pastel(for index: Int) -> Color {
         pastels[index % pastels.count]
