@@ -28,9 +28,14 @@ final class UserService {
                 .order("category")
                 .execute()
                 .value
-            allInterests = interests
+            if !interests.isEmpty {
+                allInterests = interests
+            } else {
+                allInterests = Interest.defaults
+            }
         } catch {
             print("Failed to fetch interests: \(error)")
+            allInterests = Interest.defaults
         }
     }
 
