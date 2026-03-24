@@ -41,5 +41,7 @@ Config.plist
 
 # Plans
 plans/
-project.yml
 CLAUDE.md
+
+# Generated Xcode project (regenerate with xcodegen)
+*.xcodeproj
