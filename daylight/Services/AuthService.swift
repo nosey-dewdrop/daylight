@@ -93,7 +93,7 @@ final class AuthService {
                 .value
             currentProfile = profile
         } catch {
-            print("Failed to fetch profile: \(error)")
+            errorMessage = error.localizedDescription
         }
     }
 

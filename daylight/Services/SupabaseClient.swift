@@ -8,7 +8,13 @@ enum SupabaseManager {
               let urlString = dict["SUPABASE_URL"] as? String,
               let anonKey = dict["SUPABASE_ANON_KEY"] as? String,
               let url = URL(string: urlString) else {
-            fatalError("Config.plist missing or invalid. Ensure SUPABASE_URL and SUPABASE_ANON_KEY are set.")
+            assertionFailure("Config.plist missing or invalid. Ensure SUPABASE_URL and SUPABASE_ANON_KEY are set.")
+            // Fallback: return a client with placeholder values so the app does not crash in production.
+            // All network calls will fail gracefully via existing try/catch handlers.
+            return SupabaseClient(
+                supabaseURL: URL(string: "https://invalid.supabase.co")!,
+                supabaseKey: "invalid"
+            )
         }
 
         return SupabaseClient(

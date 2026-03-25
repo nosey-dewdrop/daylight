@@ -45,6 +45,9 @@ struct GlobeView: View {
                 rotation = 360
             }
         }
+        .onDisappear {
+            rotation = 0
+        }
     }
 
     private var globeGrid: some View {

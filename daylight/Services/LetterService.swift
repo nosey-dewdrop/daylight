@@ -13,6 +13,17 @@ final class LetterService {
 
     private let client = SupabaseManager.client
     private var realtimeChannel: RealtimeChannelV2?
+    private var realtimeTask: Task<Void, Never>?
+    private static let isoFormatter = ISO8601DateFormatter()
+
+    deinit {
+        realtimeTask?.cancel()
+        let channel = realtimeChannel
+        let client = client
+        if let channel {
+            Task { await client.realtimeV2.removeChannel(channel) }
+        }
+    }
 
     @MainActor
     func fetchInbox(userId: UUID) async {
@@ -49,7 +60,7 @@ final class LetterService {
                 .value
             inTransitLetters = letters
         } catch {
-            print("Failed to fetch in-transit: \(error)")
+            errorMessage = error.localizedDescription
         }
     }
 
@@ -163,11 +174,11 @@ final class LetterService {
         do {
             try await client
                 .from("letters")
-                .update(["status": "READ", "read_at": ISO8601DateFormatter().string(from: Date())])
+                .update(["status": "READ", "read_at": Self.isoFormatter.string(from: Date())])
                 .eq("id", value: letterId.uuidString)
                 .execute()
         } catch {
-            print("Failed to mark as read: \(error)")
+            errorMessage = error.localizedDescription
         }
     }
 
@@ -180,7 +191,7 @@ final class LetterService {
                 .eq("id", value: letterId.uuidString)
                 .execute()
         } catch {
-            print("Failed to delete draft: \(error)")
+            errorMessage = error.localizedDescription
         }
     }
 
@@ -197,8 +208,9 @@ final class LetterService {
         await channel.subscribe()
         self.realtimeChannel = channel
 
-        Task {
+        realtimeTask = Task { [weak self] in
             for await _ in changes {
+                guard let self else { break }
                 await self.fetchInbox(userId: userId)
                 await self.fetchInTransit(userId: userId)
             }
@@ -206,8 +218,11 @@ final class LetterService {
     }
 
     func unsubscribe() async {
+        realtimeTask?.cancel()
+        realtimeTask = nil
         if let channel = realtimeChannel {
             await client.realtimeV2.removeChannel(channel)
+            realtimeChannel = nil
         }
     }
 }

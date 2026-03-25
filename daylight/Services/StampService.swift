@@ -24,7 +24,7 @@ final class StampService {
                 .value
             allStamps = stamps
         } catch {
-            print("Failed to fetch stamps: \(error)")
+            // Error silently handled — stamps will remain empty
         }
     }
 
@@ -40,7 +40,7 @@ final class StampService {
             userStamps = stamps
             unlockedStampIds = Set(stamps.map { $0.stampId })
         } catch {
-            print("Failed to fetch user stamps: \(error)")
+            // Error silently handled — user stamps will remain empty
         }
     }
 

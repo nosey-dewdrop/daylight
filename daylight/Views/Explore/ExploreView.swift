@@ -486,7 +486,7 @@ struct PenPalProfileSheet: View {
             do {
                 try await userService.sendFriendRequest(userId: userId, friendId: profile.id)
             } catch {
-                print("Friend request error: \(error)")
+                // Friend request failed — user can retry
             }
             isSendingRequest = false
         }

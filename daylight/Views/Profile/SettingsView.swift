@@ -132,11 +132,15 @@ struct SettingsView: View {
         .clipShape(RoundedRectangle(cornerRadius: DaylightTheme.smallCornerRadius))
     }
 
+    private static let dateFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.dateStyle = .medium
+        return f
+    }()
+
     private var formattedJoinDate: String {
         guard let date = authService.currentProfile?.createdAt else { return "-" }
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        return formatter.string(from: date)
+        return Self.dateFormatter.string(from: date)
     }
 
     private func saveBio() {
@@ -148,7 +152,7 @@ struct SettingsView: View {
                 try await userService.updateProfile(update, userId: userId)
                 await authService.refreshProfile()
             } catch {
-                print("Save bio error: \(error)")
+                // Save failed — user can retry
             }
             isSaving = false
         }

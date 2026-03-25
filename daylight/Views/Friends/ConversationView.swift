@@ -7,13 +7,7 @@ struct ConversationView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showCompose = false
     @State private var selectedLetter: Letter?
-
-    private var conversationLetters: [Letter] {
-        let all = letterService.inboxLetters + letterService.sentLetters
-        return all.filter { letter in
-            (letter.senderId == friend.id || letter.recipientId == friend.id)
-        }.sorted { ($0.sentAt ?? .distantPast) > ($1.sentAt ?? .distantPast) }
-    }
+    @State private var conversationLetters: [Letter] = []
 
     var body: some View {
         NavigationStack {
@@ -117,7 +111,21 @@ struct ConversationView: View {
             .task {
                 guard let userId = authService.currentUser?.id else { return }
                 await letterService.fetchSent(userId: userId)
+                updateConversationLetters()
+            }
+            .onChange(of: letterService.inboxLetters) { _, _ in
+                updateConversationLetters()
+            }
+            .onChange(of: letterService.sentLetters) { _, _ in
+                updateConversationLetters()
             }
         }
+    }
+
+    private func updateConversationLetters() {
+        let all = letterService.inboxLetters + letterService.sentLetters
+        conversationLetters = all.filter { letter in
+            letter.senderId == friend.id || letter.recipientId == friend.id
+        }.sorted { ($0.sentAt ?? .distantPast) > ($1.sentAt ?? .distantPast) }
     }
 }

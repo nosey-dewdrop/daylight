@@ -186,7 +186,7 @@ struct AvatarBuilderView: View {
                 await authService.refreshProfile()
                 dismiss()
             } catch {
-                print("Save avatar error: \(error)")
+                // Save failed — user can retry
             }
             isSaving = false
         }

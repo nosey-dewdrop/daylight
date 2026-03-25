@@ -416,7 +416,7 @@ struct OnboardingView: View {
                 try await userService.updateProfile(update, userId: userId)
                 await authService.refreshProfile()
             } catch {
-                print("Onboarding error: \(error)")
+                // Onboarding save failed — user can retry
             }
             isLoading = false
         }

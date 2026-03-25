@@ -34,7 +34,7 @@ final class UserService {
                 allInterests = Interest.defaults
             }
         } catch {
-            print("Failed to fetch interests: \(error)")
+            // Fallback to defaults on error
             allInterests = Interest.defaults
         }
     }
@@ -79,7 +79,7 @@ final class UserService {
                 .value
             searchResults = profiles
         } catch {
-            print("Failed to search: \(error)")
+            // Search failed silently — results will remain empty
         }
     }
 
@@ -95,7 +95,7 @@ final class UserService {
                 .value
             friends = friendships
         } catch {
-            print("Failed to fetch friends: \(error)")
+            // Error silently handled — friends list will remain empty
         }
     }
 
@@ -139,7 +139,7 @@ final class UserService {
                 .value
             return profiles.first
         } catch {
-            print("Failed to get random pen pal: \(error)")
+            // Error silently handled — returns nil
             return nil
         }
     }
