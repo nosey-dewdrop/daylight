@@ -11,16 +11,24 @@ final class AuthService {
     var errorMessage: String?
 
     private let client = SupabaseManager.client
+    private var authListenerTask: Task<Void, Never>?
 
     init() {
         Task { await restoreSession() }
         listenToAuthChanges()
     }
 
+    deinit {
+        authListenerTask?.cancel()
+    }
+
     private func listenToAuthChanges() {
-        Task {
-            for await (event, session) in client.auth.authStateChanges {
-                await MainActor.run {
+        authListenerTask = Task { [weak self] in
+            guard let self else { return }
+            for await (event, session) in self.client.auth.authStateChanges {
+                guard !Task.isCancelled else { break }
+                await MainActor.run { [weak self] in
+                    guard let self else { return }
                     switch event {
                     case .signedIn:
                         self.currentUser = session?.user

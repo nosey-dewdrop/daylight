@@ -52,12 +52,22 @@ enum Countries {
         CountryInfo(id: "RO", name: "Romania", flag: "🇷🇴", latitude: 45.9432, longitude: 24.9668),
     ].sorted(by: { $0.name < $1.name })
 
+    /// O(1) lookup by ISO code
+    private static let byCodeMap: [String: CountryInfo] = {
+        Dictionary(uniqueKeysWithValues: all.map { ($0.id, $0) })
+    }()
+
+    /// O(1) lookup by country name
+    private static let byNameMap: [String: CountryInfo] = {
+        Dictionary(uniqueKeysWithValues: all.map { ($0.name, $0) })
+    }()
+
     static func find(byCode code: String) -> CountryInfo? {
-        all.first { $0.id == code }
+        byCodeMap[code]
     }
 
     static func find(byName name: String) -> CountryInfo? {
-        all.first { $0.name == name }
+        byNameMap[name]
     }
 
     static let languages = [

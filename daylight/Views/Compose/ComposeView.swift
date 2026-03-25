@@ -17,13 +17,10 @@ struct ComposeView: View {
     @State private var isSending = false
     @State private var errorMessage: String?
     @State private var recipientProfile: Profile?
-
-    private var wordCount: Int {
-        content.split(separator: " ").count
-    }
+    @State private var cachedWordCount: Int = 0
 
     private var canSend: Bool {
-        wordCount >= 50 && (recipientId != nil || isBottleMail)
+        cachedWordCount >= 50 && (recipientId != nil || isBottleMail)
     }
 
     var body: some View {
@@ -97,9 +94,9 @@ struct ComposeView: View {
 
                         // Word count
                         HStack {
-                            Text("\(wordCount) / 50 words minimum")
+                            Text("\(cachedWordCount) / 50 words minimum")
                                 .font(DaylightTheme.captionFont)
-                                .foregroundColor(wordCount >= 50 ? DaylightTheme.green : DaylightTheme.textSub)
+                                .foregroundColor(cachedWordCount >= 50 ? DaylightTheme.green : DaylightTheme.textSub)
 
                             Spacer()
 
@@ -142,6 +139,9 @@ struct ComposeView: View {
             }
             .sheet(isPresented: $showStampPicker) {
                 StampPickerView(selectedStamp: $selectedStamp)
+            }
+            .onChange(of: content) { _, newValue in
+                cachedWordCount = newValue.split(separator: " ").count
             }
             .task {
                 if let recipientId = recipientId {

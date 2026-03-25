@@ -6,6 +6,10 @@ struct HomeView: View {
     @State private var showCompose = false
     @State private var selectedLetter: Letter?
 
+    private var hasUnreadLetters: Bool {
+        letterService.inboxLetters.contains { $0.status == .delivered }
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -45,22 +49,23 @@ struct HomeView: View {
 
                                     Spacer()
 
-                                    let unreadCount = letterService.inboxLetters.filter { $0.status == .delivered }.count
-                                    if unreadCount > 0 {
+                                    if hasUnreadLetters {
                                         StatusBadge(status: .unread)
                                     }
                                 }
                                 .padding(.horizontal, DaylightTheme.padding)
 
-                                ForEach(letterService.inboxLetters) { letter in
-                                    EnvelopeCard(
-                                        letter: letter,
-                                        senderName: letter.sender?.displayName ?? "Unknown",
-                                        senderAvatar: letter.sender?.avatarConfig
-                                    ) {
-                                        selectedLetter = letter
+                                LazyVStack(spacing: 0) {
+                                    ForEach(letterService.inboxLetters) { letter in
+                                        EnvelopeCard(
+                                            letter: letter,
+                                            senderName: letter.sender?.displayName ?? "Unknown",
+                                            senderAvatar: letter.sender?.avatarConfig
+                                        ) {
+                                            selectedLetter = letter
+                                        }
+                                        .padding(.horizontal, DaylightTheme.padding)
                                     }
-                                    .padding(.horizontal, DaylightTheme.padding)
                                 }
                             }
                         } else if !letterService.isLoading {

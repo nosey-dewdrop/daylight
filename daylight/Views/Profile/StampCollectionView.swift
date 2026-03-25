@@ -34,51 +34,9 @@ struct StampCollectionView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.top, 16)
 
-                        // Stamps by category (album style)
-                        let grouped = stampService.stampsByCategory()
-                        ForEach(Array(grouped.keys.sorted()), id: \.self) { category in
-                            VStack(alignment: .leading, spacing: 12) {
-                                HStack {
-                                    Text(category)
-                                        .font(DaylightTheme.headlineFont)
-                                        .foregroundColor(DaylightTheme.text)
-
-                                    Spacer()
-
-                                    let total = grouped[category]?.count ?? 0
-                                    let unlocked = grouped[category]?.filter { stampService.isUnlocked($0) || $0.xpRequired == 0 }.count ?? 0
-                                    Text("\(unlocked)/\(total)")
-                                        .font(DaylightTheme.captionFont)
-                                        .foregroundColor(DaylightTheme.textSub)
-                                }
-
-                                // Album-style grid
-                                LazyVGrid(columns: [
-                                    GridItem(.adaptive(minimum: 70), spacing: 12)
-                                ], spacing: 12) {
-                                    ForEach(grouped[category] ?? []) { stamp in
-                                        let isUnlocked = stampService.isUnlocked(stamp) || stamp.xpRequired == 0
-                                        VStack(spacing: 4) {
-                                            StampView(
-                                                stamp: stamp,
-                                                width: 60,
-                                                isUnlocked: isUnlocked
-                                            )
-
-                                            if !isUnlocked && stamp.xpRequired > 0 {
-                                                Text("\(stamp.xpRequired) XP")
-                                                    .font(.system(size: 9, design: .serif))
-                                                    .foregroundColor(DaylightTheme.textSub)
-                                            }
-                                        }
-                                    }
-                                }
-                                .padding(12)
-                                .background(
-                                    RoundedRectangle(cornerRadius: DaylightTheme.cornerRadius)
-                                        .fill(DaylightTheme.parchment.opacity(0.5))
-                                )
-                            }
+                        // Stamps by category (album style) - uses cached dictionary from StampService
+                        ForEach(sortedCategories, id: \.self) { category in
+                            stampCategorySection(category: category)
                         }
 
                         Spacer().frame(height: 20)
@@ -94,6 +52,58 @@ struct StampCollectionView: View {
                         .foregroundColor(DaylightTheme.rose)
                 }
             }
+        }
+    }
+
+    private var sortedCategories: [String] {
+        stampService.stampsByCategory().keys.sorted()
+    }
+
+    private func stampCategorySection(category: String) -> some View {
+        let stamps = stampService.stampsByCategory()[category] ?? []
+        let total = stamps.count
+        let unlocked = stamps.reduce(0) { count, stamp in
+            count + ((stampService.isUnlocked(stamp) || stamp.xpRequired == 0) ? 1 : 0)
+        }
+        return VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text(category)
+                    .font(DaylightTheme.headlineFont)
+                    .foregroundColor(DaylightTheme.text)
+
+                Spacer()
+
+                Text("\(unlocked)/\(total)")
+                    .font(DaylightTheme.captionFont)
+                    .foregroundColor(DaylightTheme.textSub)
+            }
+
+            // Album-style grid
+            LazyVGrid(columns: [
+                GridItem(.adaptive(minimum: 70), spacing: 12)
+            ], spacing: 12) {
+                ForEach(stamps) { stamp in
+                    let isUnlocked = stampService.isUnlocked(stamp) || stamp.xpRequired == 0
+                    VStack(spacing: 4) {
+                        StampView(
+                            stamp: stamp,
+                            width: 60,
+                            isUnlocked: isUnlocked
+                        )
+
+                        if !isUnlocked && stamp.xpRequired > 0 {
+                            Text("\(stamp.xpRequired) XP")
+                                .font(.system(size: 9, design: .serif))
+                                .foregroundColor(DaylightTheme.textSub)
+                        }
+                    }
+                }
+            }
+            .padding(12)
+            .background(
+                RoundedRectangle(cornerRadius: DaylightTheme.cornerRadius)
+                    .fill(DaylightTheme.parchment.opacity(0.5))
+            )
         }
     }
 

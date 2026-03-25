@@ -68,14 +68,16 @@ struct ConversationView: View {
                             }
                             .padding(.vertical, 40)
                         } else {
-                            ForEach(conversationLetters) { letter in
-                                LetterCardView(
-                                    letter: letter,
-                                    showSender: letter.senderId == friend.id
-                                )
-                                .padding(.horizontal, DaylightTheme.padding)
-                                .onTapGesture {
-                                    selectedLetter = letter
+                            LazyVStack(spacing: 0) {
+                                ForEach(conversationLetters) { letter in
+                                    LetterCardView(
+                                        letter: letter,
+                                        showSender: letter.senderId == friend.id
+                                    )
+                                    .padding(.horizontal, DaylightTheme.padding)
+                                    .onTapGesture {
+                                        selectedLetter = letter
+                                    }
                                 }
                             }
                         }
@@ -123,9 +125,13 @@ struct ConversationView: View {
     }
 
     private func updateConversationLetters() {
-        let all = letterService.inboxLetters + letterService.sentLetters
-        conversationLetters = all.filter { letter in
-            letter.senderId == friend.id || letter.recipientId == friend.id
-        }.sorted { ($0.sentAt ?? .distantPast) > ($1.sentAt ?? .distantPast) }
+        let friendId = friend.id
+        // Filter inbox and sent separately to avoid creating a combined array first
+        let inboxFiltered = letterService.inboxLetters.filter { $0.senderId == friendId }
+        let sentFiltered = letterService.sentLetters.filter { $0.recipientId == friendId }
+        var combined = inboxFiltered
+        combined.append(contentsOf: sentFiltered)
+        combined.sort { ($0.sentAt ?? .distantPast) > ($1.sentAt ?? .distantPast) }
+        conversationLetters = combined
     }
 }

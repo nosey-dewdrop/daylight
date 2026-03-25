@@ -178,6 +178,10 @@ struct OnboardingView: View {
         }
     }
 
+    private var groupedInterests: [String: [Interest]] {
+        Dictionary(grouping: userService.allInterests, by: { $0.category })
+    }
+
     private var interestsStep: some View {
         VStack(spacing: 20) {
             Image(systemName: "heart.circle.fill")
@@ -192,15 +196,14 @@ struct OnboardingView: View {
                 .font(DaylightTheme.letterFont)
                 .foregroundColor(DaylightTheme.textSub)
 
-            let grouped = Dictionary(grouping: userService.allInterests, by: { $0.category })
-            ForEach(Array(grouped.keys.sorted()), id: \.self) { category in
+            ForEach(Array(groupedInterests.keys.sorted()), id: \.self) { category in
                 VStack(alignment: .leading, spacing: 8) {
                     Text(category)
                         .font(DaylightTheme.captionFont)
                         .foregroundColor(DaylightTheme.textSub)
 
                     FlowLayout(spacing: 8) {
-                        ForEach(grouped[category] ?? [], id: \.id) { interest in
+                        ForEach(groupedInterests[category] ?? [], id: \.id) { interest in
                             InterestChip(
                                 text: interest.name,
                                 isSelected: selectedInterests.contains(interest.name)

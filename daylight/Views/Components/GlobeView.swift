@@ -3,6 +3,7 @@ import SwiftUI
 struct GlobeView: View {
     let inTransitLetters: [Letter]
     @State private var rotation: Double = 0
+    @State private var isAnimating = false
 
     var body: some View {
         ZStack {
@@ -41,12 +42,17 @@ struct GlobeView: View {
                 .foregroundColor(DaylightTheme.rose.opacity(0.4))
         }
         .onAppear {
+            guard !isAnimating else { return }
+            isAnimating = true
             withAnimation(.linear(duration: 60).repeatForever(autoreverses: false)) {
                 rotation = 360
             }
         }
         .onDisappear {
-            rotation = 0
+            isAnimating = false
+            withAnimation(.linear(duration: 0)) {
+                rotation = 0
+            }
         }
     }
 

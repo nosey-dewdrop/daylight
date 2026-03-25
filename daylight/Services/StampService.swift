@@ -3,10 +3,13 @@ import Supabase
 
 @Observable
 final class StampService {
-    var allStamps: [Stamp] = []
+    var allStamps: [Stamp] = [] {
+        didSet { cachedStampsByCategory = Dictionary(grouping: allStamps, by: { $0.category }) }
+    }
     var userStamps: [UserStamp] = []
     var unlockedStampIds: Set<UUID> = []
     var isLoading = false
+    private(set) var cachedStampsByCategory: [String: [Stamp]] = [:]
 
     private let client = SupabaseManager.client
 
@@ -70,7 +73,7 @@ final class StampService {
     }
 
     func stampsByCategory() -> [String: [Stamp]] {
-        Dictionary(grouping: allStamps, by: { $0.category })
+        cachedStampsByCategory
     }
 
     func isUnlocked(_ stamp: Stamp) -> Bool {
